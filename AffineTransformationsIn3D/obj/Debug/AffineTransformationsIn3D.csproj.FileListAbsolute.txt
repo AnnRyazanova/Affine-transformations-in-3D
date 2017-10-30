@@ -1,0 +1,9 @@
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.exe.config
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.exe
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.pdb
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.csprojResolveAssemblyReference.cache
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.Form1.resources
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.Properties.Resources.resources
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.csproj.GenerateResource.Cache
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.exe
+D:\MMCS\Учеба\7 семестр\Графика\Лабы\lab6\AffineTransformationsIn3D\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.pdb
