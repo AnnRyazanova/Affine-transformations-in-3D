@@ -28,14 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            AffineTransformationsIn3D.Primitives.Transformation transformation2 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation1 = new AffineTransformationsIn3D.Primitives.Transformation();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            AffineTransformationsIn3D.Primitives.Transformation transformation4 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation3 = new AffineTransformationsIn3D.Primitives.Transformation();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -56,25 +67,104 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.sceneView3, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.sceneView4, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.sceneView1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.sceneView2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(460, 358);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // pictureBox1
+            // sceneView4
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(224, 173);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView4.Location = new System.Drawing.Point(233, 195);
+            this.sceneView4.Name = "sceneView4";
+            this.sceneView4.Projection = transformation2;
+            this.sceneView4.Scene = ((System.Collections.Generic.List<AffineTransformationsIn3D.Primitives.IPrimitive>)(resources.GetObject("sceneView4.Scene")));
+            this.sceneView4.Size = new System.Drawing.Size(224, 160);
+            this.sceneView4.TabIndex = 3;
+            this.sceneView4.Text = "sceneView4";
+            // 
+            // sceneView3
+            // 
+            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView3.Location = new System.Drawing.Point(3, 195);
+            this.sceneView3.Name = "sceneView3";
+            this.sceneView3.Projection = transformation1;
+            this.sceneView3.Scene = ((System.Collections.Generic.List<AffineTransformationsIn3D.Primitives.IPrimitive>)(resources.GetObject("sceneView3.Scene")));
+            this.sceneView3.Size = new System.Drawing.Size(224, 160);
+            this.sceneView3.TabIndex = 2;
+            this.sceneView3.Text = "sceneView3";
+            // 
+            // sceneView2
+            // 
+            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView2.Location = new System.Drawing.Point(233, 16);
+            this.sceneView2.Name = "sceneView2";
+            this.sceneView2.Projection = transformation4;
+            this.sceneView2.Scene = ((System.Collections.Generic.List<AffineTransformationsIn3D.Primitives.IPrimitive>)(resources.GetObject("sceneView2.Scene")));
+            this.sceneView2.Size = new System.Drawing.Size(224, 160);
+            this.sceneView2.TabIndex = 1;
+            this.sceneView2.Text = "sceneView2";
+            // 
+            // sceneView1
+            // 
+            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView1.Location = new System.Drawing.Point(3, 16);
+            this.sceneView1.Name = "sceneView1";
+            this.sceneView1.Projection = transformation3;
+            this.sceneView1.Scene = ((System.Collections.Generic.List<AffineTransformationsIn3D.Primitives.IPrimitive>)(resources.GetObject("sceneView1.Scene")));
+            this.sceneView1.Size = new System.Drawing.Size(224, 160);
+            this.sceneView1.TabIndex = 0;
+            this.sceneView1.Text = "sceneView1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Проекция XOY";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(233, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Проекция ZOY";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 179);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Проекция ZOX";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(233, 179);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(144, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Изометрическая проекция";
             // 
             // Form1
             // 
@@ -89,7 +179,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -98,7 +188,14 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private SceneView sceneView4;
+        private SceneView sceneView3;
+        private SceneView sceneView2;
+        private SceneView sceneView1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -1,30 +1,40 @@
-﻿using System;
+﻿using System.Windows.Forms;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System;
 using AffineTransformationsIn3D.Primitives;
+using System.Drawing;
 
 namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-        private Graphics graphics;
-
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.Image = new Bitmap(2048, 2048);
-            graphics = Graphics.FromImage(pictureBox1.Image);
-            graphics.Clear(Color.White);
-            Point3D p = new Point3D(100, 100, 0);
-            Transformation projection = Transformation.Projection();
-            p.Draw(graphics, projection);
-            pictureBox1.Refresh();
+            List<IPrimitive> scene = new List<IPrimitive>();
+            var a = new Point3D(0, 0, 0);
+            var b = new Point3D(0.8f, 0, 0);
+            var c = new Point3D(0, 0.8f, 0);
+            var d = new Point3D(0, 0, 0.8f);
+            scene.Add(a);
+            scene.Add(b);
+            scene.Add(c);
+            scene.Add(d);
+            scene.Add(new Line(a, b));
+            scene.Add(new Line(a, c));
+            scene.Add(new Line(a, d));
+            sceneView1.Scene = scene;
+            sceneView2.Scene = scene;
+            sceneView3.Scene = scene;
+            sceneView4.Scene = scene;
+            sceneView1.Projection = Transformation.OrthogonalProjection();
+            sceneView2.Projection = Transformation.OrthogonalProjection() 
+                * Transformation.RotateY((float)Math.PI / 2);
+            sceneView3.Projection = Transformation.OrthogonalProjection() 
+                * Transformation.RotateX(-(float)Math.PI / 2);
+            sceneView4.Projection = Transformation.OrthogonalProjection()
+                * Transformation.RotateY((float)Math.PI / 4)
+                * Transformation.RotateX(-(float)Math.PI / 4);
         }
     }
 }
