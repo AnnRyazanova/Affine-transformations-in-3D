@@ -50,6 +50,7 @@ namespace AffineTransformationsIn3D
                     new Point(Width - 1, 1),
                     new Point(1, 1)
                 });
+            if (null == scene) return;
             foreach (var primitive in scene)
                 primitive.Draw(e.Graphics, projection, Width, Height);
         }
