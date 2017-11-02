@@ -52,6 +52,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Polyhedra\Tetrahedron.cs" />
+    <Compile Include="Primitives\Facet.cs" />
     <Compile Include="Primitives\Line.cs" />
     <Compile Include="Primitives\Point3D.cs" />
     <Compile Include="Primitives\IPrimitive.cs" />
