@@ -68,8 +68,8 @@ namespace AffineTransformationsIn3D.Polyhedra
 
         public void Apply(Transformation t)
         {
-            foreach (var facet in Facets)
-                facet.Apply(t);
+            foreach (var point in Points)
+                point.Apply(t);
         }
 
         public void Draw(Graphics g, Transformation projection, int width, int height)
