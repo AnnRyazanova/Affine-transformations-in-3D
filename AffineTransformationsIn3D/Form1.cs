@@ -40,18 +40,6 @@ namespace AffineTransformationsIn3D
             sceneView4.Projection = Transformation.OrthogonalProjection()
                 * Transformation.RotateY((float)Math.PI / 4)
                 * Transformation.RotateX(-(float)Math.PI / 4);
-            Timer t = new Timer();
-            t.Tick += (sender, e) =>
-            {
-                foreach (var primitive in scene)
-                    primitive.Apply(Transformation.RotateY(0.01f));
-                sceneView1.Invalidate();
-                sceneView2.Invalidate();
-                sceneView3.Invalidate();
-                sceneView4.Invalidate();
-            };
-            t.Interval = 10;
-            t.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
