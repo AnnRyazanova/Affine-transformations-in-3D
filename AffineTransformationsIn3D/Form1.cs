@@ -9,6 +9,8 @@ namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
+        private Tetrahedron curTetrahedron;
+
         public Form1()
         {
             InitializeComponent();
@@ -24,15 +26,16 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
-            scene.Add(new Tetrahedron(0.3f));
+            curTetrahedron = new Tetrahedron(0.5f);
+            scene.Add(curTetrahedron);
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;
             sceneView4.Scene = scene;
             sceneView1.Projection = Transformation.OrthogonalProjection();
-            sceneView2.Projection = Transformation.OrthogonalProjection() 
+            sceneView2.Projection = Transformation.OrthogonalProjection()
                 * Transformation.RotateY((float)Math.PI / 2);
-            sceneView3.Projection = Transformation.OrthogonalProjection() 
+            sceneView3.Projection = Transformation.OrthogonalProjection()
                 * Transformation.RotateX(-(float)Math.PI / 2);
             sceneView4.Projection = Transformation.OrthogonalProjection()
                 * Transformation.RotateY((float)Math.PI / 4)
@@ -50,5 +53,18 @@ namespace AffineTransformationsIn3D
             t.Interval = 10;
             t.Start();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            float scalingX = (float)numericUpDown1.Value;
+            float scalingY = (float)numericUpDown2.Value;
+            float scalingZ = (float)numericUpDown3.Value;
+
+            /*
+            var scalingTetrahedron = Transformation.Scale(scalingX, scalingY, scalingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+            */
+        }
     }
+    
 }
