@@ -42,16 +42,23 @@ namespace AffineTransformationsIn3D
                 * Transformation.RotateX(-(float)Math.PI / 4);
         }
 
+        private void scenesRefresh()
+        {
+            sceneView1.Refresh();
+            sceneView2.Refresh();
+            sceneView3.Refresh();
+            sceneView4.Refresh();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             float scalingX = (float)numericUpDown1.Value;
             float scalingY = (float)numericUpDown2.Value;
             float scalingZ = (float)numericUpDown3.Value;
-
-            /*
+            
             var scalingTetrahedron = Transformation.Scale(scalingX, scalingY, scalingZ);
             curTetrahedron.Apply(scalingTetrahedron);
-            */
+            scenesRefresh();
         }
     }
     
