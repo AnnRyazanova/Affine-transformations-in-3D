@@ -28,7 +28,7 @@ namespace AffineTransformationsIn3D.Primitives
         public void Draw(Graphics g, Transformation projection, int width, int height)
         {
             foreach (var e in edges)
-                e.Draw(g, projection, width, height)
+                e.Draw(g, projection, width, height);
         }
     }
 }
