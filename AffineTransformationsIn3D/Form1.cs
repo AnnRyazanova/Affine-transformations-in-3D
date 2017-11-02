@@ -81,6 +81,26 @@ namespace AffineTransformationsIn3D
             curTetrahedron.Apply(scalingTetrahedron);
             scenesRefresh();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Transformation reflection = new Transformation();
+
+            if (!radioButton1.Checked && !radioButton2.Checked && !radioButton3.Checked)
+            {
+                MessageBox.Show("Выберите, относительно чего отразить многогранник");
+                return;
+            }
+            if (radioButton1.Checked)
+                reflection = Transformation.ReflectX();
+            else if (radioButton2.Checked)
+                reflection = Transformation.ReflectY();
+            else if (radioButton3.Checked)
+                reflection = Transformation.ReflectZ();
+
+            curTetrahedron.Apply(reflection);
+            scenesRefresh();
+        }
     }
     
 }

@@ -95,6 +95,41 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
+
+        public static Transformation ReflectX()
+        {
+            return new Transformation(
+                new float[,] {
+                    { -1, 0, 0, 0 },
+                    { 0, 1, 0, 0 },
+                    { 0, 0, 1, 0 },
+                    { 0, 0, 0, 1 }
+                });
+        }
+
+        public static Transformation ReflectY()
+        {
+            return new Transformation(
+                new float[,] {
+                    { 1, 0, 0, 0 },
+                    { 0, -1, 0, 0 },
+                    { 0, 0, 1, 0 },
+                    { 0, 0, 0, 1 }
+                });
+        }
+
+        public static Transformation ReflectZ()
+        {
+            return new Transformation(
+                new float[,] {
+                    { 1, 0, 0, 0 },
+                    { 0, 1, 0, 0 },
+                    { 0, 0, -1, 0 },
+                    { 0, 0, 0, 1 }
+                });
+        }
+
+
         public static Transformation OrthogonalProjection()
         {
             return Identity();
