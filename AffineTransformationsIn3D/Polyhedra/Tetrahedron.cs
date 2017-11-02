@@ -65,7 +65,6 @@ namespace AffineTransformationsIn3D.Polyhedra
 
         public Tetrahedron(float size) : this(FindPoints(size)) { }
 
-
         public void Apply(Transformation t)
         {
             foreach (var point in Points)
@@ -79,11 +78,5 @@ namespace AffineTransformationsIn3D.Polyhedra
             foreach (var facet in Facets)
                 facet.Draw(g, projection, width, height);
         }
-
-        public object Clone()
-        {
-            return new Tetrahedron(Points);
-        }
-
     }
 }

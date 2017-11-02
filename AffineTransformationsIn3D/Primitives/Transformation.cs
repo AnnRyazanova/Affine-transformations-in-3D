@@ -9,8 +9,11 @@ namespace AffineTransformationsIn3D.Primitives
 
         public float[,] Matrix { get { return matrix; } }
 
-        public Transformation() { }
-        
+        public Transformation()
+        {
+            matrix = Identity().matrix;
+        }
+
         public Transformation(float[,] matrix)
         {
             this.matrix = matrix;
@@ -53,7 +56,7 @@ namespace AffineTransformationsIn3D.Primitives
                 {
                     { cos, -sin, 0, 0 },
                     { sin, cos, 0, 0 },
-                    { 0, 0, 0, 0 },
+                    { 0, 0, 1, 0 },
                     { 0, 0, 0, 1 }
                 });
         }
@@ -99,15 +102,15 @@ namespace AffineTransformationsIn3D.Primitives
 
         public static Transformation operator *(Transformation t1, Transformation t2)
         {
-            Transformation result = new Transformation();
+            float[,] matrix = new float[4, 4];
             for (int i = 0; i < 4; ++i)
                 for (int j = 0; j < 4; ++j)
                 {
-                    result.matrix[i, j] = 0;
+                    matrix[i, j] = 0;
                     for (int k = 0; k < 4; ++k)
-                        result.matrix[i, j] += t1.matrix[i, k] * t2.matrix[k, j];
+                        matrix[i, j] += t1.matrix[i, k] * t2.matrix[k, j];
                 }
-            return result;
+            return new Transformation(matrix);
         }
     }
 }

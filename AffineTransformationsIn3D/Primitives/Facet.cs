@@ -42,11 +42,5 @@ namespace AffineTransformationsIn3D.Primitives
                 (new Line(Points[Points.Count - 1], Points[0])).Draw(g, projection, width, height);
             }
         }
-
-        public object Clone()
-        {
-            return new Facet(Points);
-        }
-
     }
 }

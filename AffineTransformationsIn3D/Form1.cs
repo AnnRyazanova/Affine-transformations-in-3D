@@ -50,13 +50,34 @@ namespace AffineTransformationsIn3D
             sceneView4.Refresh();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Scale(object sender, EventArgs e)
         {
             float scalingX = (float)numericUpDown1.Value;
             float scalingY = (float)numericUpDown2.Value;
             float scalingZ = (float)numericUpDown3.Value;
-            
             var scalingTetrahedron = Transformation.Scale(scalingX, scalingY, scalingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+            scenesRefresh();
+        }
+
+        private void Rotate(object sender, EventArgs e)
+        {
+            float rotatingX = (float)((double)numericUpDown4.Value / 180 * Math.PI);
+            float rotatingY = (float)((double)numericUpDown5.Value / 180 * Math.PI);
+            float rotatingZ = (float)((double)numericUpDown6.Value / 180 * Math.PI);
+            var scalingTetrahedron = Transformation.RotateX(rotatingX)
+                * Transformation.RotateY(rotatingY)
+                * Transformation.RotateZ(rotatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+            scenesRefresh();
+        }
+
+        private void Translate(object sender, EventArgs e)
+        {
+            float translatingX = (float)numericUpDown7.Value;
+            float translatingY = (float)numericUpDown8.Value;
+            float translatingZ = (float)numericUpDown9.Value;
+            var scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
             curTetrahedron.Apply(scalingTetrahedron);
             scenesRefresh();
         }
