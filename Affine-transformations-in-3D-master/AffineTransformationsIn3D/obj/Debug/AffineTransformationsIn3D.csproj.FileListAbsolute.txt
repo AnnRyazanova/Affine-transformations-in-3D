@@ -1,0 +1,10 @@
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.exe.config
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.exe
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.pdb
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.csprojResolveAssemblyReference.cache
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.Form1.resources
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.Properties.Resources.resources
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.csproj.GenerateResource.Cache
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.exe
+C:\Users\User\source\repos\Affine-transformations-in-3D-master\AffineTransformationsIn3D\obj\Debug\AffineTransformationsIn3D.pdb
