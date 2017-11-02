@@ -81,7 +81,7 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation OrthogonalProjection()
+        public static Transformation Identity()
         {
             return new Transformation(
                 new float[,] {
@@ -90,6 +90,11 @@ namespace AffineTransformationsIn3D.Primitives
                     { 0, 0, 1, 0 },
                     { 0, 0, 0, 1 }
                 });
+        }
+
+        public static Transformation OrthogonalProjection()
+        {
+            return Identity();
         }
 
         public static Transformation operator *(Transformation t1, Transformation t2)

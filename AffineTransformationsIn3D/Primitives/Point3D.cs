@@ -44,10 +44,16 @@ namespace AffineTransformationsIn3D.Primitives
             coords = newCoords;
         }
 
+        public Point3D Transform(Transformation t)
+        {
+            var p = new Point3D(X, Y, Z);
+            p.Apply(t);
+            return p;
+        }
+
         public void Draw(Graphics g, Transformation projection, int width, int height)
         {
-            var projected = (Point3D)Clone();
-            projected.Apply(projection);
+            var projected = Transform(projection);
             if (Z < -1 || 1 < Z) return;
             var x = (projected.X + 1) / 2 * width;
             var y = (-projected.Y + 1) / 2 * height;
@@ -56,9 +62,14 @@ namespace AffineTransformationsIn3D.Primitives
                 POINT_SIZE, POINT_SIZE);
         }
 
-        public object Clone()
+        /*
+         * Преобразует координаты из ([-1, 1], [-1, 1], [-1, 1]) в ([0, width), [0, height), [-1, 1]).
+         */
+        public Point3D NormalizedToDisplay(int width, int height)
         {
-            return new Point3D(X, Y, Z);
+            var x = (X + 1) / 2 * width;
+            var y = (-Y + 1) / 2 * height;
+            return new Point3D(x, y, Z);
         }
     }
 }

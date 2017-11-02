@@ -9,13 +9,25 @@ namespace AffineTransformationsIn3D
     class SceneView : Control
     {
         private List<IPrimitive> scene = new List<IPrimitive>();
+        private Transformation view = Transformation.Identity();
         private Transformation projection = Transformation.OrthogonalProjection();
 
         public List<IPrimitive> Scene
         {
             get { return scene; }
-            set {
+            set
+            {
                 scene = value;
+                Invalidate();
+            }
+        }
+
+        public Transformation View
+        {
+            get { return view; }
+            set
+            {
+                view = value;
                 Invalidate();
             }
         }
@@ -23,7 +35,8 @@ namespace AffineTransformationsIn3D
         public Transformation Projection
         {
             get { return projection; }
-            set {
+            set
+            {
                 projection = value;
                 Invalidate();
             }
@@ -52,7 +65,7 @@ namespace AffineTransformationsIn3D
                 });
             if (null == scene) return;
             foreach (var primitive in scene)
-                primitive.Draw(e.Graphics, projection, Width, Height);
+                primitive.Draw(e.Graphics, view * projection, Width, Height);
         }
     }
 }
