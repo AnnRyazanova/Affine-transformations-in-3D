@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using AffineTransformationsIn3D.Primitives;
+using AffineTransformationsIn3D.Polyhedra;
 using System.Drawing;
 
 namespace AffineTransformationsIn3D
@@ -23,6 +24,7 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
+            scene.Add(new Tetrahedron(0.3f));
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;

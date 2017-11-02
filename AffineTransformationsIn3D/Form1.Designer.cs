@@ -57,7 +57,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer1.Size = new System.Drawing.Size(1354, 803);
+            this.splitContainer1.Size = new System.Drawing.Size(1354, 733);
             this.splitContainer1.SplitterDistance = 1029;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -82,13 +82,13 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1029, 803);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1029, 733);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(517, 401);
+            this.label4.Location = new System.Drawing.Point(517, 366);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(144, 13);
             this.label4.TabIndex = 7;
@@ -97,7 +97,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 401);
+            this.label3.Location = new System.Drawing.Point(3, 366);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 6;
@@ -115,22 +115,22 @@
             // sceneView3
             // 
             this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView3.Location = new System.Drawing.Point(3, 417);
+            this.sceneView3.Location = new System.Drawing.Point(3, 382);
             this.sceneView3.Name = "sceneView3";
             this.sceneView3.Projection = transformation1;
             this.sceneView3.Scene = null;
-            this.sceneView3.Size = new System.Drawing.Size(508, 383);
+            this.sceneView3.Size = new System.Drawing.Size(508, 348);
             this.sceneView3.TabIndex = 2;
             this.sceneView3.Text = "sceneView3";
             // 
             // sceneView4
             // 
             this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView4.Location = new System.Drawing.Point(517, 417);
+            this.sceneView4.Location = new System.Drawing.Point(517, 382);
             this.sceneView4.Name = "sceneView4";
             this.sceneView4.Projection = transformation2;
             this.sceneView4.Scene = null;
-            this.sceneView4.Size = new System.Drawing.Size(509, 383);
+            this.sceneView4.Size = new System.Drawing.Size(509, 348);
             this.sceneView4.TabIndex = 3;
             this.sceneView4.Text = "sceneView4";
             // 
@@ -141,7 +141,7 @@
             this.sceneView1.Name = "sceneView1";
             this.sceneView1.Projection = transformation3;
             this.sceneView1.Scene = null;
-            this.sceneView1.Size = new System.Drawing.Size(508, 382);
+            this.sceneView1.Size = new System.Drawing.Size(508, 347);
             this.sceneView1.TabIndex = 0;
             this.sceneView1.Text = "sceneView1";
             // 
@@ -152,7 +152,7 @@
             this.sceneView2.Name = "sceneView2";
             this.sceneView2.Projection = transformation4;
             this.sceneView2.Scene = null;
-            this.sceneView2.Size = new System.Drawing.Size(509, 382);
+            this.sceneView2.Size = new System.Drawing.Size(509, 347);
             this.sceneView2.TabIndex = 1;
             this.sceneView2.Text = "sceneView2";
             // 
@@ -169,7 +169,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1354, 803);
+            this.ClientSize = new System.Drawing.Size(1354, 733);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
