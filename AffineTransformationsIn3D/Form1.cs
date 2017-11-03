@@ -8,7 +8,7 @@ namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-		private Polyhedra.Polyhedra curPolyhedron = new Tetrahedron(0.5f);
+		private IPolyhedron curPolyhedron = new Tetrahedron(0.5f);
 
         public Form1()
         {
@@ -53,8 +53,8 @@ namespace AffineTransformationsIn3D
             double scalingX = (double)numericUpDown1.Value;
             double scalingY = (double)numericUpDown2.Value;
             double scalingZ = (double)numericUpDown3.Value;
-            var scalingPolyhedron = Transformation.Scale(scalingX, scalingY, scalingZ);
-			curPolyhedron.Apply(scalingPolyhedron);
+			curPolyhedron.Apply(
+                Transformation.Scale(scalingX, scalingY, scalingZ));
             scenesRefresh();
         }
 
@@ -63,10 +63,9 @@ namespace AffineTransformationsIn3D
             double rotatingX = (double)numericUpDown4.Value / 180 * Math.PI;
             double rotatingY = (double)numericUpDown5.Value / 180 * Math.PI;
             double rotatingZ = (double)numericUpDown6.Value / 180 * Math.PI;
-            var rotatingPolyhedron = Transformation.RotateX(rotatingX)
+			curPolyhedron.Apply(Transformation.RotateX(rotatingX)
                 * Transformation.RotateY(rotatingY)
-                * Transformation.RotateZ(rotatingZ);
-			curPolyhedron.Apply(rotatingPolyhedron);
+                * Transformation.RotateZ(rotatingZ));
             scenesRefresh();
         }
 
@@ -75,39 +74,35 @@ namespace AffineTransformationsIn3D
             double translatingX = (double)numericUpDown7.Value;
             double translatingY = (double)numericUpDown8.Value;
             double translatingZ = (double)numericUpDown9.Value;
-            var scalingPolyhedron = Transformation.Translate(translatingX, translatingY, translatingZ);
-			curPolyhedron.Apply(scalingPolyhedron);
+			curPolyhedron.Apply(
+                Transformation.Translate(translatingX, translatingY, translatingZ));
             scenesRefresh();
         }
 
         private void Reflect(object sender, EventArgs e)
         {
-            if (!radioButton1.Checked && !radioButton2.Checked && !radioButton3.Checked)
-            {
-                MessageBox.Show("Выберите, относительно чего отразить многогранник");
-                return;
-            }
-            Transformation reflection = null;
+            Transformation reflection;
             if (radioButton1.Checked)
                 reflection = Transformation.ReflectX();
             else if (radioButton2.Checked)
                 reflection = Transformation.ReflectY();
             else if (radioButton3.Checked)
                 reflection = Transformation.ReflectZ();
+            else throw new Exception("Unreachable statement");
 			curPolyhedron.Apply(reflection);
             scenesRefresh();
         }
 
 		private void RotateAroundCenter(object sender, EventArgs e)
         {
-            double rot1 = (double)numericUpDown10.Value;
-            double rot2 = (double)numericUpDown11.Value;
-            double rot3 = (double)numericUpDown12.Value;
+            double rotX = (double)numericUpDown10.Value;
+            double rotY = (double)numericUpDown11.Value;
+            double rotZ = (double)numericUpDown12.Value;
             Point3D p = curPolyhedron.Center;
             curPolyhedron.Apply(Transformation.Translate(-p.X, -p.Y, -p.Z)
-                * Transformation.RotateX(rot1 / 180 * Math.PI)
-                * Transformation.RotateY(rot2 / 180 * Math.PI)
-                * Transformation.RotateZ(rot3 / 180 * Math.PI)
+                * Transformation.RotateX(rotX / 180 * Math.PI)
+                * Transformation.RotateY(rotY / 180 * Math.PI)
+                * Transformation.RotateZ(rotZ / 180 * Math.PI)
                 * Transformation.Translate(p.X, p.Y, p.Z));
             scenesRefresh();
         }
@@ -158,7 +153,6 @@ namespace AffineTransformationsIn3D
                     * Transformation.RotateY(rotatingY)
                     * Transformation.RotateZ(rotatingZ);
                 line.Apply(scalingTetrahedron);
-
                 rot_y++;
             }
 

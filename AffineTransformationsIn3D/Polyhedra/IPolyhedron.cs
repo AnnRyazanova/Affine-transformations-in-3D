@@ -5,7 +5,7 @@ using AffineTransformationsIn3D.Primitives;
 
 namespace AffineTransformationsIn3D.Polyhedra
 {
-    interface Polyhedra : IPrimitive
+    interface IPolyhedron : IPrimitive
     {
 		Point3D Center
 		{

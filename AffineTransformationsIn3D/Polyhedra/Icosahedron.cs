@@ -5,7 +5,7 @@ using AffineTransformationsIn3D.Primitives;
 
 namespace AffineTransformationsIn3D.Polyhedra
 {
-    class Icosahedron : Polyhedra
+    class Icosahedron : IPolyhedron
     {
         // кол-во вершин = 12
         private List<Point3D> points = new List<Point3D>();
