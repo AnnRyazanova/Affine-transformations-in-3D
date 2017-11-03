@@ -15,21 +15,21 @@ namespace AffineTransformationsIn3D.Polyhedra
         public List<Point3D> Points { get { return points; } }
         public List<Facet> Facets { get { return facets; } }
 
-		public Point3D Center
+        public Point3D Center
         {
             get
             {
-				Point3D p = new Point3D(0, 0, 0);
-				for (int i = 0; i < 4; i++)
-				{
-					p.X += Points[i].X;
-					p.Y += Points[i].Y;
-					p.Z += Points[i].Z;
-				}
-				p.X /= 4;
-				p.Y /= 4;
-				p.Z /= 4;
-				return p;
+                Point3D p = new Point3D(0, 0, 0);
+                for (int i = 0; i < 4; i++)
+                {
+                    p.X += Points[i].X;
+                    p.Y += Points[i].Y;
+                    p.Z += Points[i].Z;
+                }
+                p.X /= 4;
+                p.Y /= 4;
+                p.Z /= 4;
+                return p;
             }
         }
 

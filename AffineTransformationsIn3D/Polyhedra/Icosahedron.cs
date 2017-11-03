@@ -16,23 +16,23 @@ namespace AffineTransformationsIn3D.Polyhedra
         public List<Point3D> Points { get { return points; } }
         public List<Facet> Facets { get { return facets; } }
 
-		public Point3D Center
-		{
-			get
-			{
-				Point3D p = new Point3D(0, 0, 0);
-				for (int i = 0; i < 12; i++)
-				{
-					p.X += Points[i].X;
-					p.Y += Points[i].Y;
-					p.Z += Points[i].Z;
-				}
-				p.X /= 12;
-				p.Y /= 12;
-				p.Z /= 12;
-				return p;
-			}
-		}
+        public Point3D Center
+        {
+            get
+            {
+                Point3D p = new Point3D(0, 0, 0);
+                for (int i = 0; i < 12; i++)
+                {
+                    p.X += Points[i].X;
+                    p.Y += Points[i].Y;
+                    p.Z += Points[i].Z;
+                }
+                p.X /= 12;
+                p.Y /= 12;
+                p.Z /= 12;
+                return p;
+            }
+        }
 
         public Icosahedron(double size)
         {
@@ -81,7 +81,7 @@ namespace AffineTransformationsIn3D.Polyhedra
         public void Draw(Graphics g, Transformation projection, int width, int height)
         {
             if (Points.Count != 12) return;
-			
+            
             foreach (var facet in Facets)
                 facet.Draw(g, projection, width, height);
         }

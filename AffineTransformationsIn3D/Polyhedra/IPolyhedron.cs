@@ -7,9 +7,6 @@ namespace AffineTransformationsIn3D.Polyhedra
 {
     interface IPolyhedron : IPrimitive
     {
-		Point3D Center
-		{
-			get;
-		}
-	}
+        Point3D Center { get; }
+    }
 }

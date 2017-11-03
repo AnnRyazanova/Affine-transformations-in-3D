@@ -953,20 +953,20 @@
         private System.Windows.Forms.NumericUpDown numericUpDown10;
         private System.Windows.Forms.NumericUpDown numericUpDown11;
         private System.Windows.Forms.NumericUpDown numericUpDown12;
-		private System.Windows.Forms.Button button6;
-		private System.Windows.Forms.Label label13;
-		private System.Windows.Forms.Label label14;
-		private System.Windows.Forms.NumericUpDown numericUpDown13;
-		private System.Windows.Forms.Label label15;
-		private System.Windows.Forms.Label label16;
-		private System.Windows.Forms.NumericUpDown numericUpDown14;
-		private System.Windows.Forms.NumericUpDown numericUpDown17;
-		private System.Windows.Forms.NumericUpDown numericUpDown18;
-		private System.Windows.Forms.NumericUpDown numericUpDown15;
-		private System.Windows.Forms.NumericUpDown numericUpDown19;
-		private System.Windows.Forms.NumericUpDown numericUpDown16;
-		private System.Windows.Forms.RadioButton radioButtonTetrahedron;
-		private System.Windows.Forms.RadioButton radioButtonIcosahedron;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown numericUpDown13;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown numericUpDown14;
+        private System.Windows.Forms.NumericUpDown numericUpDown17;
+        private System.Windows.Forms.NumericUpDown numericUpDown18;
+        private System.Windows.Forms.NumericUpDown numericUpDown15;
+        private System.Windows.Forms.NumericUpDown numericUpDown19;
+        private System.Windows.Forms.NumericUpDown numericUpDown16;
+        private System.Windows.Forms.RadioButton radioButtonTetrahedron;
+        private System.Windows.Forms.RadioButton radioButtonIcosahedron;
         private System.Windows.Forms.GroupBox groupBox1;
     }
 }
