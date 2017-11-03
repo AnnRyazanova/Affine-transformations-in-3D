@@ -8,7 +8,7 @@ namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-		private IPolyhedron curPolyhedron = new Tetrahedron(0.5f);
+        private IPolyhedron curPolyhedron = new Tetrahedron(0.5f);
 
         public Form1()
         {
