@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace AffineTransformationsIn3D.Primitives
 {
     class Facet : IPrimitive
     {
-        private List<Point3D> points = new List<Point3D>();
+        private IList<Point3D> points = new List<Point3D>();
 
-        public List<Point3D> Points { get { return points; } set { points = value; } }
+        public IList<Point3D> Points { get { return points; } set { points = value; } }
 
         public Facet(){}
 
-        public Facet(List<Point3D> points)
+        public Facet(IList<Point3D> points)
         {
             this.points = points;
         }
