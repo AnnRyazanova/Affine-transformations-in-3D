@@ -101,6 +101,102 @@ namespace AffineTransformationsIn3D
             curTetrahedron.Apply(reflection);
             scenesRefresh();
         }
+
+
+        private void Translate_arout()
+        {
+            Point3D p = new Point3D( 0, 0, 0 );
+            for (int i = 0; i < 4; i++)
+            {
+                p.X += curTetrahedron.Points[i].X;
+                p.Y += curTetrahedron.Points[i].Y;
+                p.Z += curTetrahedron.Points[i].Z;
+            }
+
+            p.X /= 4;
+            p.Y /= 4;
+            p.Z /= 4;
+
+            float translatingX = -p.X;
+            float translatingY = -p.Y;
+            float translatingZ = -p.Z;
+
+            var scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            float rotatingX = (float)((double)numericUpDown10.Value / 180 * Math.PI);
+            float rotatingY = (float)((double)numericUpDown11.Value / 180 * Math.PI);
+            float rotatingZ = (float)((double)numericUpDown12.Value / 180 * Math.PI);
+            scalingTetrahedron = Transformation.RotateX(rotatingX)
+                * Transformation.RotateY(rotatingY)
+                * Transformation.RotateZ(rotatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            translatingX = p.X;
+            translatingY = p.Y;
+            translatingZ = p.Z;
+
+            scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            scenesRefresh();
+        }
+
+        /*private void Translate_arout_line()
+        {
+            Point3D p1 = new Point3D(0, 0, 0);
+            Point3D p2 = new Point3D(0, 100, 0);
+
+            Point3D cent = new Point3D();
+            cent.X += (p1.X + p2.X) / 2;
+            cent.Y += (p1.Y + p2.Y) / 2;
+            cent.Z += (p1.Z + p2.Z) / 2;
+
+            List<IPrimitive> scene = new List<IPrimitive>();
+            scene.Add(p1);
+            scene.Add(p1);
+            curTetrahedron = new Tetrahedron(0.5f);
+            scene.Add(curTetrahedron);
+
+            var scalingTetrahedron = Transformation.Translate(cent.X, cent.Y, cent.Y);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            Math.Acos()
+
+            float rotatingX = (float)((double)numericUpDown10.Value / 180 * Math.PI);
+            float rotatingY = (float)((double)numericUpDown11.Value / 180 * Math.PI);
+            float rotatingZ = (float)((double)numericUpDown12.Value / 180 * Math.PI);
+            scalingTetrahedron = Transformation.RotateX(rotatingX)
+                * Transformation.RotateY(rotatingY)
+                * Transformation.RotateZ(rotatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            translatingX = p.X;
+            translatingY = p.Y;
+            translatingZ = p.Z;
+
+            scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
+            curTetrahedron.Apply(scalingTetrahedron);
+
+            scenesRefresh();
+        }*/
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Translate_arout();
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel2_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
     }
+
+
     
 }
