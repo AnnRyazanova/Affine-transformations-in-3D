@@ -5,26 +5,26 @@ namespace AffineTransformationsIn3D.Primitives
 {
     class Transformation
     {
-        private float[,] matrix = new float[4,4];
+        private double[,] matrix = new double[4,4];
 
-        public float[,] Matrix { get { return matrix; } }
+        public double[,] Matrix { get { return matrix; } }
 
         public Transformation()
         {
             matrix = Identity().matrix;
         }
 
-        public Transformation(float[,] matrix)
+        public Transformation(double[,] matrix)
         {
             this.matrix = matrix;
         }
 
-        public static Transformation RotateX(float angle)
+        public static Transformation RotateX(double angle)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            double cos = Math.Cos(angle);
+            double sin = Math.Sin(angle);
             return new Transformation(
-                new float[,]
+                new double[,]
                 {
                     { 1, 0, 0, 0 },
                     { 0, cos, -sin, 0 },
@@ -33,12 +33,12 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation RotateY(float angle)
+        public static Transformation RotateY(double angle)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            double cos = Math.Cos(angle);
+            double sin = Math.Sin(angle);
             return new Transformation(
-                new float[,]
+                new double[,]
                 {
                     { cos, 0, sin, 0 },
                     { 0, 1, 0, 0 },
@@ -47,12 +47,12 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation RotateZ(float angle)
+        public static Transformation RotateZ(double angle)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            double cos = Math.Cos(angle);
+            double sin = Math.Sin(angle);
             return new Transformation(
-                new float[,]
+                new double[,]
                 {
                     { cos, -sin, 0, 0 },
                     { sin, cos, 0, 0 },
@@ -61,10 +61,10 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation Scale(float fx, float fy, float fz)
+        public static Transformation Scale(double fx, double fy, double fz)
         {
             return new Transformation( 
-                new float[,] { 
+                new double[,] { 
                     { fx, 0, 0, 0 },
                     { 0, fy, 0, 0 },
                     { 0, 0, fz, 0 },
@@ -72,10 +72,10 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
         
-        public static Transformation Translate(float dx, float dy, float dz)
+        public static Transformation Translate(double dx, double dy, double dz)
         {
             return new Transformation(
-                new float[,]
+                new double[,]
                 {
                     { 1, 0, 0, 0 },
                     { 0, 1, 0, 0 },
@@ -87,7 +87,7 @@ namespace AffineTransformationsIn3D.Primitives
         public static Transformation Identity()
         {
             return new Transformation(
-                new float[,] {
+                new double[,] {
                     { 1, 0, 0, 0 },
                     { 0, 1, 0, 0 },
                     { 0, 0, 1, 0 },
@@ -98,37 +98,18 @@ namespace AffineTransformationsIn3D.Primitives
 
         public static Transformation ReflectX()
         {
-            return new Transformation(
-                new float[,] {
-                    { -1, 0, 0, 0 },
-                    { 0, 1, 0, 0 },
-                    { 0, 0, 1, 0 },
-                    { 0, 0, 0, 1 }
-                });
+            return Scale(-1, 1, 1);
         }
 
         public static Transformation ReflectY()
         {
-            return new Transformation(
-                new float[,] {
-                    { 1, 0, 0, 0 },
-                    { 0, -1, 0, 0 },
-                    { 0, 0, 1, 0 },
-                    { 0, 0, 0, 1 }
-                });
+            return Scale(1, -1, 1);
         }
 
         public static Transformation ReflectZ()
         {
-            return new Transformation(
-                new float[,] {
-                    { 1, 0, 0, 0 },
-                    { 0, 1, 0, 0 },
-                    { 0, 0, -1, 0 },
-                    { 0, 0, 0, 1 }
-                });
+            return Scale(1, 1, -1);
         }
-
 
         public static Transformation OrthogonalProjection()
         {
@@ -137,7 +118,7 @@ namespace AffineTransformationsIn3D.Primitives
 
         public static Transformation operator *(Transformation t1, Transformation t2)
         {
-            float[,] matrix = new float[4, 4];
+            double[,] matrix = new double[4, 4];
             for (int i = 0; i < 4; ++i)
                 for (int j = 0; j < 4; ++j)
                 {

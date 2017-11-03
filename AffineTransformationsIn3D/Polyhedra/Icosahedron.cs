@@ -34,34 +34,35 @@ namespace AffineTransformationsIn3D.Polyhedra
 			}
 		}
 
-        public Icosahedron(float size)
+        public Icosahedron(double size)
         {
             // радиус описанной сферы
-            float R = (size * (float)Math.Sqrt(2.0 * (5.0 + Math.Sqrt(5.0)))) / 4;
+            double R = (size * Math.Sqrt(2.0 * (5.0 + Math.Sqrt(5.0)))) / 4;
 
             // радиус вписанной сферы
-            float r = (size * (float)Math.Sqrt(3.0) * (float)(3.0 + Math.Sqrt(5.0))) / 12;
+            double r = (size * Math.Sqrt(3.0) * (3.0 + Math.Sqrt(5.0))) / 12;
 
             points = new List<Point3D>();
 
             for (int i = 0; i < 5; ++i)
             {
                 points.Add(new Point3D(
-                    r * (float)Math.Cos(2 * Math.PI / 5 * i),
+                    r * Math.Cos(2 * Math.PI / 5 * i),
                     R / 2,
-                    r * (float)Math.Sin(2 * Math.PI / 5 * i)));
+                    r * Math.Sin(2 * Math.PI / 5 * i)));
                 points.Add(new Point3D(
-                    r * (float)Math.Cos(2 * Math.PI / 5 * i + 2 * Math.PI / 10),
+                    r * Math.Cos(2 * Math.PI / 5 * i + 2 * Math.PI / 10),
                     -R / 2,
-                    r * (float)Math.Sin(2 * Math.PI / 5 * i + 2 * Math.PI / 10)));
+                    r * Math.Sin(2 * Math.PI / 5 * i + 2 * Math.PI / 10)));
             }
 
             points.Add(new Point3D(0, R, 0));
             points.Add(new Point3D(0, -R, 0));
 
+            // середина
             for (int i = 0; i < 10; ++i)
-                // середина
                 facets.Add(new Facet(new Point3D[] { points[i], points[(i + 1) % 10], points[(i + 2) % 10] }));
+
             for (int i = 0; i < 5; ++i)
             {
                 // верхняя часть

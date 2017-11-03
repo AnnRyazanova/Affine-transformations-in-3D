@@ -26,7 +26,7 @@ namespace AffineTransformationsIn3D.Primitives
         {
             var c = A.Transform(projection).NormalizedToDisplay(width, height);
             var d = B.Transform(projection).NormalizedToDisplay(width, height);
-            g.DrawLine(Pens.Black, c.X, c.Y, d.X, d.Y);
+            g.DrawLine(Pens.Black, (float)c.X, (float)c.Y, (float)d.X, (float)d.Y);
         }
     }
 }

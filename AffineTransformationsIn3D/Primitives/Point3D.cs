@@ -5,24 +5,24 @@ namespace AffineTransformationsIn3D.Primitives
 {
     class Point3D : IPrimitive
     {
-        private static float POINT_SIZE = 6.0f;
+        private static double POINT_SIZE = 6;
 
-        private float[] coords = new float[] { 0, 0, 0, 1 };
+        private double[] coords = new double[] { 0, 0, 0, 1 };
 
-        public float X { get { return coords[0]; } set { coords[0] = value; } }
-        public float Y { get { return coords[1]; } set { coords[1] = value; } }
-        public float Z { get { return coords[2]; } set { coords[2] = value; } }
+        public double X { get { return coords[0]; } set { coords[0] = value; } }
+        public double Y { get { return coords[1]; } set { coords[1] = value; } }
+        public double Z { get { return coords[2]; } set { coords[2] = value; } }
 
         public Point3D() { }
 
-        public Point3D(float x, float y, float z)
+        public Point3D(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        private Point3D(float[] arr)
+        private Point3D(double[] arr)
         {
             coords = arr;
         }
@@ -34,7 +34,7 @@ namespace AffineTransformationsIn3D.Primitives
 
         public void Apply(Transformation t)
         {
-            float[] newCoords = new float[4];
+            double[] newCoords = new double[4];
             for (int i = 0; i < 4; ++i)
             {
                 newCoords[i] = 0;
@@ -58,8 +58,8 @@ namespace AffineTransformationsIn3D.Primitives
             var x = (projected.X + 1) / 2 * width;
             var y = (-projected.Y + 1) / 2 * height;
             g.FillRectangle(Brushes.Black,
-                x - POINT_SIZE / 2, y - POINT_SIZE / 2,
-                POINT_SIZE, POINT_SIZE);
+                (float)(x - POINT_SIZE / 2), (float)(y - POINT_SIZE / 2),
+                (float)POINT_SIZE, (float)POINT_SIZE);
         }
 
         /*

@@ -33,14 +33,14 @@ namespace AffineTransformationsIn3D.Polyhedra
             }
         }
 
-        public Tetrahedron(float size) 
+        public Tetrahedron(double size) 
         {
-            float h = (float)Math.Sqrt(2.0 / 3.0) * size;
+            double h = Math.Sqrt(2.0 / 3.0) * size;
             points = new List<Point3D>();
 
-            points.Add(new Point3D(-size / 2, 0, h * (float)(1.0 / 3.0)));
-            points.Add(new Point3D(0, 0, -h * (float)(2.0 / 3.0)));
-            points.Add(new Point3D(size / 2, 0, h * (float)(1.0 / 3.0)));
+            points.Add(new Point3D(-size / 2, 0, h / 3));
+            points.Add(new Point3D(0, 0, -h * 2 / 3));
+            points.Add(new Point3D(size / 2, 0, h / 3));
             points.Add(new Point3D(0, h, 0));
 
             // Основание тетраэдра
