@@ -10,6 +10,7 @@ namespace AffineTransformationsIn3D
     public partial class Form1 : Form
     {
         private Tetrahedron curTetrahedron;
+        //private Icosahedron curIcosahedron;
 
         public Form1()
         {
@@ -28,6 +29,8 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, d));
             curTetrahedron = new Tetrahedron(0.5f);
             scene.Add(curTetrahedron);
+            //curIcosahedron = new Icosahedron(0.5f);
+            //scene.Add(curIcosahedron);
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;
@@ -103,7 +106,7 @@ namespace AffineTransformationsIn3D
         }
 
 
-        private void Translate_arout()
+        private void Translate_around()
         {
             Point3D p = new Point3D( 0, 0, 0 );
             for (int i = 0; i < 4; i++)
@@ -138,11 +141,9 @@ namespace AffineTransformationsIn3D
 
             scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
             curTetrahedron.Apply(scalingTetrahedron);
-
-            scenesRefresh();
         }
 
-        /*private void Translate_arout_line()
+        /*private void Translate_around_line()
         {
             Point3D p1 = new Point3D(0, 0, 0);
             Point3D p2 = new Point3D(0, 100, 0);
@@ -177,23 +178,13 @@ namespace AffineTransformationsIn3D
 
             scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
             curTetrahedron.Apply(scalingTetrahedron);
-
-            scenesRefresh();
+            
         }*/
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Translate_arout();
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint_1(object sender, PaintEventArgs e)
-        {
-
+            Translate_around();
+            scenesRefresh();
         }
     }
 
