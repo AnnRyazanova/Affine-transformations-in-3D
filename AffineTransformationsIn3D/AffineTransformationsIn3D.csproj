@@ -53,13 +53,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Polyhedra\Icosahedron.cs" />
+    <Compile Include="Polyhedra\Polyhedra.cs" />
     <Compile Include="Polyhedra\Tetrahedron.cs" />
     <Compile Include="Primitives\Facet.cs" />
     <Compile Include="Primitives\Line.cs" />
     <Compile Include="Primitives\Point3D.cs" />
     <Compile Include="Primitives\IPrimitive.cs" />
-    <Compile Include="Primitives\Polygon.cs" />
-    <Compile Include="Primitives\Polyhedron.cs" />
     <Compile Include="Primitives\Transformation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

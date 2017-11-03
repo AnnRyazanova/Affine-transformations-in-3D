@@ -5,7 +5,7 @@ using AffineTransformationsIn3D.Primitives;
 
 namespace AffineTransformationsIn3D.Polyhedra
 {
-    class Icosahedron : IPrimitive
+    class Icosahedron : Polyhedra
     {
         // кол-во вершин = 12
         private List<Point3D> points = new List<Point3D>();
@@ -16,7 +16,27 @@ namespace AffineTransformationsIn3D.Polyhedra
         public List<Point3D> Points { get { return points; } set { points = value; } }
         public List<Facet> Facets { get { return facets; } set { facets = value; } }
 
-        public Icosahedron(List<Point3D> points)
+		public Point3D Center
+		{
+			get
+			{
+				Point3D p = new Point3D(0, 0, 0);
+				for (int i = 0; i < 12; i++)
+				{
+					p.X += Points[i].X;
+					p.Y += Points[i].Y;
+					p.Z += Points[i].Z;
+				}
+
+				p.X /= 12;
+				p.Y /= 12;
+				p.Z /= 12;
+
+				return p;
+			}
+		}
+
+		public Icosahedron(List<Point3D> points)
         {
             if (points.Count != 12) return;
 
@@ -29,9 +49,9 @@ namespace AffineTransformationsIn3D.Polyhedra
             var f4 = new Facet();  f4.FacetAddPoint(points[3]);  f4.FacetAddPoint(points[4]);  f4.FacetAddPoint(points[5]);  facets.Add(f4);
             var f5 = new Facet();  f5.FacetAddPoint(points[4]);  f5.FacetAddPoint(points[5]);  f5.FacetAddPoint(points[6]);  facets.Add(f5);
             var f6 = new Facet();  f6.FacetAddPoint(points[5]);  f6.FacetAddPoint(points[6]);  f6.FacetAddPoint(points[7]);  facets.Add(f6);
-            var f7 = new Facet();  f7.FacetAddPoint(points[6]);  f7.FacetAddPoint(points[7]);  f6.FacetAddPoint(points[8]);  facets.Add(f7);
+            var f7 = new Facet();  f7.FacetAddPoint(points[6]);  f7.FacetAddPoint(points[7]);  f7.FacetAddPoint(points[8]);  facets.Add(f7);
             var f8 = new Facet();  f8.FacetAddPoint(points[7]);  f8.FacetAddPoint(points[8]);  f8.FacetAddPoint(points[9]);  facets.Add(f8);
-            var f9 = new Facet();  f9.FacetAddPoint(points[8]);  f9.FacetAddPoint(points[9]);  f9.FacetAddPoint(points[0]); facets.Add(f9);
+            var f9 = new Facet();  f9.FacetAddPoint(points[8]);  f9.FacetAddPoint(points[9]);  f9.FacetAddPoint(points[0]);  facets.Add(f9);
             var f10 = new Facet(); f10.FacetAddPoint(points[9]); f10.FacetAddPoint(points[0]); f10.FacetAddPoint(points[1]); facets.Add(f10);
 
             // верхняя часть
@@ -59,7 +79,21 @@ namespace AffineTransformationsIn3D.Polyhedra
 
             List<Point3D> creatingPoints = new List<Point3D>();
 
-            creatingPoints.Add(new Point3D(r, R / 2, r / 2));          
+			for (int i = 0; i < 5; ++i)
+			{
+				creatingPoints.Add(new Point3D(r * (float)Math.Cos(2 * Math.PI / 5 * i),
+											   R / 2,
+											   r * (float)Math.Sin(2 * Math.PI / 5 * i)));
+				creatingPoints.Add(new Point3D(r * (float)Math.Cos(2 * Math.PI / 5 * i + 2 * Math.PI / 10),
+											   -R / 2,
+											   r * (float)Math.Sin(2 * Math.PI / 5 * i + 2 * Math.PI / 10)));
+			}
+
+			creatingPoints.Add(new Point3D(0, R, 0));
+			creatingPoints.Add(new Point3D(0, -R, 0));
+
+			/*
+            creatingPoints.Add(new Point3D(r, R / 2, 0));          
             creatingPoints.Add(new Point3D(r / 2, - R / 2, r));                 
             creatingPoints.Add(new Point3D(0, R / 2, r));           
             creatingPoints.Add(new Point3D(- r / 2, - R / 2, r));                                      
@@ -70,9 +104,10 @@ namespace AffineTransformationsIn3D.Polyhedra
             creatingPoints.Add(new Point3D(r / 2, R / 2, -r));         
             creatingPoints.Add(new Point3D(r, - R / 2, -r / 2));                 
             creatingPoints.Add(new Point3D(0, R, r));           
-            creatingPoints.Add(new Point3D(0, -R, -r));                                       
+            creatingPoints.Add(new Point3D(0, -R, -r));   
+			*/
 
-            return creatingPoints;
+			return creatingPoints;
         }
 
         public Icosahedron(float size) : this(FindPoints(size)) { }
@@ -87,8 +122,11 @@ namespace AffineTransformationsIn3D.Polyhedra
         {
             if (Points.Count != 12) return;
 
+			
             foreach (var facet in Facets)
                 facet.Draw(g, projection, width, height);
+				
+				
         }
     }
 }

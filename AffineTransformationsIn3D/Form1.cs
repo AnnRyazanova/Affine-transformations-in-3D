@@ -10,7 +10,8 @@ namespace AffineTransformationsIn3D
     public partial class Form1 : Form
     {
         private Tetrahedron curTetrahedron;
-        //private Icosahedron curIcosahedron;
+		private Icosahedron curIcosahedron;
+		private Polyhedra.Polyhedra curPolyhedron;
 
         public Form1()
         {
@@ -27,10 +28,9 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
-            curTetrahedron = new Tetrahedron(0.5f);
-            scene.Add(curTetrahedron);
-            //curIcosahedron = new Icosahedron(0.5f);
-            //scene.Add(curIcosahedron);
+			curPolyhedron = new Tetrahedron(0.5f);
+			//curPolyhedron = new Icosahedron(0.5f);
+			scene.Add(curPolyhedron);
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;
@@ -58,8 +58,9 @@ namespace AffineTransformationsIn3D
             float scalingX = (float)numericUpDown1.Value;
             float scalingY = (float)numericUpDown2.Value;
             float scalingZ = (float)numericUpDown3.Value;
-            var scalingTetrahedron = Transformation.Scale(scalingX, scalingY, scalingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+            var scalingPolyhedron = Transformation.Scale(scalingX, scalingY, scalingZ);
+			// curTetrahedron.Apply(scalingTetrahedron);
+			curPolyhedron.Apply(scalingPolyhedron);
             scenesRefresh();
         }
 
@@ -68,10 +69,10 @@ namespace AffineTransformationsIn3D
             float rotatingX = (float)((double)numericUpDown4.Value / 180 * Math.PI);
             float rotatingY = (float)((double)numericUpDown5.Value / 180 * Math.PI);
             float rotatingZ = (float)((double)numericUpDown6.Value / 180 * Math.PI);
-            var scalingTetrahedron = Transformation.RotateX(rotatingX)
+            var rotatingPolyhedron = Transformation.RotateX(rotatingX)
                 * Transformation.RotateY(rotatingY)
                 * Transformation.RotateZ(rotatingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+			curPolyhedron.Apply(rotatingPolyhedron);
             scenesRefresh();
         }
 
@@ -80,8 +81,8 @@ namespace AffineTransformationsIn3D
             float translatingX = (float)numericUpDown7.Value;
             float translatingY = (float)numericUpDown8.Value;
             float translatingZ = (float)numericUpDown9.Value;
-            var scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+            var scalingPolyhedron = Transformation.Translate(translatingX, translatingY, translatingZ);
+			curPolyhedron.Apply(scalingPolyhedron);
             scenesRefresh();
         }
 
@@ -100,32 +101,23 @@ namespace AffineTransformationsIn3D
                 reflection = Transformation.ReflectY();
             else if (radioButton3.Checked)
                 reflection = Transformation.ReflectZ();
-
-            curTetrahedron.Apply(reflection);
+			
+			curPolyhedron.Apply(reflection);
             scenesRefresh();
         }
 
 
         private void Translate_around()
         {
-            Point3D p = new Point3D( 0, 0, 0 );
-            for (int i = 0; i < 4; i++)
-            {
-                p.X += curTetrahedron.Points[i].X;
-                p.Y += curTetrahedron.Points[i].Y;
-                p.Z += curTetrahedron.Points[i].Z;
-            }
-
-            p.X /= 4;
-            p.Y /= 4;
-            p.Z /= 4;
+            Point3D p = curPolyhedron.Center;
+            
 
             float translatingX = -p.X;
             float translatingY = -p.Y;
             float translatingZ = -p.Z;
 
             var scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+            curPolyhedron.Apply(scalingTetrahedron);
 
             float rotatingX = (float)((double)numericUpDown10.Value / 180 * Math.PI);
             float rotatingY = (float)((double)numericUpDown11.Value / 180 * Math.PI);
@@ -133,14 +125,14 @@ namespace AffineTransformationsIn3D
             scalingTetrahedron = Transformation.RotateX(rotatingX)
                 * Transformation.RotateY(rotatingY)
                 * Transformation.RotateZ(rotatingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+            curPolyhedron.Apply(scalingTetrahedron);
 
             translatingX = p.X;
             translatingY = p.Y;
             translatingZ = p.Z;
 
             scalingTetrahedron = Transformation.Translate(translatingX, translatingY, translatingZ);
-            curTetrahedron.Apply(scalingTetrahedron);
+            curPolyhedron.Apply(scalingTetrahedron);
         }
 
         /*private void Translate_around_line()

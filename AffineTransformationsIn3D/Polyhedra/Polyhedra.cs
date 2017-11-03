@@ -5,9 +5,11 @@ using AffineTransformationsIn3D.Primitives;
 
 namespace AffineTransformationsIn3D.Polyhedra
 {
-    interface Polyhedra
+    interface Polyhedra : IPrimitive
     {
-        void Draw(Graphics g, Transformation projection, int width, int height);
-        void Apply(Transformation t);
-    }
+		Point3D Center
+		{
+			get;
+		}
+	}
 }
