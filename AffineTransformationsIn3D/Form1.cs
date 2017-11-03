@@ -11,7 +11,7 @@ namespace AffineTransformationsIn3D
     {
         private Tetrahedron curTetrahedron;
 		private Icosahedron curIcosahedron;
-		private Polyhedra.Polyhedra curPolyhedron;
+		private Polyhedra.Polyhedra curPolyhedron = new Tetrahedron(0.5f);
 
         public Form1()
         {
@@ -28,8 +28,6 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
-			curPolyhedron = new Tetrahedron(0.5f);
-			//curPolyhedron = new Icosahedron(0.5f);
 			scene.Add(curPolyhedron);
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
@@ -213,6 +211,28 @@ namespace AffineTransformationsIn3D
 		private void button6_Click(object sender, EventArgs e)
 		{
 			Translate_around_line();
+		}
+
+		private void radioButton5_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radioButton5.Checked)
+			{
+				sceneView1.Scene.Remove(curPolyhedron);
+				curPolyhedron = new Icosahedron(0.5f);
+				sceneView1.Scene.Add(curPolyhedron);
+				scenesRefresh();
+			}
+		}
+
+		private void radioButton4_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radioButton4.Checked)
+			{
+				sceneView1.Scene.Remove(curPolyhedron);
+				curPolyhedron = new Tetrahedron(0.5f);
+				sceneView1.Scene.Add(curPolyhedron);
+				scenesRefresh();
+			}
 		}
 	}
 
