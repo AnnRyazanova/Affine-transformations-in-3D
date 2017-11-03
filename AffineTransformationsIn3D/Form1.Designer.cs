@@ -84,8 +84,8 @@
             this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButtonTetrahedron = new System.Windows.Forms.RadioButton();
+            this.radioButtonIcosahedron = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -692,7 +692,7 @@
             this.button5.TabIndex = 23;
             this.button5.Text = "Применить";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.RotateAroundCenter);
             // 
             // numericUpDown10
             // 
@@ -737,7 +737,7 @@
             this.button6.TabIndex = 28;
             this.button6.Text = "Применить";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.TranslateAroundLine);
             // 
             // label13
             // 
@@ -836,37 +836,37 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton4);
-            this.groupBox1.Controls.Add(this.radioButton5);
+            this.groupBox1.Controls.Add(this.radioButtonTetrahedron);
+            this.groupBox1.Controls.Add(this.radioButtonIcosahedron);
             this.groupBox1.Location = new System.Drawing.Point(12, 316);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(142, 87);
             this.groupBox1.TabIndex = 42;
             this.groupBox1.TabStop = false;
             // 
-            // radioButton4
+            // radioButtonTetrahedron
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Checked = true;
-            this.radioButton4.Location = new System.Drawing.Point(7, 19);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(83, 17);
-            this.radioButton4.TabIndex = 40;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Tetrahedron";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
+            this.radioButtonTetrahedron.AutoSize = true;
+            this.radioButtonTetrahedron.Checked = true;
+            this.radioButtonTetrahedron.Location = new System.Drawing.Point(7, 19);
+            this.radioButtonTetrahedron.Name = "radioButtonTetrahedron";
+            this.radioButtonTetrahedron.Size = new System.Drawing.Size(83, 17);
+            this.radioButtonTetrahedron.TabIndex = 40;
+            this.radioButtonTetrahedron.TabStop = true;
+            this.radioButtonTetrahedron.Text = "Tetrahedron";
+            this.radioButtonTetrahedron.UseVisualStyleBackColor = true;
+            this.radioButtonTetrahedron.CheckedChanged += new System.EventHandler(this.radioButtonPolyhedronCheckedChanged);
             // 
-            // radioButton5
+            // radioButtonIcosahedron
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(7, 44);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(84, 17);
-            this.radioButton5.TabIndex = 41;
-            this.radioButton5.Text = "Icosahedron";
-            this.radioButton5.UseVisualStyleBackColor = true;
-            this.radioButton5.CheckedChanged += new System.EventHandler(this.radioButton5_CheckedChanged);
+            this.radioButtonIcosahedron.AutoSize = true;
+            this.radioButtonIcosahedron.Location = new System.Drawing.Point(7, 44);
+            this.radioButtonIcosahedron.Name = "radioButtonIcosahedron";
+            this.radioButtonIcosahedron.Size = new System.Drawing.Size(84, 17);
+            this.radioButtonIcosahedron.TabIndex = 41;
+            this.radioButtonIcosahedron.Text = "Icosahedron";
+            this.radioButtonIcosahedron.UseVisualStyleBackColor = true;
+            this.radioButtonIcosahedron.CheckedChanged += new System.EventHandler(this.radioButtonPolyhedronCheckedChanged);
             // 
             // Form1
             // 
@@ -965,8 +965,8 @@
 		private System.Windows.Forms.NumericUpDown numericUpDown15;
 		private System.Windows.Forms.NumericUpDown numericUpDown19;
 		private System.Windows.Forms.NumericUpDown numericUpDown16;
-		private System.Windows.Forms.RadioButton radioButton4;
-		private System.Windows.Forms.RadioButton radioButton5;
+		private System.Windows.Forms.RadioButton radioButtonTetrahedron;
+		private System.Windows.Forms.RadioButton radioButtonIcosahedron;
         private System.Windows.Forms.GroupBox groupBox1;
     }
 }
