@@ -68,7 +68,7 @@ namespace AffineTransformationsIn3D.Polyhedra
                 // верхняя часть
                 facets.Add(new Facet(new Point3D[] { points[2 * i], points[10], points[(2 * (i + 1)) % 10] }));
                 // нижняя часть
-                facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[10], points[(2 * (i + 1) + 1) % 10] }));
+                facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[11], points[(2 * (i + 1) + 1) % 10] }));
             }
         }
 
