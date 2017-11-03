@@ -1,3 +1,0 @@
-﻿1>------ Сборка начата: проект: AffineTransformationsIn3D, Конфигурация: Debug Any CPU ------
-1>  AffineTransformationsIn3D -> D:\_Documents\Visual Studio 2017\Projects\ap\AffineTransformationsIn3D\bin\Debug\AffineTransformationsIn3D.exe
-========== Сборка: успешно: 1, с ошибками: 0, без изменений: 0, пропущено: 0 ==========
