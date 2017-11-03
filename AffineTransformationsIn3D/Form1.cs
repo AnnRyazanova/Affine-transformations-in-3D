@@ -170,7 +170,7 @@ namespace AffineTransformationsIn3D
             scenesRefresh();
         }
 
-		private void radioButtonPolyhedronCheckedChanged(object sender, EventArgs e)
+        private void radioButtonPolyhedronCheckedChanged(object sender, EventArgs e)
         {
             sceneView1.Scene.Remove(curPolyhedron);
             if (radioButtonIcosahedron.Checked)
@@ -181,5 +181,5 @@ namespace AffineTransformationsIn3D
             sceneView1.Scene.Add(curPolyhedron);
             scenesRefresh();
         }
-	}
+    }
 }
