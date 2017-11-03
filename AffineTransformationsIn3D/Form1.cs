@@ -93,7 +93,7 @@ namespace AffineTransformationsIn3D
             scenesRefresh();
         }
 
-		private void RotateAroundCenter(object sender, EventArgs e)
+        private void RotateAroundCenter(object sender, EventArgs e)
         {
             double rotX = (double)numericUpDown10.Value;
             double rotY = (double)numericUpDown11.Value;
