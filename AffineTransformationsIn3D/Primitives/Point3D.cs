@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace AffineTransformationsIn3D.Primitives
 {
@@ -8,6 +7,8 @@ namespace AffineTransformationsIn3D.Primitives
         private static double POINT_SIZE = 6;
 
         private double[] coords = new double[] { 0, 0, 0, 1 };
+
+        public Point3D Center { get { return this; } }
 
         public double X { get { return coords[0]; } set { coords[0] = value; } }
         public double Y { get { return coords[1]; } set { coords[1] = value; } }

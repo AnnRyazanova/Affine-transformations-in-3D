@@ -5,7 +5,7 @@ using AffineTransformationsIn3D.Primitives;
 
 namespace AffineTransformationsIn3D.Polyhedra
 {
-    class Tetrahedron : IPolyhedron
+    class Tetrahedron : IPrimitive
     {
         // первые три точки - основание тетраэдра, четвертая точка - его вершина
         private List<Point3D> points = new List<Point3D>();

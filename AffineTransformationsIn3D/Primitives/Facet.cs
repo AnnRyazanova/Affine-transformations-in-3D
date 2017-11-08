@@ -9,16 +9,29 @@ namespace AffineTransformationsIn3D.Primitives
 
         public IList<Point3D> Points { get { return points; } set { points = value; } }
 
+        public Point3D Center
+        {
+            get
+            {
+                var center = new Point3D();
+                foreach (var p in points)
+                {
+                    center.X += p.X;
+                    center.Y += p.Y;
+                    center.Z += p.Z;
+                }
+                center.X /= points.Count;
+                center.Y /= points.Count;
+                center.Z /= points.Count;
+                return center;
+            }
+        }
+
         public Facet(){}
 
         public Facet(IList<Point3D> points)
         {
             this.points = points;
-        }
-
-        public void FacetAddPoint(Point3D p)
-        {
-            points.Add(p);
         }
 
         public void Apply(Transformation t)

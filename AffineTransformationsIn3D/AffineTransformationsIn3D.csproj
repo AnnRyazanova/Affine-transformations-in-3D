@@ -52,9 +52,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Polyhedra\Icosahedron.cs" />
-    <Compile Include="Polyhedra\IPolyhedron.cs" />
-    <Compile Include="Polyhedra\Tetrahedron.cs" />
+    <Compile Include="FormChangeModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangeModel.Designer.cs">
+      <DependentUpon>FormChangeModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Primitives\Polyhedra\Icosahedron.cs" />
+    <Compile Include="Primitives\Polyhedra\Tetrahedron.cs" />
     <Compile Include="Primitives\Facet.cs" />
     <Compile Include="Primitives\Line.cs" />
     <Compile Include="Primitives\Point3D.cs" />
@@ -68,6 +73,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormChangeModel.resx">
+      <DependentUpon>FormChangeModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

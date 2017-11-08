@@ -8,7 +8,7 @@ namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-        private IPolyhedron curPolyhedron = new Tetrahedron(0.5f);
+        private IPrimitive model = new Tetrahedron(0.5f);
 
         public Form1()
         {
@@ -25,7 +25,7 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
-            scene.Add(curPolyhedron);
+            scene.Add(model);
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;
@@ -53,7 +53,7 @@ namespace AffineTransformationsIn3D
             double scalingX = (double)numericUpDown1.Value;
             double scalingY = (double)numericUpDown2.Value;
             double scalingZ = (double)numericUpDown3.Value;
-            curPolyhedron.Apply(
+            model.Apply(
                 Transformation.Scale(scalingX, scalingY, scalingZ));
             scenesRefresh();
         }
@@ -63,7 +63,7 @@ namespace AffineTransformationsIn3D
             double rotatingX = (double)numericUpDown4.Value / 180 * Math.PI;
             double rotatingY = (double)numericUpDown5.Value / 180 * Math.PI;
             double rotatingZ = (double)numericUpDown6.Value / 180 * Math.PI;
-            curPolyhedron.Apply(Transformation.RotateX(rotatingX)
+            model.Apply(Transformation.RotateX(rotatingX)
                 * Transformation.RotateY(rotatingY)
                 * Transformation.RotateZ(rotatingZ));
             scenesRefresh();
@@ -74,7 +74,7 @@ namespace AffineTransformationsIn3D
             double translatingX = (double)numericUpDown7.Value;
             double translatingY = (double)numericUpDown8.Value;
             double translatingZ = (double)numericUpDown9.Value;
-            curPolyhedron.Apply(
+            model.Apply(
                 Transformation.Translate(translatingX, translatingY, translatingZ));
             scenesRefresh();
         }
@@ -89,7 +89,7 @@ namespace AffineTransformationsIn3D
             else if (radioButton3.Checked)
                 reflection = Transformation.ReflectZ();
             else throw new Exception("Unreachable statement");
-            curPolyhedron.Apply(reflection);
+            model.Apply(reflection);
             scenesRefresh();
         }
 
@@ -98,8 +98,8 @@ namespace AffineTransformationsIn3D
             double rotX = (double)numericUpDown10.Value;
             double rotY = (double)numericUpDown11.Value;
             double rotZ = (double)numericUpDown12.Value;
-            Point3D p = curPolyhedron.Center;
-            curPolyhedron.Apply(Transformation.Translate(-p.X, -p.Y, -p.Z)
+            Point3D p = model.Center;
+            model.Apply(Transformation.Translate(-p.X, -p.Y, -p.Z)
                 * Transformation.RotateX(rotX / 180 * Math.PI)
                 * Transformation.RotateY(rotY / 180 * Math.PI)
                 * Transformation.RotateZ(rotZ / 180 * Math.PI)
@@ -162,24 +162,17 @@ namespace AffineTransformationsIn3D
             var scalingTetrahedron_1 = Transformation.RotateX(rotatingX_1)
                 * Transformation.RotateY(rotatingY_1)
                 * Transformation.RotateZ(rotatingZ_1);
-            curPolyhedron.Apply(scalingTetrahedron);
+            model.Apply(scalingTetrahedron);
 
             scalingTetrahedron = Transformation.Translate(cent.X, cent.Y, cent.Y);
-            curPolyhedron.Apply(scalingTetrahedron);
+            model.Apply(scalingTetrahedron);
 
             scenesRefresh();
         }
 
-        private void radioButtonPolyhedronCheckedChanged(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e)
         {
-            sceneView1.Scene.Remove(curPolyhedron);
-            if (radioButtonIcosahedron.Checked)
-                curPolyhedron = new Icosahedron(0.5);
-            else if (radioButtonTetrahedron.Checked)
-                curPolyhedron = new Tetrahedron(0.5);
-            else throw new Exception("Unreachable statement");
-            sceneView1.Scene.Add(curPolyhedron);
-            scenesRefresh();
+
         }
     }
 }
