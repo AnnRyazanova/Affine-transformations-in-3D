@@ -2,13 +2,27 @@
 using System.Collections.Generic;
 using System;
 using AffineTransformationsIn3D.Primitives;
-using AffineTransformationsIn3D.Polyhedra;
 
 namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-        private IPrimitive model = new Tetrahedron(0.5f);
+        private IPrimitive Model
+        {
+            get
+            {
+                var scene = sceneView1.Scene;
+                return scene[scene.Count - 1];
+            }
+
+            set
+            {
+                var scene = sceneView1.Scene;
+                scene.RemoveAt(scene.Count - 1);
+                scene.Add(value);
+                ScenesRefresh();
+            }
+        }
 
         public Form1()
         {
@@ -25,7 +39,7 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, b));
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
-            scene.Add(model);
+            scene.Add(Polyhedron.MakeTetrahedron(0.5f));
             sceneView1.Scene = scene;
             sceneView2.Scene = scene;
             sceneView3.Scene = scene;
@@ -40,7 +54,7 @@ namespace AffineTransformationsIn3D
                 * Transformation.RotateX(-Math.PI / 4);
         }
 
-        private void scenesRefresh()
+        private void ScenesRefresh()
         {
             sceneView1.Refresh();
             sceneView2.Refresh();
@@ -53,9 +67,9 @@ namespace AffineTransformationsIn3D
             double scalingX = (double)numericUpDown1.Value;
             double scalingY = (double)numericUpDown2.Value;
             double scalingZ = (double)numericUpDown3.Value;
-            model.Apply(
+            Model.Apply(
                 Transformation.Scale(scalingX, scalingY, scalingZ));
-            scenesRefresh();
+            ScenesRefresh();
         }
 
         private void Rotate(object sender, EventArgs e)
@@ -63,10 +77,10 @@ namespace AffineTransformationsIn3D
             double rotatingX = (double)numericUpDown4.Value / 180 * Math.PI;
             double rotatingY = (double)numericUpDown5.Value / 180 * Math.PI;
             double rotatingZ = (double)numericUpDown6.Value / 180 * Math.PI;
-            model.Apply(Transformation.RotateX(rotatingX)
+            Model.Apply(Transformation.RotateX(rotatingX)
                 * Transformation.RotateY(rotatingY)
                 * Transformation.RotateZ(rotatingZ));
-            scenesRefresh();
+            ScenesRefresh();
         }
 
         private void Translate(object sender, EventArgs e)
@@ -74,9 +88,9 @@ namespace AffineTransformationsIn3D
             double translatingX = (double)numericUpDown7.Value;
             double translatingY = (double)numericUpDown8.Value;
             double translatingZ = (double)numericUpDown9.Value;
-            model.Apply(
+            Model.Apply(
                 Transformation.Translate(translatingX, translatingY, translatingZ));
-            scenesRefresh();
+            ScenesRefresh();
         }
 
         private void Reflect(object sender, EventArgs e)
@@ -89,8 +103,8 @@ namespace AffineTransformationsIn3D
             else if (radioButton3.Checked)
                 reflection = Transformation.ReflectZ();
             else throw new Exception("Unreachable statement");
-            model.Apply(reflection);
-            scenesRefresh();
+            Model.Apply(reflection);
+            ScenesRefresh();
         }
 
         private void RotateAroundCenter(object sender, EventArgs e)
@@ -98,13 +112,13 @@ namespace AffineTransformationsIn3D
             double rotX = (double)numericUpDown10.Value;
             double rotY = (double)numericUpDown11.Value;
             double rotZ = (double)numericUpDown12.Value;
-            Point3D p = model.Center;
-            model.Apply(Transformation.Translate(-p.X, -p.Y, -p.Z)
+            Point3D p = Model.Center;
+            Model.Apply(Transformation.Translate(-p.X, -p.Y, -p.Z)
                 * Transformation.RotateX(rotX / 180 * Math.PI)
                 * Transformation.RotateY(rotY / 180 * Math.PI)
                 * Transformation.RotateZ(rotZ / 180 * Math.PI)
                 * Transformation.Translate(p.X, p.Y, p.Z));
-            scenesRefresh();
+            ScenesRefresh();
         }
 
         private void TranslateAroundLine(object sender, EventArgs e)
@@ -162,17 +176,20 @@ namespace AffineTransformationsIn3D
             var scalingTetrahedron_1 = Transformation.RotateX(rotatingX_1)
                 * Transformation.RotateY(rotatingY_1)
                 * Transformation.RotateZ(rotatingZ_1);
-            model.Apply(scalingTetrahedron);
+            Model.Apply(scalingTetrahedron);
 
             scalingTetrahedron = Transformation.Translate(cent.X, cent.Y, cent.Y);
-            model.Apply(scalingTetrahedron);
+            Model.Apply(scalingTetrahedron);
 
-            scenesRefresh();
+            ScenesRefresh();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void ChangeModel(object sender, EventArgs e)
         {
-
+            var dialog = new FormChangeModel();
+            if (DialogResult.OK != dialog.ShowDialog()) return;
+            if (null == dialog.SelectedModel) return;
+            Model = dialog.SelectedModel;
         }
     }
 }

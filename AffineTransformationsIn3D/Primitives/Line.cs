@@ -2,7 +2,7 @@
 
 namespace AffineTransformationsIn3D.Primitives
 {
-    class Line : IPrimitive
+    public class Line : IPrimitive
     {
         private Point3D a;
         private Point3D b;

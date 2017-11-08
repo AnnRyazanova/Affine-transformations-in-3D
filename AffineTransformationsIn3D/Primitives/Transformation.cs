@@ -3,7 +3,7 @@ using System;
 
 namespace AffineTransformationsIn3D.Primitives
 {
-    class Transformation
+    public class Transformation
     {
         private double[,] matrix = new double[4,4];
 

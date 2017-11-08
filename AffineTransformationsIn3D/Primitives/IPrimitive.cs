@@ -2,7 +2,7 @@
 
 namespace AffineTransformationsIn3D.Primitives
 {
-    interface IPrimitive
+    public interface IPrimitive
     {
         Point3D Center { get; }
 

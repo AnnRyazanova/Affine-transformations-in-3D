@@ -3,11 +3,13 @@ using System.Drawing;
 
 namespace AffineTransformationsIn3D.Primitives
 {
-    class Facet : IPrimitive
+    public class Facet : IPrimitive
     {
         private IList<Point3D> points = new List<Point3D>();
+        private IList<Line> lines = new List<Line>();
 
-        public IList<Point3D> Points { get { return points; } set { points = value; } }
+        public IList<Point3D> Points { get { return points; } }
+        public IList<Line> Lines { get { return lines; } }
 
         public Point3D Center
         {
@@ -27,11 +29,12 @@ namespace AffineTransformationsIn3D.Primitives
             }
         }
 
-        public Facet(){}
-
         public Facet(IList<Point3D> points)
         {
             this.points = points;
+            for (int i = 0; i < points.Count - 1; ++i)
+                lines.Add(new Line(points[i], points[i + 1]));
+            lines.Add(new Line(points[points.Count - 1], points[0]));
         }
 
         public void Apply(Transformation t)
@@ -42,17 +45,8 @@ namespace AffineTransformationsIn3D.Primitives
 
         public void Draw(Graphics g, Transformation projection, int width, int height)
         {
-            if (Points.Count == 1)
-                Points[0].Draw(g, projection, width, height);
-            else
-            {
-                for (int i = 0; i < Points.Count - 1; ++i)
-                {
-                    var line = new Line(Points[i], Points[i + 1]);
-                    line.Draw(g, projection, width, height);
-                }
-                (new Line(Points[Points.Count - 1], Points[0])).Draw(g, projection, width, height);
-            }
+            foreach (var line in lines)
+                line.Draw(g, projection, width, height);
         }
     }
 }

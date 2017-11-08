@@ -2,7 +2,7 @@
 
 namespace AffineTransformationsIn3D.Primitives
 {
-    class Point3D : IPrimitive
+    public class Point3D : IPrimitive
     {
         private static double POINT_SIZE = 6;
 
@@ -71,6 +71,11 @@ namespace AffineTransformationsIn3D.Primitives
             var x = (X + 1) / 2 * width;
             var y = (-Y + 1) / 2 * height;
             return new Point3D(x, y, Z);
+        }
+
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ", " + Z + ")";
         }
     }
 }

@@ -58,12 +58,11 @@
     <Compile Include="FormChangeModel.Designer.cs">
       <DependentUpon>FormChangeModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Primitives\Polyhedra\Icosahedron.cs" />
-    <Compile Include="Primitives\Polyhedra\Tetrahedron.cs" />
     <Compile Include="Primitives\Facet.cs" />
     <Compile Include="Primitives\Line.cs" />
     <Compile Include="Primitives\Point3D.cs" />
     <Compile Include="Primitives\IPrimitive.cs" />
+    <Compile Include="Primitives\Polyhedron.cs" />
     <Compile Include="Primitives\Transformation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
