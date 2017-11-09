@@ -50,7 +50,18 @@ namespace AffineTransformationsIn3D.Primitives
             }
         }
 
-        public Polyhedron(IList<Point3D> points, IList<Facet> facets)
+        public Polyhedron(List<Point3D> points, List<Triple> pointsSequence)
+        {
+            this.points = points;
+            this.pointsSequence = pointsSequence;
+            
+            foreach (var index in pointsSequence)
+            {
+                facets.Add(new Facet(new Point3D[] { points[index.first], points[index.second], points[index.third] }));
+            }
+        }
+
+        private Polyhedron(IList<Point3D> points, IList<Facet> facets)
         {
             this.points = points;
             this.facets = facets;
@@ -143,6 +154,7 @@ namespace AffineTransformationsIn3D.Primitives
                 facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[11], points[(2 * (i + 1) + 1) % 10] }));
             }
         }
+        
 
         public static IPrimitive MakeTetrahedron(double size)
         {

@@ -81,12 +81,11 @@
             this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.sceneView3 = new AffineTransformationsIn3D.SceneView();
             this.sceneView4 = new AffineTransformationsIn3D.SceneView();
             this.sceneView1 = new AffineTransformationsIn3D.SceneView();
             this.sceneView2 = new AffineTransformationsIn3D.SceneView();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -244,8 +243,7 @@
             this.tableLayoutPanel2.Controls.Add(this.numericUpDown16, 3, 8);
             this.tableLayoutPanel2.Controls.Add(this.button7, 4, 11);
             this.tableLayoutPanel2.Controls.Add(this.button8, 0, 12);
-            this.tableLayoutPanel2.Controls.Add(this.button9, 3, 12);
-            this.tableLayoutPanel2.Controls.Add(this.button10, 4, 12);
+            this.tableLayoutPanel2.Controls.Add(this.button9, 4, 12);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -814,6 +812,16 @@
             this.button8.Visible = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(317, 302);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 45;
+            this.button9.Text = "Сохранить";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
             // sceneView3
             // 
             this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -857,25 +865,6 @@
             this.sceneView2.Size = new System.Drawing.Size(353, 280);
             this.sceneView2.TabIndex = 1;
             this.sceneView2.Text = "sceneView2";
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(241, 302);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(70, 23);
-            this.button9.TabIndex = 45;
-            this.button9.Text = "Сохранить";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(317, 302);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 46;
-            this.button10.Text = "Загрузить";
-            this.button10.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -974,7 +963,6 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
     }
 }
 
