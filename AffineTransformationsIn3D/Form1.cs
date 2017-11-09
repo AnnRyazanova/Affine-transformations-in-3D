@@ -40,8 +40,11 @@ namespace AffineTransformationsIn3D
             scene.Add(new Line(a, c));
             scene.Add(new Line(a, d));
             scene.Add(Polyhedron.MakeTetrahedron(0.5f));
-            sceneView1.Scene = scene;
+            
             sceneView2.Scene = scene;
+
+            sceneView1.Scene = scene;
+
             sceneView3.Scene = scene;
             sceneView4.Scene = scene;
             sceneView1.Projection = Transformation.OrthogonalProjection();

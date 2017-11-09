@@ -28,10 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AffineTransformationsIn3D.Primitives.Transformation transformation1 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation2 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation3 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation4 = new AffineTransformationsIn3D.Primitives.Transformation();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
@@ -80,10 +76,6 @@
             this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
             this.button7 = new System.Windows.Forms.Button();
-            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -138,10 +130,6 @@
             this.tableLayoutPanel1.Controls.Add(this.label4, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.sceneView3, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.sceneView4, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.sceneView1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.sceneView2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -794,50 +782,6 @@
             this.button7.Text = "Объект...";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.ChangeModel);
-            // 
-            // sceneView3
-            // 
-            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView3.Location = new System.Drawing.Point(3, 315);
-            this.sceneView3.Name = "sceneView3";
-            this.sceneView3.Projection = transformation1;
-            this.sceneView3.Scene = null;
-            this.sceneView3.Size = new System.Drawing.Size(353, 281);
-            this.sceneView3.TabIndex = 2;
-            this.sceneView3.Text = "sceneView3";
-            // 
-            // sceneView4
-            // 
-            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView4.Location = new System.Drawing.Point(362, 315);
-            this.sceneView4.Name = "sceneView4";
-            this.sceneView4.Projection = transformation2;
-            this.sceneView4.Scene = null;
-            this.sceneView4.Size = new System.Drawing.Size(353, 281);
-            this.sceneView4.TabIndex = 3;
-            this.sceneView4.Text = "sceneView4";
-            // 
-            // sceneView1
-            // 
-            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView1.Location = new System.Drawing.Point(3, 16);
-            this.sceneView1.Name = "sceneView1";
-            this.sceneView1.Projection = transformation3;
-            this.sceneView1.Scene = null;
-            this.sceneView1.Size = new System.Drawing.Size(353, 280);
-            this.sceneView1.TabIndex = 0;
-            this.sceneView1.Text = "sceneView1";
-            // 
-            // sceneView2
-            // 
-            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView2.Location = new System.Drawing.Point(362, 16);
-            this.sceneView2.Name = "sceneView2";
-            this.sceneView2.Projection = transformation4;
-            this.sceneView2.Scene = null;
-            this.sceneView2.Size = new System.Drawing.Size(353, 280);
-            this.sceneView2.TabIndex = 1;
-            this.sceneView2.Text = "sceneView2";
             // 
             // Form1
             // 
