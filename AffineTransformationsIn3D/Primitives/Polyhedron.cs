@@ -5,14 +5,32 @@ using System.Drawing;
 
 namespace AffineTransformationsIn3D.Primitives
 {
+    public struct Triple
+    {
+        public int first;
+        public int second;
+        public int third;
+
+        public Triple(int f, int s, int t)
+        {
+            first = f;
+            second = s;
+            third = t;
+        }
+    };
+
+
     public class Polyhedron : IPrimitive
     {
         private IList<Point3D> points = new List<Point3D>();
-
+        
         private IList<Facet> facets = new List<Facet>();
+
+        private IList<Triple> pointsSequence = new List<Triple>();
 
         public IList<Point3D> Points { get { return points; } }
         public IList<Facet> Facets { get { return facets; } }
+        public IList<Triple> PointsSequence { get { return pointsSequence; } }
 
         public Point3D Center
         {
@@ -38,6 +56,13 @@ namespace AffineTransformationsIn3D.Primitives
             this.facets = facets;
         }
 
+        public Polyhedron(IList<Point3D> points, IList<Facet> facets, IList<Triple> pointsSequence)
+        {
+            this.points = points;
+            this.facets = facets;
+            this.pointsSequence = pointsSequence;
+        }
+
         public void Apply(Transformation t)
         {
             foreach (var point in Points)
@@ -50,8 +75,11 @@ namespace AffineTransformationsIn3D.Primitives
                 facet.Draw(g, projection, width, height);
         }
 
+        
+
         public static IPrimitive MakeIcosahedron(double size)
         {
+            var pointsSequence = new List<Triple>();
             var points = new List<Point3D>();
             var facets = new List<Facet>();
             
@@ -80,6 +108,31 @@ namespace AffineTransformationsIn3D.Primitives
 
             // середина
             for (int i = 0; i < 10; ++i)
+            {
+                facets.Add(new Facet(new Point3D[] { points[i], points[(i + 1) % 10], points[(i + 2) % 10] }));
+                Triple triple = new Triple(i, (i + 1) % 10, (i + 2) % 10);
+                pointsSequence.Add(triple);
+            }
+
+            for (int i = 0; i < 5; ++i)
+            {
+                // верхняя часть
+                facets.Add(new Facet(new Point3D[] { points[2 * i], points[10], points[(2 * (i + 1)) % 10] }));
+                Triple triple = new Triple(2 * i, 10, (2 * (i + 1)) % 10);
+                pointsSequence.Add(triple);
+                // нижняя часть
+                facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[11], points[(2 * (i + 1) + 1) % 10] }));
+                triple = new Triple(2 * i + 1, 11, (2 * (i + 1) + 1) % 10);
+                pointsSequence.Add(triple);
+            }
+
+            return new Polyhedron(points, facets, pointsSequence);
+        }
+
+        public void IcosahedronFacet()
+        {
+            // середина
+            for (int i = 0; i < 10; ++i)
                 facets.Add(new Facet(new Point3D[] { points[i], points[(i + 1) % 10], points[(i + 2) % 10] }));
 
             for (int i = 0; i < 5; ++i)
@@ -89,14 +142,13 @@ namespace AffineTransformationsIn3D.Primitives
                 // нижняя часть
                 facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[11], points[(2 * (i + 1) + 1) % 10] }));
             }
-
-            return new Polyhedron(points, facets);
         }
 
         public static IPrimitive MakeTetrahedron(double size)
         {
             var points = new List<Point3D>();
             var facets = new List<Facet>();
+            var pointsSequence = new List<Triple>();
 
             double h = Math.Sqrt(2.0 / 3.0) * size;
             points = new List<Point3D>();
@@ -108,14 +160,25 @@ namespace AffineTransformationsIn3D.Primitives
 
             // Основание тетраэдра
             facets.Add(new Facet(new Point3D[] { points[0], points[1], points[2] }));
+            Triple triple = new Triple(0, 1, 2);
+            pointsSequence.Add(triple);
+
             // Левая грань
             facets.Add(new Facet(new Point3D[] { points[1], points[3], points[0] }));
-            // Правая грань
+            triple = new Triple(1, 3, 0);
+            pointsSequence.Add(triple);
+            
             // Передняя грань
             facets.Add(new Facet(new Point3D[] { points[0], points[3], points[2] }));
-            facets.Add(new Facet(new Point3D[] { points[2], points[3], points[1] }));
+            triple = new Triple(0, 3, 2);
+            pointsSequence.Add(triple);
 
-            return new Polyhedron(points, facets);
+            // Правая грань
+            facets.Add(new Facet(new Point3D[] { points[2], points[3], points[1] }));
+            triple = new Triple(2, 3, 1);
+            pointsSequence.Add(triple);
+
+            return new Polyhedron(points, facets, pointsSequence);
         }
 
         public static IPrimitive MakeRotationFigure(IList<Point3D> initial, int axis, int density)

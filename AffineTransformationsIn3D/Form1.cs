@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using AffineTransformationsIn3D.Primitives;
+using System.IO;
 
 namespace AffineTransformationsIn3D
 {
@@ -226,6 +227,38 @@ namespace AffineTransformationsIn3D
                 * Transformation.RotateX(-Math.PI / 4);
 
             ScenesRefresh();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save_dialog = new SaveFileDialog();
+            save_dialog.Filter = "Text Files(*.txt)|*.txt|All files (*.*)|*.*";
+            if (save_dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string info = "# File Created: " + DateTime.Now.ToString() + "\r\n\r\n";
+                    
+                    foreach (var point in ((Polyhedron)Model).Points)
+                        info += "v " + Math.Round(point.X, 2, MidpointRounding.AwayFromZero) 
+                                     + " " + Math.Round(point.Y, 2, MidpointRounding.AwayFromZero) 
+                                     + " " + Math.Round(point.Z, 2, MidpointRounding.AwayFromZero) + "\r\n";
+                    info += "# " + ((Polyhedron)Model).Points.Count + " vertices\r\n\r\n";
+
+                    
+                    foreach (var seq in ((Polyhedron)Model).PointsSequence)
+                        info += "f " + seq.first + " " + seq.second + " " + seq.third + "\r\n";
+                    info += "# " + ((Polyhedron)Model).Facets.Count + " polygons\r\n\r\n";
+
+                    File.WriteAllText(save_dialog.FileName, info);
+                }
+                catch
+                {
+                    DialogResult rezult = MessageBox.Show("Невозможно сохранить файл",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
         }
     }
 }

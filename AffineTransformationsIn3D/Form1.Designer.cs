@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AffineTransformationsIn3D.Primitives.Transformation transformation1 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation2 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation3 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation4 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation5 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation6 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation7 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation8 = new AffineTransformationsIn3D.Primitives.Transformation();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
@@ -85,6 +85,8 @@
             this.sceneView4 = new AffineTransformationsIn3D.SceneView();
             this.sceneView1 = new AffineTransformationsIn3D.SceneView();
             this.sceneView2 = new AffineTransformationsIn3D.SceneView();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -242,11 +244,14 @@
             this.tableLayoutPanel2.Controls.Add(this.numericUpDown16, 3, 8);
             this.tableLayoutPanel2.Controls.Add(this.button7, 4, 11);
             this.tableLayoutPanel2.Controls.Add(this.button8, 0, 12);
+            this.tableLayoutPanel2.Controls.Add(this.button9, 3, 12);
+            this.tableLayoutPanel2.Controls.Add(this.button10, 4, 12);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel2.RowCount = 13;
+            this.tableLayoutPanel2.RowCount = 15;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -260,6 +265,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(400, 599);
             this.tableLayoutPanel2.TabIndex = 9;
             // 
@@ -813,7 +819,7 @@
             this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView3.Location = new System.Drawing.Point(3, 315);
             this.sceneView3.Name = "sceneView3";
-            this.sceneView3.Projection = transformation1;
+            this.sceneView3.Projection = transformation5;
             this.sceneView3.Scene = null;
             this.sceneView3.Size = new System.Drawing.Size(353, 281);
             this.sceneView3.TabIndex = 2;
@@ -824,7 +830,7 @@
             this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView4.Location = new System.Drawing.Point(362, 315);
             this.sceneView4.Name = "sceneView4";
-            this.sceneView4.Projection = transformation2;
+            this.sceneView4.Projection = transformation6;
             this.sceneView4.Scene = null;
             this.sceneView4.Size = new System.Drawing.Size(353, 281);
             this.sceneView4.TabIndex = 3;
@@ -835,7 +841,7 @@
             this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView1.Location = new System.Drawing.Point(3, 16);
             this.sceneView1.Name = "sceneView1";
-            this.sceneView1.Projection = transformation3;
+            this.sceneView1.Projection = transformation7;
             this.sceneView1.Scene = null;
             this.sceneView1.Size = new System.Drawing.Size(353, 280);
             this.sceneView1.TabIndex = 0;
@@ -846,11 +852,30 @@
             this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView2.Location = new System.Drawing.Point(362, 16);
             this.sceneView2.Name = "sceneView2";
-            this.sceneView2.Projection = transformation4;
+            this.sceneView2.Projection = transformation8;
             this.sceneView2.Scene = null;
             this.sceneView2.Size = new System.Drawing.Size(353, 280);
             this.sceneView2.TabIndex = 1;
             this.sceneView2.Text = "sceneView2";
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(241, 302);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(70, 23);
+            this.button9.TabIndex = 45;
+            this.button9.Text = "Сохранить";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(317, 302);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 46;
+            this.button10.Text = "Загрузить";
+            this.button10.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -948,6 +973,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDown16;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button10;
     }
 }
 
