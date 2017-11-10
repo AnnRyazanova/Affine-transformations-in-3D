@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Primitives\Facet.cs" />
     <Compile Include="Primitives\Line.cs" />
+    <Compile Include="Primitives\Plot.cs" />
     <Compile Include="Primitives\Point3D.cs" />
     <Compile Include="Primitives\IPrimitive.cs" />
     <Compile Include="Primitives\Polyhedron.cs" />
