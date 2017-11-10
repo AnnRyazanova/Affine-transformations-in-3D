@@ -54,9 +54,12 @@
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPagePolyhedron.SuspendLayout();
+            this.tabPageFile.SuspendLayout();
             this.tabPageRotationFigure.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -136,6 +139,8 @@
             // 
             // tabPageFile
             // 
+            this.tabPageFile.Controls.Add(this.label4);
+            this.tabPageFile.Controls.Add(this.button3);
             this.tabPageFile.Location = new System.Drawing.Point(4, 22);
             this.tabPageFile.Name = "tabPageFile";
             this.tabPageFile.Padding = new System.Windows.Forms.Padding(3);
@@ -428,6 +433,25 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Ok);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(136, 135);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(156, 27);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "Загрузить многогранник";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(144, 187);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "label4";
+            // 
             // FormChangeModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -441,6 +465,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPagePolyhedron.ResumeLayout(false);
             this.tabPagePolyhedron.PerformLayout();
+            this.tabPageFile.ResumeLayout(false);
+            this.tabPageFile.PerformLayout();
             this.tabPageRotationFigure.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -483,5 +509,7 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonRemove;
         private System.Windows.Forms.ListBox listBoxPoints;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label4;
     }
 }

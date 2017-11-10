@@ -1,6 +1,7 @@
 ﻿using AffineTransformationsIn3D.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D
@@ -14,6 +15,7 @@ namespace AffineTransformationsIn3D
         public FormChangeModel()
         {
             InitializeComponent();
+            label4.Text = "";
         }
 
         private void AddPoint(object sender, EventArgs e)
@@ -58,6 +60,70 @@ namespace AffineTransformationsIn3D
                 else /* if (radioButtonZ.Checked) */ axis = 2;
                 var density = (int)numericUpDownDensity.Value;
                 selectedModel = Polyhedron.MakeRotationFigure(initial, axis, density);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "Object Files(*.obj)|*.obj|Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var points = new List<Point3D>();
+                    var pointsSequence = new List<List<int>>();
+
+                    var str = File.ReadAllText(openDialog.FileName).Replace("\r\n", "!");
+                    var info = str.Split('!');
+                    int index = 0;
+
+                    while (!info[index][0].Equals('v'))
+                        index++;
+
+                    while (info[index][0].Equals('v'))
+                    {
+                        var infoPoint = info[index].Split(' ');
+
+                        float x, y, z;
+                        float.TryParse(infoPoint[1], out x);
+                        float.TryParse(infoPoint[2], out y);
+                        float.TryParse(infoPoint[3], out z);
+
+                        points.Add(new Point3D(x, y, z));
+                        index++;
+                    }
+
+                    while (!info[index][0].Equals('f'))
+                        index++;
+
+                    int indexPointSeq = 0;
+
+                    while (info[index][0].Equals('f'))
+                    {
+                        var infoPointSeq = info[index].Split(' ');
+                        var listPoints = new List<int>();
+
+                        for (int i = 1; i < infoPointSeq.Length; ++i)
+                        {
+                            int elem;
+                            if (int.TryParse(infoPointSeq[i], out elem))
+                                listPoints.Add(elem);
+                        }
+                        pointsSequence.Add(listPoints);
+                        index++;
+                        indexPointSeq++;
+                    }
+
+                    selectedModel = new Polyhedron(points, pointsSequence);
+                    label4.Text = "Многогранник загружен";
+                }
+                catch
+                {
+                    DialogResult rezult = MessageBox.Show("Невозможно открыть выбранный файл",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

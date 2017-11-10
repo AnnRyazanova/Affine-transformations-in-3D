@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using AffineTransformationsIn3D.Primitives;
+using System.IO;
 
 namespace AffineTransformationsIn3D
 {
@@ -144,9 +145,10 @@ namespace AffineTransformationsIn3D
             line.Apply(scalingTetrahedron);
 
             int rot_x = 0;
-            while (Math.Abs(line.A.Y) > 0.01 || Math.Abs(line.B.Y) > 0.01)
+
+			while (Math.Abs(line.A.Y) > 0.01 || Math.Abs(line.B.Y) > 0.01)
             {
-                double rotatingX = 1.0 / 180 * Math.PI;
+				double rotatingX = 1.0 / 180 * Math.PI;
                 double rotatingY = 0.0 / 180 * Math.PI;
                 double rotatingZ = 0.0 / 180 * Math.PI;
                 scalingTetrahedron = Transformation.RotateX(rotatingX)
@@ -155,8 +157,8 @@ namespace AffineTransformationsIn3D
                 line.Apply(scalingTetrahedron);
                 rot_x++;
             }
-
-            int rot_y = 0;
+			
+			int rot_y = 0;
             while (Math.Abs(line.A.X) > 0.01 || Math.Abs(line.B.X) > 0.01)
             {
                 double rotatingX = 0.0 / 180 * Math.PI;
@@ -168,7 +170,7 @@ namespace AffineTransformationsIn3D
                 line.Apply(scalingTetrahedron);
                 rot_y++;
             }
-
+			
             double rotatingX_1 = ((double)((360 - (rot_x))) / 180 * Math.PI);
             double rotatingY_1 = ((double)((360 - (rot_x))) / 180 * Math.PI);
             double rotatingZ_1 = ((double)(numericUpDown19.Value) / 180 * Math.PI);
@@ -177,7 +179,7 @@ namespace AffineTransformationsIn3D
                 * Transformation.RotateZ(rotatingZ_1);
             Model.Apply(scalingTetrahedron_1);
 
-            scalingTetrahedron = Transformation.Translate(cent.X, cent.Y, cent.Z);
+            scalingTetrahedron = Transformation.Translate(cent.X, cent.Y, 0);
             Model.Apply(scalingTetrahedron);
             
             ScenesRefresh();
@@ -191,41 +193,48 @@ namespace AffineTransformationsIn3D
             Model = dialog.SelectedModel;
         }
 
-        private double F(double x, double y)
-        {
-            return (x*x * y) / (x*x*x*x + y*y);
-        }
-
         private void button8_Click(object sender, EventArgs e)
         {
-            List<IPrimitive> scene = new List<IPrimitive>();
+			sceneView1.Scene.Add(new Plot());
+			ScenesRefresh();
+		}
 
-            var p1 = new Point3D(0, 0, F(0,0));
-            scene.Add(p1);
-
-            for (double i = 0.1; i < 10; i+=0.01)
-                for (double j = 0.1; j < 10; j+=0.01)
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Object Files(*.obj)|*.obj|Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
                 {
-                    var p2 = new Point3D(i, j, F(i, j));
-                    scene.Add(new Line(p1, p2));
-                    p1 = p2;
+                    string info = "# File Created: " + DateTime.Now.ToString() + "\r\n";
+                    
+                    foreach (var point in ((Polyhedron)Model).Points)
+                        info += "v " + Math.Round(point.X, 2, MidpointRounding.AwayFromZero) 
+                                     + " " + Math.Round(point.Y, 2, MidpointRounding.AwayFromZero) 
+                                     + " " + Math.Round(point.Z, 2, MidpointRounding.AwayFromZero) + "\r\n";
+                    info += "# " + ((Polyhedron)Model).Points.Count + " vertices\r\n";
+
+
+                    foreach (var seq in ((Polyhedron)Model).PointsSequence)
+                    {
+                        info += "f ";
+                        for (int i = 0; i < seq.Count; ++i)
+                            info += seq[i] + " ";
+                        info += "\r\n";
+                    }
+                    info += "# " + ((Polyhedron)Model).Facets.Count + " polygons\r\n";
+
+                    File.WriteAllText(saveDialog.FileName, info);
+                }
+                catch
+                {
+                    DialogResult rezult = MessageBox.Show("Невозможно сохранить файл",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
-            scene.Add(Polyhedron.MakeTetrahedron(0.5f));
-            sceneView1.Scene = scene;
-            sceneView2.Scene = scene;
-            sceneView3.Scene = scene;
-            sceneView4.Scene = scene;
-            sceneView1.Projection = Transformation.OrthogonalProjection();
-            sceneView2.Projection = Transformation.OrthogonalProjection()
-                * Transformation.RotateY(Math.PI / 2);
-            sceneView3.Projection = Transformation.OrthogonalProjection()
-                * Transformation.RotateX(-Math.PI / 2);
-            sceneView4.Projection = Transformation.OrthogonalProjection()
-                * Transformation.RotateY(Math.PI / 4)
-                * Transformation.RotateX(-Math.PI / 4);
-
-            ScenesRefresh();
+            }
         }
+        
     }
 }
