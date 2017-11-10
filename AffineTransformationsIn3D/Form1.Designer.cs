@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AffineTransformationsIn3D.Primitives.Transformation transformation5 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation6 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation7 = new AffineTransformationsIn3D.Primitives.Transformation();
-            AffineTransformationsIn3D.Primitives.Transformation transformation8 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation1 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation2 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation3 = new AffineTransformationsIn3D.Primitives.Transformation();
+            AffineTransformationsIn3D.Primitives.Transformation transformation4 = new AffineTransformationsIn3D.Primitives.Transformation();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
@@ -827,7 +827,7 @@
             this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView3.Location = new System.Drawing.Point(3, 315);
             this.sceneView3.Name = "sceneView3";
-            this.sceneView3.Projection = transformation5;
+            this.sceneView3.Projection = transformation1;
             this.sceneView3.Scene = null;
             this.sceneView3.Size = new System.Drawing.Size(353, 281);
             this.sceneView3.TabIndex = 2;
@@ -838,7 +838,7 @@
             this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView4.Location = new System.Drawing.Point(362, 315);
             this.sceneView4.Name = "sceneView4";
-            this.sceneView4.Projection = transformation6;
+            this.sceneView4.Projection = transformation2;
             this.sceneView4.Scene = null;
             this.sceneView4.Size = new System.Drawing.Size(353, 281);
             this.sceneView4.TabIndex = 3;
@@ -849,7 +849,7 @@
             this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView1.Location = new System.Drawing.Point(3, 16);
             this.sceneView1.Name = "sceneView1";
-            this.sceneView1.Projection = transformation7;
+            this.sceneView1.Projection = transformation3;
             this.sceneView1.Scene = null;
             this.sceneView1.Size = new System.Drawing.Size(353, 280);
             this.sceneView1.TabIndex = 0;
@@ -860,7 +860,7 @@
             this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView2.Location = new System.Drawing.Point(362, 16);
             this.sceneView2.Name = "sceneView2";
-            this.sceneView2.Projection = transformation8;
+            this.sceneView2.Projection = transformation4;
             this.sceneView2.Scene = null;
             this.sceneView2.Size = new System.Drawing.Size(353, 280);
             this.sceneView2.TabIndex = 1;

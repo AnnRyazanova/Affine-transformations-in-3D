@@ -26,11 +26,11 @@ namespace AffineTransformationsIn3D.Primitives
         
         private IList<Facet> facets = new List<Facet>();
 
-        private IList<Triple> pointsSequence = new List<Triple>();
+        private IList<List<int>> pointsSequence = new List<List<int>>();
 
         public IList<Point3D> Points { get { return points; } }
         public IList<Facet> Facets { get { return facets; } }
-        public IList<Triple> PointsSequence { get { return pointsSequence; } }
+        public IList<List<int>> PointsSequence { get { return pointsSequence; } }
 
         public Point3D Center
         {
@@ -50,14 +50,18 @@ namespace AffineTransformationsIn3D.Primitives
             }
         }
 
-        public Polyhedron(List<Point3D> points, List<Triple> pointsSequence)
+        public Polyhedron(List<Point3D> points, List<List<int>> pointsSequence)
         {
             this.points = points;
             this.pointsSequence = pointsSequence;
             
             foreach (var index in pointsSequence)
             {
-                facets.Add(new Facet(new Point3D[] { points[index.first], points[index.second], points[index.third] }));
+                var pointsToFacet = new List<Point3D>();
+                for (int i = 0; i < index.Count; ++i)
+                    pointsToFacet.Add(points[index[i]]);
+
+                facets.Add(new Facet(pointsToFacet));
             }
         }
 
@@ -67,7 +71,7 @@ namespace AffineTransformationsIn3D.Primitives
             this.facets = facets;
         }
 
-        public Polyhedron(IList<Point3D> points, IList<Facet> facets, IList<Triple> pointsSequence)
+        public Polyhedron(IList<Point3D> points, IList<Facet> facets, IList<List<int>> pointsSequence)
         {
             this.points = points;
             this.facets = facets;
@@ -90,7 +94,7 @@ namespace AffineTransformationsIn3D.Primitives
 
         public static IPrimitive MakeIcosahedron(double size)
         {
-            var pointsSequence = new List<Triple>();
+            var pointsSequence = new List<List<int>>();
             var points = new List<Point3D>();
             var facets = new List<Facet>();
             
@@ -121,20 +125,34 @@ namespace AffineTransformationsIn3D.Primitives
             for (int i = 0; i < 10; ++i)
             {
                 facets.Add(new Facet(new Point3D[] { points[i], points[(i + 1) % 10], points[(i + 2) % 10] }));
-                Triple triple = new Triple(i, (i + 1) % 10, (i + 2) % 10);
-                pointsSequence.Add(triple);
+                //Triple triple = new Triple(i, (i + 1) % 10, (i + 2) % 10);
+                var listPoint = new List<int>();
+                listPoint.Add(i);
+                listPoint.Add((i + 1) % 10);
+                listPoint.Add((i + 2) % 10);
+                pointsSequence.Add(listPoint);
             }
 
             for (int i = 0; i < 5; ++i)
             {
                 // верхняя часть
                 facets.Add(new Facet(new Point3D[] { points[2 * i], points[10], points[(2 * (i + 1)) % 10] }));
-                Triple triple = new Triple(2 * i, 10, (2 * (i + 1)) % 10);
-                pointsSequence.Add(triple);
+
+                //triple = new Triple(2 * i, 10, (2 * (i + 1)) % 10);
+                var listPoint = new List<int>();
+                listPoint.Add(2 * i);
+                listPoint.Add(10);
+                listPoint.Add((2 * (i + 1)) % 10);
+                pointsSequence.Add(listPoint);
+
                 // нижняя часть
                 facets.Add(new Facet(new Point3D[] { points[2 * i + 1], points[11], points[(2 * (i + 1) + 1) % 10] }));
-                triple = new Triple(2 * i + 1, 11, (2 * (i + 1) + 1) % 10);
-                pointsSequence.Add(triple);
+                //triple = new Triple(2 * i + 1, 11, (2 * (i + 1) + 1) % 10);
+                listPoint = new List<int>();
+                listPoint.Add(2 * i + 1);
+                listPoint.Add(11);
+                listPoint.Add((2 * (i + 1) + 1) % 10);
+                pointsSequence.Add(listPoint);
             }
 
             return new Polyhedron(points, facets, pointsSequence);
@@ -160,7 +178,7 @@ namespace AffineTransformationsIn3D.Primitives
         {
             var points = new List<Point3D>();
             var facets = new List<Facet>();
-            var pointsSequence = new List<Triple>();
+            var pointsSequence = new List<List<int>>();
 
             double h = Math.Sqrt(2.0 / 3.0) * size;
             points = new List<Point3D>();
@@ -172,23 +190,45 @@ namespace AffineTransformationsIn3D.Primitives
 
             // Основание тетраэдра
             facets.Add(new Facet(new Point3D[] { points[0], points[1], points[2] }));
-            Triple triple = new Triple(0, 1, 2);
-            pointsSequence.Add(triple);
+            // Triple triple = new Triple(0, 1, 2);
+            // pointsSequence.Add(triple);
+            var listPoint = new List<int>();
+            listPoint.Add(0);
+            listPoint.Add(1);
+            listPoint.Add(2);
+
+            pointsSequence.Add(listPoint);
+
 
             // Левая грань
             facets.Add(new Facet(new Point3D[] { points[1], points[3], points[0] }));
-            triple = new Triple(1, 3, 0);
-            pointsSequence.Add(triple);
-            
+            //triple = new Triple(1, 3, 0);
+            //pointsSequence.Add(triple);
+            listPoint = new List<int>();
+            listPoint.Add(1);
+            listPoint.Add(3);
+            listPoint.Add(0);
+            pointsSequence.Add(listPoint);
+
             // Передняя грань
             facets.Add(new Facet(new Point3D[] { points[0], points[3], points[2] }));
-            triple = new Triple(0, 3, 2);
-            pointsSequence.Add(triple);
+            //triple = new Triple(0, 3, 2);
+            //pointsSequence.Add(triple);
+            listPoint = new List<int>();
+            listPoint.Add(0);
+            listPoint.Add(3);
+            listPoint.Add(2);
+            pointsSequence.Add(listPoint);
 
             // Правая грань
             facets.Add(new Facet(new Point3D[] { points[2], points[3], points[1] }));
-            triple = new Triple(2, 3, 1);
-            pointsSequence.Add(triple);
+            //triple = new Triple(2, 3, 1);
+            //pointsSequence.Add(triple);
+            listPoint = new List<int>();
+            listPoint.Add(2);
+            listPoint.Add(3);
+            listPoint.Add(1);
+            pointsSequence.Add(listPoint);
 
             return new Polyhedron(points, facets, pointsSequence);
         }

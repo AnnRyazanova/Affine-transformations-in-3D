@@ -73,7 +73,7 @@ namespace AffineTransformationsIn3D
                 try
                 {
                     var points = new List<Point3D>();
-                    var pointsSequence = new List<Triple>();
+                    var pointsSequence = new List<List<int>>();
 
                     var str = File.ReadAllText(openDialog.FileName).Replace("\r\n", "!");
                     var info = str.Split('!');
@@ -98,17 +98,22 @@ namespace AffineTransformationsIn3D
                     while (!info[index][0].Equals('f'))
                         index++;
 
+                    int indexPointSeq = 0;
+
                     while (info[index][0].Equals('f'))
                     {
                         var infoPointSeq = info[index].Split(' ');
+                        var listPoints = new List<int>();
 
-                        int fst, snd, trd;
-                        int.TryParse(infoPointSeq[1], out fst);
-                        int.TryParse(infoPointSeq[2], out snd);
-                        int.TryParse(infoPointSeq[3], out trd);
-
-                        pointsSequence.Add(new Triple(fst, snd, trd));
+                        for (int i = 1; i < infoPointSeq.Length; ++i)
+                        {
+                            int elem;
+                            if (int.TryParse(infoPointSeq[i], out elem))
+                                listPoints.Add(elem);
+                        }
+                        pointsSequence.Add(listPoints);
                         index++;
+                        indexPointSeq++;
                     }
 
                     selectedModel = new Polyhedron(points, pointsSequence);

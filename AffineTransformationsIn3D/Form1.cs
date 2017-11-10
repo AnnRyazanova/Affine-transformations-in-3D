@@ -245,9 +245,14 @@ namespace AffineTransformationsIn3D
                                      + " " + Math.Round(point.Z, 2, MidpointRounding.AwayFromZero) + "\r\n";
                     info += "# " + ((Polyhedron)Model).Points.Count + " vertices\r\n";
 
-                    
+
                     foreach (var seq in ((Polyhedron)Model).PointsSequence)
-                        info += "f " + seq.first + " " + seq.second + " " + seq.third + "\r\n";
+                    {
+                        info += "f ";
+                        for (int i = 0; i < seq.Count; ++i)
+                            info += seq[i] + " ";
+                        info += "\r\n";
+                    }
                     info += "# " + ((Polyhedron)Model).Facets.Count + " polygons\r\n";
 
                     File.WriteAllText(saveDialog.FileName, info);
