@@ -1,6 +1,4 @@
-﻿
-using AffineTransformationsIn3D.Primitives;
-using System.Collections.Generic;
+﻿using AffineTransformationsIn3D.Geometry;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,20 +6,11 @@ namespace AffineTransformationsIn3D
 {
     class SceneView : Control
     {
-        private List<IPrimitive> scene = new List<IPrimitive>();
-        private Transformation projection = Transformation.OrthogonalProjection();
+        private Matrix projection = Transformations.OrthogonalProjection();
 
-        public List<IPrimitive> Scene
-        {
-            get { return scene; }
-            set
-            {
-                scene = value;
-                Invalidate();
-            }
-        }
+        public Mesh Mesh { get; set; }
 
-        public Transformation Projection
+        public Matrix Projection
         {
             get { return projection; }
             set
@@ -52,9 +41,18 @@ namespace AffineTransformationsIn3D
                     new Point(Width - 1, 1),
                     new Point(1, 1)
                 });
-            if (null == scene) return;
-            foreach (var primitive in scene)
-                primitive.Draw(e.Graphics, projection, Width, Height);
+            if (null == Mesh) return;
+            var graphics3D = new Graphics3D(e.Graphics, Projection, Width, Height);
+            var x = new Vertex(0.8, 0, 0);
+            var y = new Vertex(0, 0.8, 0);
+            var z = new Vertex(0, 0, 0.8);
+            graphics3D.DrawLine(new Vertex(0, 0, 0), x, new Pen(Color.Red, 2));
+            graphics3D.DrawPoint(x, Brushes.Red);
+            graphics3D.DrawLine(new Vertex(0, 0, 0), y, new Pen(Color.Green, 2));
+            graphics3D.DrawPoint(y, Brushes.Green);
+            graphics3D.DrawLine(new Vertex(0, 0, 0), z, new Pen(Color.Blue, 2));
+            graphics3D.DrawPoint(z, Brushes.Blue);
+            Mesh.Draw(graphics3D);
         }
     }
 }

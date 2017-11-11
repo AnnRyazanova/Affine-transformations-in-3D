@@ -1,29 +1,14 @@
-﻿
-using System;
+﻿using System;
 
-namespace AffineTransformationsIn3D.Primitives
+namespace AffineTransformationsIn3D.Geometry
 {
-    public class Transformation
+    public static class Transformations
     {
-        private double[,] matrix = new double[4,4];
-
-        public double[,] Matrix { get { return matrix; } }
-
-        public Transformation()
-        {
-            matrix = Identity().matrix;
-        }
-
-        public Transformation(double[,] matrix)
-        {
-            this.matrix = matrix;
-        }
-
-        public static Transformation RotateX(double angle)
+        public static Matrix RotateX(double angle)
         {
             double cos = Math.Cos(angle);
             double sin = Math.Sin(angle);
-            return new Transformation(
+            return new Matrix(
                 new double[,]
                 {
                     { 1, 0, 0, 0 },
@@ -33,11 +18,11 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation RotateY(double angle)
+        public static Matrix RotateY(double angle)
         {
             double cos = Math.Cos(angle);
             double sin = Math.Sin(angle);
-            return new Transformation(
+            return new Matrix(
                 new double[,]
                 {
                     { cos, 0, sin, 0 },
@@ -47,11 +32,11 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation RotateZ(double angle)
+        public static Matrix RotateZ(double angle)
         {
             double cos = Math.Cos(angle);
             double sin = Math.Sin(angle);
-            return new Transformation(
+            return new Matrix(
                 new double[,]
                 {
                     { cos, -sin, 0, 0 },
@@ -61,20 +46,20 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation Scale(double fx, double fy, double fz)
+        public static Matrix Scale(double fx, double fy, double fz)
         {
-            return new Transformation( 
-                new double[,] { 
+            return new Matrix(
+                new double[,] {
                     { fx, 0, 0, 0 },
                     { 0, fy, 0, 0 },
                     { 0, 0, fz, 0 },
                     { 0, 0, 0, 1 }
                 });
         }
-        
-        public static Transformation Translate(double dx, double dy, double dz)
+
+        public static Matrix Translate(double dx, double dy, double dz)
         {
-            return new Transformation(
+            return new Matrix(
                 new double[,]
                 {
                     { 1, 0, 0, 0 },
@@ -84,9 +69,9 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-        public static Transformation Identity()
+        public static Matrix Identity()
         {
-            return new Transformation(
+            return new Matrix(
                 new double[,] {
                     { 1, 0, 0, 0 },
                     { 0, 1, 0, 0 },
@@ -95,38 +80,50 @@ namespace AffineTransformationsIn3D.Primitives
                 });
         }
 
-
-        public static Transformation ReflectX()
+        public static Matrix ReflectX()
         {
             return Scale(-1, 1, 1);
         }
 
-        public static Transformation ReflectY()
+        public static Matrix ReflectY()
         {
             return Scale(1, -1, 1);
         }
 
-        public static Transformation ReflectZ()
+        public static Matrix ReflectZ()
         {
             return Scale(1, 1, -1);
         }
 
-        public static Transformation OrthogonalProjection()
+        public static Matrix OrthogonalProjection()
         {
             return Identity();
         }
 
-        public static Transformation operator *(Transformation t1, Transformation t2)
+        public static Matrix RotateAroundPoint(Vertex point, 
+            double angleX, double angleY, double angleZ)
         {
-            double[,] matrix = new double[4, 4];
-            for (int i = 0; i < 4; ++i)
-                for (int j = 0; j < 4; ++j)
-                {
-                    matrix[i, j] = 0;
-                    for (int k = 0; k < 4; ++k)
-                        matrix[i, j] += t1.matrix[i, k] * t2.matrix[k, j];
-                }
-            return new Transformation(matrix);
+            return Translate(-point.X, -point.Y, -point.Z)
+                * RotateX(angleX)
+                * RotateY(angleY)
+                * RotateZ(angleZ)
+                * Translate(point.X, point.Y, point.Z);
+        }
+
+        public static Matrix RotateAroundLine(Vertex a, Vertex b, double angle)
+        {
+            var dx = b.X - a.X;
+            var dy = b.Y - a.Y;
+            var dz = b.Z - a.Z;
+            var angleY = 0 == dx ? 0 : -Math.Atan(dz / dx);
+            var angleZ = 0 == dx ? Math.PI / 2 : Math.Atan(dy / dx);
+            return Translate(-a.X, -a.Y, -a.Z)
+                * RotateZ(angleZ)
+                * RotateY(angleY)
+                * RotateX(angle)
+                * RotateY(-angleY)
+                * RotateZ(-angleZ)
+                * Translate(a.X, a.Y, a.Z);
         }
     }
 }

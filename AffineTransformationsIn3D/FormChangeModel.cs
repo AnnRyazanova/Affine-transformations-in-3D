@@ -1,21 +1,17 @@
-﻿using AffineTransformationsIn3D.Primitives;
+﻿using AffineTransformationsIn3D.Geometry;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D
 {
     public partial class FormChangeModel : Form
     {
-        private IPrimitive selectedModel;
-
-        public IPrimitive SelectedModel { get { return selectedModel; } }
+        public Mesh SelectedModel { get; private set; }
 
         public FormChangeModel()
         {
             InitializeComponent();
-            label4.Text = "";
         }
 
         private void AddPoint(object sender, EventArgs e)
@@ -26,7 +22,7 @@ namespace AffineTransformationsIn3D
             numericUpDownX.Value = 0;
             numericUpDownY.Value = 0;
             numericUpDownZ.Value = 0;
-            listBoxPoints.Items.Add(new Point3D(x, y, z));
+            listBoxPoints.Items.Add(new Vertex(x, y, z));
         }
 
         private void SelectedPointChanged(object sender, EventArgs e)
@@ -45,85 +41,22 @@ namespace AffineTransformationsIn3D
             if (tabPagePolyhedron == tab)
             {
                 if (radioButtonTetrahedron.Checked)
-                    selectedModel = Polyhedron.MakeTetrahedron(0.5);
+                    SelectedModel = new Tetrahedron(0.5);
                 else
-                    selectedModel = Polyhedron.MakeIcosahedron(0.5);
+                    SelectedModel = new Icosahedron(0.5);
             }
             else if (tabPageRotationFigure == tab)
             {
-                var initial = new List<Point3D>();
-                foreach (var p in listBoxPoints.Items)
-                    initial.Add((Point3D)p);
                 int axis;
                 if (radioButtonX.Checked) axis = 0;
                 else if (radioButtonY.Checked) axis = 1;
                 else /* if (radioButtonZ.Checked) */ axis = 2;
                 var density = (int)numericUpDownDensity.Value;
-                selectedModel = Polyhedron.MakeRotationFigure(initial, axis, density);
+                SelectedModel = new RotationFigure((IList<Vertex>)listBoxPoints.Items, axis, density);
             }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.Filter = "Object Files(*.obj)|*.obj|Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (openDialog.ShowDialog() == DialogResult.OK)
+            else if (tabPagePlot == tab)
             {
-                try
-                {
-                    var points = new List<Point3D>();
-                    var pointsSequence = new List<List<int>>();
-
-                    var str = File.ReadAllText(openDialog.FileName).Replace("\r\n", "!");
-                    var info = str.Split('!');
-                    int index = 0;
-
-                    while (!info[index][0].Equals('v'))
-                        index++;
-
-                    while (info[index][0].Equals('v'))
-                    {
-                        var infoPoint = info[index].Split(' ');
-
-                        float x, y, z;
-                        float.TryParse(infoPoint[1], out x);
-                        float.TryParse(infoPoint[2], out y);
-                        float.TryParse(infoPoint[3], out z);
-
-                        points.Add(new Point3D(x, y, z));
-                        index++;
-                    }
-
-                    while (!info[index][0].Equals('f'))
-                        index++;
-
-                    int indexPointSeq = 0;
-
-                    while (info[index][0].Equals('f'))
-                    {
-                        var infoPointSeq = info[index].Split(' ');
-                        var listPoints = new List<int>();
-
-                        for (int i = 1; i < infoPointSeq.Length; ++i)
-                        {
-                            int elem;
-                            if (int.TryParse(infoPointSeq[i], out elem))
-                                listPoints.Add(elem);
-                        }
-                        pointsSequence.Add(listPoints);
-                        index++;
-                        indexPointSeq++;
-                    }
-
-                    selectedModel = new Polyhedron(points, pointsSequence);
-                    label4.Text = "Многогранник загружен";
-                }
-                catch
-                {
-                    DialogResult rezult = MessageBox.Show("Невозможно открыть выбранный файл",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                SelectedModel = new Plot();
             }
         }
     }
