@@ -25,7 +25,7 @@ namespace AffineTransformationsIn3D.Geometry
                 default: rotation = Transformations.RotateZ; break;
             }
             for (int i = 0; i < density; ++i)
-                for (int j = 0; j < initial.Count; ++i)
+                for (int j = 0; j < n; ++j)
                     vertices[i * n + j] = initial[j] * rotation(2 * Math.PI * i / density);
             for (int i = 0; i < density; ++i)
                 for (int j = 0; j < n - 1; ++j)

@@ -1,7 +1,8 @@
 ﻿using AffineTransformationsIn3D.Geometry;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AffineTransformationsIn3D
 {
@@ -47,12 +48,15 @@ namespace AffineTransformationsIn3D
             }
             else if (tabPageRotationFigure == tab)
             {
+                IList<Vertex> initial = new List<Vertex>(listBoxPoints.Items.Count);
+                foreach (var v in listBoxPoints.Items)
+                    initial.Add((Vertex)v);
                 int axis;
                 if (radioButtonX.Checked) axis = 0;
                 else if (radioButtonY.Checked) axis = 1;
                 else /* if (radioButtonZ.Checked) */ axis = 2;
                 var density = (int)numericUpDownDensity.Value;
-                SelectedModel = new RotationFigure((IList<Vertex>)listBoxPoints.Items, axis, density);
+                SelectedModel = new RotationFigure(initial, axis, density);
             }
             else if (tabPagePlot == tab)
             {
