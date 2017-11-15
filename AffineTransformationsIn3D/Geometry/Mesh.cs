@@ -45,9 +45,9 @@ namespace AffineTransformationsIn3D.Geometry
             var indices = new List<List<int>>();
             var info = File.ReadAllLines(path);
             int index = 0;
-            while (!info[index][0].Equals('v'))
+            while (info[index].Equals("") || !info[index][0].Equals('v'))
                 index++;
-            while (info[index][0].Equals('v'))
+            while (info[index].Equals("") || info[index][0].Equals('v'))
             {
                 var infoPoint = info[index].Split(' ');
                 double x = double.Parse(infoPoint[1]);
@@ -56,10 +56,10 @@ namespace AffineTransformationsIn3D.Geometry
                 vertices.Add(new Vertex(x, y, z));
                 index++;
             }
-            while (!info[index][0].Equals('f'))
+            while (info[index].Equals("") || !info[index][0].Equals('f'))
                 index++;
             int indexPointSeq = 0;
-            while (info[index][0].Equals('f'))
+            while (info[index].Equals("") || info[index][0].Equals('f'))
             {
                 var infoPointSeq = info[index].Split(' ');
                 var listPoints = new List<int>();
