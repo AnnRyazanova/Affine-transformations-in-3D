@@ -67,7 +67,7 @@ namespace AffineTransformationsIn3D.Geometry
                 {
                     int elem;
                     if (int.TryParse(infoPointSeq[i], out elem))
-                        listPoints.Add(elem);
+                        listPoints.Add(elem - 1);
                 }
                 indices.Add(listPoints);
                 index++;
@@ -103,7 +103,7 @@ namespace AffineTransformationsIn3D.Geometry
             {
                 info += "f ";
                 for (int i = 0; i < facet.Length; ++i)
-                    info += facet[i] + " ";
+                    info += (facet[i] + 1) + " ";
                 info += "\r\n";
             }
             info += "# " + Indices.Length + " polygons\r\n";
