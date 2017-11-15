@@ -12,10 +12,10 @@ namespace AffineTransformationsIn3D.Geometry
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public Graphics3D(Graphics graphics, Matrix projection, double width, double height)
+        public Graphics3D(Graphics graphics, Matrix transformation, double width, double height)
         {
             this.graphics = graphics;
-            Transformation = projection;
+            Transformation = transformation;
             Width = width;
             Height = height;
         }

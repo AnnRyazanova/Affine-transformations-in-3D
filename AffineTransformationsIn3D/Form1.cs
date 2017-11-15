@@ -22,18 +22,21 @@ namespace AffineTransformationsIn3D
             }
         }
 
+        private Camera camera;
+
         public Form1()
         {
             InitializeComponent();
             CurrentMesh = new Tetrahedron(0.5f);
-            sceneView1.Projection = Transformations.OrthogonalProjection();
-            sceneView2.Projection = Transformations.OrthogonalProjection()
-                * Transformations.RotateY(Math.PI / 2);
-            sceneView3.Projection = Transformations.OrthogonalProjection()
-                * Transformations.RotateX(-Math.PI / 2);
-            sceneView4.Projection = Transformations.OrthogonalProjection()
-                * Transformations.RotateY(Math.PI / 4)
-                * Transformations.RotateX(-Math.PI / 4);
+            sceneView1.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection());
+            sceneView2.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection()
+                * Transformations.RotateY(Math.PI / 2));
+            sceneView3.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection()
+                * Transformations.RotateX(-Math.PI / 2));
+
+            camera = new Camera(new Vertex(0, 0, 0), Math.PI / 4, -Math.PI / 4, Transformations.OrthogonalProjection());
+
+            sceneView4.ViewCamera = camera;
         }
 
         private static double DegToRad(double deg)
@@ -160,6 +163,38 @@ namespace AffineTransformationsIn3D
                 MessageBox.Show("Ошибка при чтении файла",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void SceneKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    camera.AngleX += 0.5;
+                    break;
+                case Keys.Down:
+                    camera.AngleX -= 0.5;
+                    break;
+                case Keys.Left:
+                    camera.AngleY += 0.5;
+                    break;
+                case Keys.Right:
+                    camera.AngleY -= 0.5;
+                    break;
+                case Keys.W:
+                    camera.Position *= Transformations.Translate(0, 0, -0.3);
+                    break;
+                case Keys.S:
+                    camera.Position *= Transformations.Translate(0, 0, 0.3);
+                    break;
+                case Keys.A:
+                    camera.Position *= Transformations.Translate(-0.3, 0, 0);
+                    break;
+                case Keys.D:
+                    camera.Position *= Transformations.Translate(0.3, 0, 0);
+                    break;
+            }
+            RefreshScenes();
         }
     }
 }

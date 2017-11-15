@@ -6,19 +6,8 @@ namespace AffineTransformationsIn3D
 {
     class SceneView : Control
     {
-        private Matrix projection = Transformations.OrthogonalProjection();
-
+        public Camera ViewCamera { get; set; }
         public Mesh Mesh { get; set; }
-
-        public Matrix Projection
-        {
-            get { return projection; }
-            set
-            {
-                projection = value;
-                Invalidate();
-            }
-        }
 
         public SceneView() : base()
         {
@@ -42,7 +31,7 @@ namespace AffineTransformationsIn3D
                     new Point(1, 1)
                 });
             if (null == Mesh) return;
-            var graphics3D = new Graphics3D(e.Graphics, Projection, Width, Height);
+            var graphics3D = new Graphics3D(e.Graphics, ViewCamera.Transformation, Width, Height);
             var x = new Vertex(0.8, 0, 0);
             var y = new Vertex(0, 0.8, 0);
             var z = new Vertex(0, 0, 0.8);

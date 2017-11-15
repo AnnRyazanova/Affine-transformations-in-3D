@@ -100,6 +100,17 @@ namespace AffineTransformationsIn3D.Geometry
             return Identity();
         }
 
+        public static Matrix PerspectiveProjection(double l, double r, double t, double b, double n, double f)
+        {
+            return new Matrix(
+                new double[4, 4] {
+                    { 2 * n / (r - l), 0, (r + l) / (r - l), 0 },
+                    { 0, 2 * n / (t - b), (t + b) / (t - b), 0 },
+                    { 0, 0, -(f + n) / (f - n), -2 * f * n / (f - n) },
+                    { 0, 0, -1, 0 }
+                });
+        }
+
         public static Matrix RotateAroundPoint(Vertex point, 
             double angleX, double angleY, double angleZ)
         {

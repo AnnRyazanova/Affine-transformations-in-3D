@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AffineTransformationsIn3D.Geometry.Matrix matrix1 = new AffineTransformationsIn3D.Geometry.Matrix();
-            AffineTransformationsIn3D.Geometry.Matrix matrix2 = new AffineTransformationsIn3D.Geometry.Matrix();
-            AffineTransformationsIn3D.Geometry.Matrix matrix3 = new AffineTransformationsIn3D.Geometry.Matrix();
-            AffineTransformationsIn3D.Geometry.Matrix matrix4 = new AffineTransformationsIn3D.Geometry.Matrix();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
@@ -82,10 +82,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
-            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -182,6 +178,50 @@
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Проекция ZOY";
+            // 
+            // sceneView3
+            // 
+            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView3.Location = new System.Drawing.Point(3, 315);
+            this.sceneView3.Mesh = null;
+            this.sceneView3.Name = "sceneView3";
+            this.sceneView3.Size = new System.Drawing.Size(353, 281);
+            this.sceneView3.TabIndex = 2;
+            this.sceneView3.Text = "sceneView3";
+            this.sceneView3.ViewCamera = null;
+            // 
+            // sceneView4
+            // 
+            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView4.Location = new System.Drawing.Point(362, 315);
+            this.sceneView4.Mesh = null;
+            this.sceneView4.Name = "sceneView4";
+            this.sceneView4.Size = new System.Drawing.Size(353, 281);
+            this.sceneView4.TabIndex = 3;
+            this.sceneView4.Text = "sceneView4";
+            this.sceneView4.ViewCamera = null;
+            // 
+            // sceneView1
+            // 
+            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView1.Location = new System.Drawing.Point(3, 16);
+            this.sceneView1.Mesh = null;
+            this.sceneView1.Name = "sceneView1";
+            this.sceneView1.Size = new System.Drawing.Size(353, 280);
+            this.sceneView1.TabIndex = 0;
+            this.sceneView1.Text = "sceneView1";
+            this.sceneView1.ViewCamera = null;
+            // 
+            // sceneView2
+            // 
+            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView2.Location = new System.Drawing.Point(362, 16);
+            this.sceneView2.Mesh = null;
+            this.sceneView2.Name = "sceneView2";
+            this.sceneView2.Size = new System.Drawing.Size(353, 280);
+            this.sceneView2.TabIndex = 1;
+            this.sceneView2.Text = "sceneView2";
+            this.sceneView2.ViewCamera = null;
             // 
             // label1
             // 
@@ -901,59 +941,17 @@
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.LoadFile);
             // 
-            // sceneView3
-            // 
-            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView3.Location = new System.Drawing.Point(3, 315);
-            this.sceneView3.Mesh = null;
-            this.sceneView3.Name = "sceneView3";
-            this.sceneView3.Projection = matrix1;
-            this.sceneView3.Size = new System.Drawing.Size(353, 281);
-            this.sceneView3.TabIndex = 2;
-            this.sceneView3.Text = "sceneView3";
-            // 
-            // sceneView4
-            // 
-            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView4.Location = new System.Drawing.Point(362, 315);
-            this.sceneView4.Mesh = null;
-            this.sceneView4.Name = "sceneView4";
-            this.sceneView4.Projection = matrix2;
-            this.sceneView4.Size = new System.Drawing.Size(353, 281);
-            this.sceneView4.TabIndex = 3;
-            this.sceneView4.Text = "sceneView4";
-            // 
-            // sceneView1
-            // 
-            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView1.Location = new System.Drawing.Point(3, 16);
-            this.sceneView1.Mesh = null;
-            this.sceneView1.Name = "sceneView1";
-            this.sceneView1.Projection = matrix3;
-            this.sceneView1.Size = new System.Drawing.Size(353, 280);
-            this.sceneView1.TabIndex = 0;
-            this.sceneView1.Text = "sceneView1";
-            // 
-            // sceneView2
-            // 
-            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView2.Location = new System.Drawing.Point(362, 16);
-            this.sceneView2.Mesh = null;
-            this.sceneView2.Name = "sceneView2";
-            this.sceneView2.Projection = matrix4;
-            this.sceneView2.Size = new System.Drawing.Size(353, 280);
-            this.sceneView2.TabIndex = 1;
-            this.sceneView2.Text = "sceneView2";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1122, 599);
             this.Controls.Add(this.splitContainer1);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Affine transformation in 3D";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SceneKeyUp);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
