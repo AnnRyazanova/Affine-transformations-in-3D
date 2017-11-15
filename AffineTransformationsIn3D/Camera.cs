@@ -8,6 +8,15 @@ namespace AffineTransformationsIn3D
         public double AngleY { get; set; }
         public double AngleX { get; set; }
         public Matrix Projection { get; set; }
+        public Vertex Direction
+        {
+            get
+            {
+                return new Vertex(0, 0, -1)
+                    *Transformations.RotateY(AngleY)
+                    * Transformations.RotateX(AngleX);
+            }
+        }
 
         public Matrix Transformation
         {
