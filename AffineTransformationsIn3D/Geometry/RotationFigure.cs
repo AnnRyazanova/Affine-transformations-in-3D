@@ -6,16 +6,16 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class RotationFigure : Mesh
     {
-        public RotationFigure(IList<Vertex> initial, int axis, int density)
+        public RotationFigure(IList<Vector> initial, int axis, int density)
             : base(Construct(initial, axis, density))
         {
         }
 
-        private static Tuple<Vertex[], int[][]> Construct(IList<Vertex> initial, int axis, int density)
+        private static Tuple<Vector[], int[][]> Construct(IList<Vector> initial, int axis, int density)
         {
             Debug.Assert(0 <= axis && axis < 3);
             var n = initial.Count;
-            var vertices = new Vertex[n * density];
+            var vertices = new Vector[n * density];
             var indices = new int[density * (n - 1)][];
             Func<double, Matrix> rotation;
             switch (axis)
@@ -34,7 +34,7 @@ namespace AffineTransformationsIn3D.Geometry
                         (i + 1) % density * n + j,
                         (i + 1) % density * n + j + 1,
                         i * n + j + 1 };
-            return new Tuple<Vertex[], int[][]>(vertices, indices);
+            return new Tuple<Vector[], int[][]>(vertices, indices);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace AffineTransformationsIn3D
             numericUpDownX.Value = 0;
             numericUpDownY.Value = 0;
             numericUpDownZ.Value = 0;
-            listBoxPoints.Items.Add(new Vertex(x, y, z));
+            listBoxPoints.Items.Add(new Vector(x, y, z));
         }
 
         private void SelectedPointChanged(object sender, EventArgs e)
@@ -48,9 +48,9 @@ namespace AffineTransformationsIn3D
             }
             else if (tabPageRotationFigure == tab)
             {
-                IList<Vertex> initial = new List<Vertex>(listBoxPoints.Items.Count);
+                IList<Vector> initial = new List<Vector>(listBoxPoints.Items.Count);
                 foreach (var v in listBoxPoints.Items)
-                    initial.Add((Vertex)v);
+                    initial.Add((Vector)v);
                 int axis;
                 if (radioButtonX.Checked) axis = 0;
                 else if (radioButtonY.Checked) axis = 1;

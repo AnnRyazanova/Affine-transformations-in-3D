@@ -21,20 +21,20 @@ namespace AffineTransformationsIn3D.Geometry
 		{
 		}
 
-        private static Tuple<Vertex[], int[][]> Construct(
+        private static Tuple<Vector[], int[][]> Construct(
             double x0, double x1, double dx, double z0, double z1, double dz,
             Func<double, double, double> function)
         {
             int nx = (int)((x1 - x0) / dx);
             int nz = (int)((z1 - z0) / dz);
-            var vertices = new Vertex[nx * nz];
+            var vertices = new Vector[nx * nz];
             var indices = new int[(nx - 1) * (nz - 1)][];
             for (int i = 0; i < nx; ++i)
                 for (int j = 0; j < nz; ++j)
                 { 
                     var x = x0 + dx * i;
                     var z = z0 + dz * j;
-                    vertices[i * nz + j] = new Vertex(x, function(x, z), z);
+                    vertices[i * nz + j] = new Vector(x, function(x, z), z);
                 }
             for (int i = 0; i < nx - 1; ++i)
                 for (int j = 0; j < nz - 1; ++j)
@@ -45,7 +45,7 @@ namespace AffineTransformationsIn3D.Geometry
                         (i + 1) * nz + j + 1,
                         i * nz + j + 1 };
                 }
-            return new Tuple<Vertex[], int[][]>(vertices, indices);
+            return new Tuple<Vector[], int[][]>(vertices, indices);
         }
 	}
 };

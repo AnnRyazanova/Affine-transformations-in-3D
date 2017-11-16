@@ -7,14 +7,14 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class Mesh
     {
-        public Vertex[] Vertices { get; set; }
+        public Vector[] Vertices { get; set; }
         public int[][] Indices { get; set; }
 
-        public Vertex Center
+        public Vector Center
         {
             get
             {
-                Vertex center = new Vertex();
+                Vector center = new Vector();
                 foreach (var v in Vertices)
                 {
                     center.X += v.X;
@@ -28,12 +28,12 @@ namespace AffineTransformationsIn3D.Geometry
             }
         }
 
-        public Mesh(Tuple<Vertex[], int[][]> data)
+        public Mesh(Tuple<Vector[], int[][]> data)
             : this(data.Item1, data.Item2)
         {
         }
 
-        public Mesh(Vertex[] vertices, int[][] indices)
+        public Mesh(Vector[] vertices, int[][] indices)
         {
             Vertices = vertices;
             Indices = indices;
@@ -41,7 +41,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public Mesh(string path)
         {
-            var vertices = new List<Vertex>();
+            var vertices = new List<Vector>();
             var indices = new List<List<int>>();
             var info = File.ReadAllLines(path);
             int index = 0;
@@ -53,7 +53,7 @@ namespace AffineTransformationsIn3D.Geometry
                 double x = double.Parse(infoPoint[1]);
                 double y = double.Parse(infoPoint[2]);
                 double z = double.Parse(infoPoint[3]);
-                vertices.Add(new Vertex(x, y, z));
+                vertices.Add(new Vector(x, y, z));
                 index++;
             }
             while (info[index].Equals("") || !info[index][0].Equals('f'))

@@ -12,8 +12,8 @@ namespace AffineTransformationsIn3D.Geometry
                 new double[,]
                 {
                     { 1, 0, 0, 0 },
-                    { 0, cos, -sin, 0 },
-                    { 0, sin, cos, 0 },
+                    { 0, cos, sin, 0 },
+                    { 0, -sin, cos, 0 },
                     { 0, 0, 0, 1 }
                 });
         }
@@ -25,9 +25,9 @@ namespace AffineTransformationsIn3D.Geometry
             return new Matrix(
                 new double[,]
                 {
-                    { cos, 0, sin, 0 },
+                    { cos, 0, -sin, 0 },
                     { 0, 1, 0, 0 },
-                    { -sin, 0, cos, 0 },
+                    { sin, 0, cos, 0 },
                     { 0, 0, 0, 1 }
                 });
         }
@@ -39,8 +39,8 @@ namespace AffineTransformationsIn3D.Geometry
             return new Matrix(
                 new double[,]
                 {
-                    { cos, -sin, 0, 0 },
-                    { sin, cos, 0, 0 },
+                    { cos, sin, 0, 0 },
+                    { -sin, cos, 0, 0 },
                     { 0, 0, 1, 0 },
                     { 0, 0, 0, 1 }
                 });
@@ -55,6 +55,11 @@ namespace AffineTransformationsIn3D.Geometry
                     { 0, 0, fz, 0 },
                     { 0, 0, 0, 1 }
                 });
+        }
+
+        public static Matrix Translate(Vector v)
+        {
+            return Translate(v.X, v.Y, v.Z);
         }
 
         public static Matrix Translate(double dx, double dy, double dz)
@@ -100,41 +105,46 @@ namespace AffineTransformationsIn3D.Geometry
             return Identity();
         }
 
-        public static Matrix PerspectiveProjection(double l, double r, double t, double b, double n, double f)
+        public static Matrix PerspectiveProjection(double left, double right, double bottom, double top, double near, double far)
         {
+            var a = 2 * near / (right - left);
+            var b = (right + left) / (right - left);
+            var c = 2 * near / (top - bottom);
+            var d = (top + bottom) / (top - bottom);
+            var e = -(far + near) / (far - near);
+            var f = -2 * far * near / (far - near);
             return new Matrix(
                 new double[4, 4] {
-                    { 2 * n / (r - l), 0, (r + l) / (r - l), 0 },
-                    { 0, 2 * n / (t - b), (t + b) / (t - b), 0 },
-                    { 0, 0, -(f + n) / (f - n), -2 * f * n / (f - n) },
-                    { 0, 0, -1, 0 }
+                    { a, 0, 0, 0 },
+                    { 0, c, 0, 0 },
+                    { b, d, e, -1 },
+                    { 0, 0, f, 0 }
                 });
         }
 
-        public static Matrix RotateAroundPoint(Vertex point, 
-            double angleX, double angleY, double angleZ)
+        public static Matrix RotateAroundPoint(Vector point, double angleX, double angleY, double angleZ)
         {
-            return Translate(-point.X, -point.Y, -point.Z)
+            return Translate(-point)
                 * RotateX(angleX)
                 * RotateY(angleY)
                 * RotateZ(angleZ)
-                * Translate(point.X, point.Y, point.Z);
+                * Translate(point);
         }
 
-        public static Matrix RotateAroundLine(Vertex a, Vertex b, double angle)
+        public static Matrix RotateAroundLine(Vector a, Vector b, double angle)
         {
             var dx = b.X - a.X;
             var dy = b.Y - a.Y;
             var dz = b.Z - a.Z;
-            var angleY = 0 == dx ? 0 : -Math.Atan(dz / dx);
-            var angleZ = 0 == dx ? Math.PI / 2 : Math.Atan(dy / dx);
-            return Translate(-a.X, -a.Y, -a.Z)
+            var angleY = -Math.Atan2(dz, dx);
+            var angleZ = Math.Atan2(dy, dx);
+            return Translate(-a)
                 * RotateZ(angleZ)
                 * RotateY(angleY)
                 * RotateX(angle)
                 * RotateY(-angleY)
                 * RotateZ(-angleZ)
-                * Translate(a.X, a.Y, a.Z);
+                * Translate(a);
         }
     }
 }

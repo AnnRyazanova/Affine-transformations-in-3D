@@ -10,7 +10,7 @@ namespace AffineTransformationsIn3D
         {
             get
             {
-                return sceneView1.Mesh;
+                return sceneView4.Mesh;
             }
             set
             {
@@ -27,16 +27,22 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentMesh = new Tetrahedron(0.5f);
-            sceneView1.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection());
-            sceneView2.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection()
-                * Transformations.RotateY(Math.PI / 2));
-            sceneView3.ViewCamera = new Camera(new Vertex(0, 0, 0), 0, 0, Transformations.OrthogonalProjection()
-                * Transformations.RotateX(-Math.PI / 2));
-
-            camera = new Camera(new Vertex(0, 0, 0), Math.PI / 4, -Math.PI / 4, Transformations.OrthogonalProjection());
-
+            CurrentMesh = new Icosahedron(1);
+            sceneView1.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0, 
+                Transformations.OrthogonalProjection());
+            sceneView2.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
+                Transformations.RotateY(-Math.PI / 2) 
+                * Transformations.OrthogonalProjection());
+            sceneView3.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
+                Transformations.RotateX(Math.PI / 2)
+                * Transformations.OrthogonalProjection());
+            Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20);
+            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -Math.PI / 4, projection);
             sceneView4.ViewCamera = camera;
+
+            var v1 = new Vector(1, 0, 0) * Transformations.RotateZ(Math.PI / 2);
+            var v2 = new Vector(0, 1, 0) * Transformations.RotateX(Math.PI / 2);
+            var v3 = new Vector(0, 0, 1) * Transformations.RotateY(Math.PI / 2);
         }
 
         private static double DegToRad(double deg)
@@ -57,8 +63,7 @@ namespace AffineTransformationsIn3D
             double scalingX = (double)numericUpDown1.Value;
             double scalingY = (double)numericUpDown2.Value;
             double scalingZ = (double)numericUpDown3.Value;
-            CurrentMesh.Apply(
-                Transformations.Scale(scalingX, scalingY, scalingZ));
+            CurrentMesh.Apply(Transformations.Scale(scalingX, scalingY, scalingZ));
             RefreshScenes();
         }
 
@@ -78,8 +83,7 @@ namespace AffineTransformationsIn3D
             double translatingX = (double)numericUpDown7.Value;
             double translatingY = (double)numericUpDown8.Value;
             double translatingZ = (double)numericUpDown9.Value;
-            CurrentMesh.Apply(
-                Transformations.Translate(translatingX, translatingY, translatingZ));
+            CurrentMesh.Apply(Transformations.Translate(translatingX, translatingY, translatingZ));
             RefreshScenes();
         }
 
@@ -109,11 +113,11 @@ namespace AffineTransformationsIn3D
 
         private void RotateAroundLine(object sender, EventArgs e)
         {
-            Vertex a = new Vertex(
+            Vector a = new Vector(
                 (double)numericUpDownPoint1X.Value, 
                 (double)numericUpDownPoint1Y.Value, 
                 (double)numericUpDownPoint1Z.Value);
-            Vertex b = new Vertex(
+            Vector b = new Vector(
                 (double)numericUpDownPoint2X.Value, 
                 (double)numericUpDownPoint2Y.Value, 
                 (double)numericUpDownPoint2Z.Value);
@@ -165,36 +169,22 @@ namespace AffineTransformationsIn3D
             }
         }
 
-        private void SceneKeyUp(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (e.KeyCode)
+            double delta = 0.3;
+            switch (keyData)
             {
-                case Keys.Up:
-                    camera.AngleX += 0.5;
-                    break;
-                case Keys.Down:
-                    camera.AngleX -= 0.5;
-                    break;
-                case Keys.Left:
-                    camera.AngleY += 0.5;
-                    break;
-                case Keys.Right:
-                    camera.AngleY -= 0.5;
-                    break;
-                case Keys.W:
-                    camera.Position *= Transformations.Translate(0, 0, -0.3);
-                    break;
-                case Keys.S:
-                    camera.Position *= Transformations.Translate(0, 0, 0.3);
-                    break;
-                case Keys.A:
-                    camera.Position *= Transformations.Translate(-0.3, 0, 0);
-                    break;
-                case Keys.D:
-                    camera.Position *= Transformations.Translate(0.3, 0, 0);
-                    break;
+                case Keys.W: camera.Position *= Transformations.Translate(0.1 * camera.Forward); break;
+                case Keys.A: camera.Position *= Transformations.Translate(0.1 * camera.Left); break;
+                case Keys.S: camera.Position *= Transformations.Translate(0.1 * camera.Backward); break; 
+                case Keys.D: camera.Position *= Transformations.Translate(0.1 * camera.Right); break;
+                case Keys.Left: camera.Fi += delta; break;
+                case Keys.Right: camera.Fi -= delta; break;
+                case Keys.Up: camera.Theta += delta; break;
+                case Keys.Down: camera.Theta -= delta; break;
             }
             RefreshScenes();
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

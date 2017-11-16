@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 
 namespace AffineTransformationsIn3D.Geometry
 {
@@ -40,6 +41,30 @@ namespace AffineTransformationsIn3D.Geometry
                         data[i, j] += m1[i, k] * m2[k, j];
                 }
             return new Matrix(data);
+        }
+
+        public Matrix Transpose()
+        {
+            double[,] data = new double[4, 4];
+            for (int i = 0; i < 4; ++i)
+                for (int j = 0; j < 4; ++j)
+                    data[i, j] = this[j, i];
+            return new Matrix(data);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < 4; ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    builder.Append(data[i, j]);
+                    builder.Append(' ');
+                }
+                builder.AppendLine();
+            }
+            return builder.ToString();
         }
     }
 }

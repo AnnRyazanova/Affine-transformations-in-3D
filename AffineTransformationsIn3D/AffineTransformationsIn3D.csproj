@@ -67,7 +67,7 @@
     <Compile Include="Geometry\RotationFigure.cs" />
     <Compile Include="Geometry\Tetrahedron.cs" />
     <Compile Include="Geometry\Transformations.cs" />
-    <Compile Include="Geometry\Vertex.cs" />
+    <Compile Include="Geometry\Vector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SceneView.cs">

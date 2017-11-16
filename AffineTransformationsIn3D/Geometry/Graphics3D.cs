@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace AffineTransformationsIn3D.Geometry
 {
@@ -20,21 +21,39 @@ namespace AffineTransformationsIn3D.Geometry
             Height = height;
         }
 
-        private PointF NormalizedToScreen(Vertex v)
+        private Vector ClipToNormalized(Vector v)
+        {
+            return new Vector(v.X / v.W, v.Y / v.W, v.Z / v.W);
+        }
+
+        private PointF NormalizedToScreen(Vector v)
         {
             return new PointF(
                 (float)((v.X + 1) / 2 * Width), 
                 (float)((-v.Y + 1) / 2 * Height));
         }
 
-        public void DrawLine(Vertex a, Vertex b)
+        public void DrawLine(Vector a, Vector b)
         {
             DrawLine(a, b, Pens.Black);
         }
 
-        public void DrawPoint(Vertex a, Brush brush)
+        public static bool IsHuge(float f)
         {
-            var A = NormalizedToScreen(a * Transformation);
+            return 10e6 < Math.Abs(f);
+        }
+
+        public static bool IsHuge(PointF v)
+        {
+            return IsHuge(v.X) || IsHuge(v.Y);
+        }
+
+        public void DrawPoint(Vector a, Brush brush)
+        {
+            var t = ClipToNormalized(a * Transformation);
+            if (t.Z < -1 || t.Z > 1) return;
+            var A = NormalizedToScreen(t);
+            if (IsHuge(A)) return;
             var rectangle = new RectangleF(
                 (float)(A.X - POINT_SIZE / 2), 
                 (float)(A.Y - POINT_SIZE / 2), 
@@ -43,10 +62,15 @@ namespace AffineTransformationsIn3D.Geometry
             graphics.FillRectangle(brush, rectangle);
         }
 
-        public void DrawLine(Vertex a, Vertex b, Pen pen)
+        public void DrawLine(Vector a, Vector b, Pen pen)
         {
-            var A = NormalizedToScreen(a * Transformation);
-            var B = NormalizedToScreen(b * Transformation);
+            var t = ClipToNormalized(a * Transformation);
+            if (t.Z < -1 || t.Z > 1) return;
+            var A = NormalizedToScreen(t);
+            var u = ClipToNormalized(b * Transformation);
+            if (u.Z < -1 || u.Z > 1) return;
+            var B = NormalizedToScreen(u);
+            if (IsHuge(A) || IsHuge(B)) return;
             graphics.DrawLine(pen, A, B);
         }
     }
