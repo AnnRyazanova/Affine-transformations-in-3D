@@ -63,18 +63,30 @@ namespace AffineTransformationsIn3D.Geometry
             return IsHuge(v.X) || IsHuge(v.Y);
         }
 
-        public void DrawPoint(Vector a, Brush brush)
+        private bool shouldBeDrawn(Vector vertex)
+        {
+            return ((vertex.X >= 0 && vertex.X < Width) &&
+                   (vertex.Y >= 0 && vertex.Y < Height) &&
+                   (vertex.Z < 1) && (vertex.Z > -1));
+        }
+
+        public void DrawPoint(Vector a, Color color)
         {
             var t = ClipToNormalized(a * Transformation);
             if (t.Z < -1 || t.Z > 1) return;
             var A = NormalizedToScreen(t);
-            if (IsHuge(A)) return;
+            //if (IsHuge(A)) return;
+            /*
             var rectangle = new RectangleF(
-                (float)(A.X - POINT_SIZE / 2), 
-                (float)(A.Y - POINT_SIZE / 2), 
-                (float)POINT_SIZE, 
+                (float)(A.X - POINT_SIZE / 2),
+                (float)(A.Y - POINT_SIZE / 2),
+                (float)POINT_SIZE,
                 (float)POINT_SIZE);
-            graphics.FillRectangle(brush, rectangle);
+                */
+            //graphics.FillRectangle(brush, rectangle);
+
+            if (shouldBeDrawn(A))
+                ColorBuffer.SetPixel((int)Math.Ceiling(A.X), (int)Math.Ceiling(A.Y), color);
         }
 
         public void DrawLine(Vector a, Vector b, Pen pen)
@@ -85,8 +97,9 @@ namespace AffineTransformationsIn3D.Geometry
             var u = ClipToNormalized(b * Transformation);
             if (u.Z < -1 || u.Z > 1) return;
             var B = NormalizedToScreen(u);
-            if (IsHuge(A) || IsHuge(B)) return;
-            graphics.DrawLine(pen, (float)A.X, (float)A.Y, (float)B.X, (float)B.Y);
+           // if (IsHuge(A) || IsHuge(B)) return;
+           if (shouldBeDrawn(A))
+                graphics.DrawLine(pen, (float)A.X, (float)A.Y, (float)B.X, (float)B.Y);
         }
 
         // перевод координат из пространственных в экранные

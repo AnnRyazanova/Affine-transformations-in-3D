@@ -38,11 +38,11 @@ namespace AffineTransformationsIn3D
             var y = new Vector(0, 0.8, 0);
             var z = new Vector(0, 0, 0.8);
             graphics3D.DrawLine(new Vector(0, 0, 0), x, new Pen(Color.Red, 2));
-            graphics3D.DrawPoint(x, Brushes.Red);
+            graphics3D.DrawPoint(x, Color.Red);
             graphics3D.DrawLine(new Vector(0, 0, 0), y, new Pen(Color.Green, 2));
-            graphics3D.DrawPoint(y, Brushes.Green);
+            graphics3D.DrawPoint(y, Color.Green);
             graphics3D.DrawLine(new Vector(0, 0, 0), z, new Pen(Color.Blue, 2));
-            graphics3D.DrawPoint(z, Brushes.Blue);
+            graphics3D.DrawPoint(z, Color.Blue);
 
             Mesh.Draw(graphics3D);
             // рисование монолитной модели
