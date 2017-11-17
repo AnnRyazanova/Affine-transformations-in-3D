@@ -27,17 +27,10 @@ namespace AffineTransformationsIn3D.Geometry
                 default: rotation = Transformations.RotateZ; break;
             }
 
-            normal = new List<Vector>();
             for (int i = 0; i < density; ++i)
-            {
-                vertices[i * n] = initial[0] * rotation(2 * Math.PI * i / density);
-                normal.Add(vertices[i * n]);
-                for (int j = 1; j < n; ++j)
-                {
+                for (int j = 0; j < n; ++j)
                     vertices[i * n + j] = initial[j] * rotation(2 * Math.PI * i / density);
-                    normal[i] = Vector.CrossProduct(normal[i], vertices[i * n + j]);
-                }
-            }
+
 
             for (int i = 0; i < density; ++i)
                 for (int j = 0; j < n - 1; ++j)
@@ -51,19 +44,23 @@ namespace AffineTransformationsIn3D.Geometry
 
         public override void Draw(Graphics3D graphics)
         {
-            for (int i = 0; i < Indices.Length; ++i)
-            {
-                Vector vec = new Vector(0, 1, 1, 1);
-                {
-                    if (Vector.AngleBet(vec, normal[i])<(Math.PI/2))
-                    {
-                        for (int j = 0; j < Indices[i].Length - 1; ++j)
-                            graphics.DrawLine(Vertices[Indices[i][j]], Vertices[Indices[i][j + 1]]);
+              List<Vector> normal = new List<Vector>();
+              Vector vec = new Vector(0, 1, 1, 1);
+              for (int i = 0; i < Indices.Length; ++i)
+              {
+                normal.Add(Vertices[Indices[i][1]]);
+                normal[i] = Vector.CrossProduct(normal[i], Vertices[Indices[i][2]]);
+  
+               {
+                     if (Vector.AngleBet(vec, normal[i])<(Math.PI/2))
+                     {
+                         for (int j = 0; j < Indices[i].Length - 1; ++j)
+                             graphics.DrawLine(Vertices[Indices[i][j]], Vertices[Indices[i][j + 1]]);
 
-                        graphics.DrawLine(Vertices[Indices[i][0]], Vertices[Indices[i][Indices[i].Length - 1]]);
-                    }
-                }
-            }
+                         graphics.DrawLine(Vertices[Indices[i][0]], Vertices[Indices[i][Indices[i].Length - 1]]);
+                     }
+                 }
+             }
         }
     }
 }
