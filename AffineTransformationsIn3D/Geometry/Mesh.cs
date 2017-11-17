@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+
 
 namespace AffineTransformationsIn3D.Geometry
 {
@@ -85,11 +87,27 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void Draw(Graphics3D graphics)
         {
+
+            Random r = new Random(42);
+
             foreach (var facet in Indices)
             {
+             /*  // рисование каркасной модели
                 for (int i = 0; i < facet.Length - 1; ++i)
                     graphics.DrawLine(Vertices[facet[i]], Vertices[facet[i + 1]]);
                 graphics.DrawLine(Vertices[facet[0]], Vertices[facet[facet.Length - 1]]);
+                */
+                
+                int k = r.Next(0, 256);
+                int k2 = r.Next(0, 256);
+                int k3 = r.Next(0, 256);
+
+                for (int i = 1; i < facet.Length - 1; ++i)
+                {
+                    graphics.DrawTriangle(Vertices[facet[0]], Vertices[facet[i]], Vertices[facet[i + 1]], Color.FromArgb(k, k2, k3));
+                }
+                
+
             }
         }
 

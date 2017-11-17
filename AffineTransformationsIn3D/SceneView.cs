@@ -23,6 +23,7 @@ namespace AffineTransformationsIn3D
             base.OnPaint(e);
             if (null == Mesh) return;
             e.Graphics.Clear(SystemColors.Control);
+
             e.Graphics.DrawLines(Pens.Black, new Point[]
                 {
                     new Point(1, 1),
@@ -42,7 +43,10 @@ namespace AffineTransformationsIn3D
             graphics3D.DrawPoint(y, Brushes.Green);
             graphics3D.DrawLine(new Vector(0, 0, 0), z, new Pen(Color.Blue, 2));
             graphics3D.DrawPoint(z, Brushes.Blue);
+
             Mesh.Draw(graphics3D);
+            // рисование монолитной модели
+            e.Graphics.DrawImage(graphics3D.ColorBuffer, 0, 0);
         }
     }
 }

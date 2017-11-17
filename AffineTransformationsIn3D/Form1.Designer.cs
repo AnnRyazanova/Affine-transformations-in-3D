@@ -33,6 +33,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
+            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
@@ -78,10 +82,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
-            this.sceneView3 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView4 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView1 = new AffineTransformationsIn3D.SceneView();
-            this.sceneView2 = new AffineTransformationsIn3D.SceneView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -179,6 +179,50 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Проекция ZOY";
             // 
+            // sceneView3
+            // 
+            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView3.Location = new System.Drawing.Point(3, 315);
+            this.sceneView3.Mesh = null;
+            this.sceneView3.Name = "sceneView3";
+            this.sceneView3.Size = new System.Drawing.Size(353, 281);
+            this.sceneView3.TabIndex = 2;
+            this.sceneView3.Text = "sceneView3";
+            this.sceneView3.ViewCamera = null;
+            // 
+            // sceneView4
+            // 
+            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView4.Location = new System.Drawing.Point(362, 315);
+            this.sceneView4.Mesh = null;
+            this.sceneView4.Name = "sceneView4";
+            this.sceneView4.Size = new System.Drawing.Size(353, 281);
+            this.sceneView4.TabIndex = 3;
+            this.sceneView4.Text = "sceneView4";
+            this.sceneView4.ViewCamera = null;
+            // 
+            // sceneView1
+            // 
+            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView1.Location = new System.Drawing.Point(3, 16);
+            this.sceneView1.Mesh = null;
+            this.sceneView1.Name = "sceneView1";
+            this.sceneView1.Size = new System.Drawing.Size(353, 280);
+            this.sceneView1.TabIndex = 0;
+            this.sceneView1.Text = "sceneView1";
+            this.sceneView1.ViewCamera = null;
+            // 
+            // sceneView2
+            // 
+            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sceneView2.Location = new System.Drawing.Point(362, 16);
+            this.sceneView2.Mesh = null;
+            this.sceneView2.Name = "sceneView2";
+            this.sceneView2.Size = new System.Drawing.Size(353, 280);
+            this.sceneView2.TabIndex = 1;
+            this.sceneView2.Text = "sceneView2";
+            this.sceneView2.ViewCamera = null;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -244,7 +288,8 @@
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel2.RowCount = 14;
+            this.tableLayoutPanel2.RowCount = 15;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -896,50 +941,6 @@
             this.button9.Text = "Загрузить...";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.LoadFile);
-            // 
-            // sceneView3
-            // 
-            this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView3.Location = new System.Drawing.Point(3, 315);
-            this.sceneView3.Mesh = null;
-            this.sceneView3.Name = "sceneView3";
-            this.sceneView3.Size = new System.Drawing.Size(353, 281);
-            this.sceneView3.TabIndex = 2;
-            this.sceneView3.Text = "sceneView3";
-            this.sceneView3.ViewCamera = null;
-            // 
-            // sceneView4
-            // 
-            this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView4.Location = new System.Drawing.Point(362, 315);
-            this.sceneView4.Mesh = null;
-            this.sceneView4.Name = "sceneView4";
-            this.sceneView4.Size = new System.Drawing.Size(353, 281);
-            this.sceneView4.TabIndex = 3;
-            this.sceneView4.Text = "sceneView4";
-            this.sceneView4.ViewCamera = null;
-            // 
-            // sceneView1
-            // 
-            this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView1.Location = new System.Drawing.Point(3, 16);
-            this.sceneView1.Mesh = null;
-            this.sceneView1.Name = "sceneView1";
-            this.sceneView1.Size = new System.Drawing.Size(353, 280);
-            this.sceneView1.TabIndex = 0;
-            this.sceneView1.Text = "sceneView1";
-            this.sceneView1.ViewCamera = null;
-            // 
-            // sceneView2
-            // 
-            this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sceneView2.Location = new System.Drawing.Point(362, 16);
-            this.sceneView2.Mesh = null;
-            this.sceneView2.Name = "sceneView2";
-            this.sceneView2.Size = new System.Drawing.Size(353, 280);
-            this.sceneView2.TabIndex = 1;
-            this.sceneView2.Text = "sceneView2";
-            this.sceneView2.ViewCamera = null;
             // 
             // Form1
             // 

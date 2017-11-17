@@ -186,5 +186,7 @@ namespace AffineTransformationsIn3D
             RefreshScenes();
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        
     }
 }
