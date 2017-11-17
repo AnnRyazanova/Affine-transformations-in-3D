@@ -121,5 +121,17 @@ namespace AffineTransformationsIn3D.Geometry
         {
             return string.Format("({0}, {1}, {2})", X, Y, Z);
         }
+
+        // Модуль
+        public double Modul()
+        {
+            return Math.Pow(X * X + Y * Y + Z * Z, 1.0 / 3.0);
+        }
+
+        // Угол между векторами
+        public static double AngleBet(Vector u, Vector v)
+        {
+            return Math.Acos(DotProduct(u, v) / u.Modul() * v.Modul());
+        }
     }
 }

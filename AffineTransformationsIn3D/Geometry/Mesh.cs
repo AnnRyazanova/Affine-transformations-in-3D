@@ -85,7 +85,7 @@ namespace AffineTransformationsIn3D.Geometry
                 Vertices[i] *= transformation;
         }
 
-        public void Draw(Graphics3D graphics)
+        public virtual void Draw(Graphics3D graphics)
         {
 
             Random r = new Random(42);
