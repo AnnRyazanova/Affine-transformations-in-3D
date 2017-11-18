@@ -44,23 +44,24 @@ namespace AffineTransformationsIn3D.Geometry
 
         public override void Draw(Graphics3D graphics)
         {
-              List<Vector> normal = new List<Vector>();
-              Vector vec = new Vector(0, 1, 1, 1);
-              for (int i = 0; i < Indices.Length; ++i)
-              {
-                normal.Add(Vertices[Indices[i][1]]);
-                normal[i] = Vector.CrossProduct(normal[i], Vertices[Indices[i][2]]);
-  
-               {
-                     if (Vector.AngleBet(vec, normal[i])<(Math.PI/2))
-                     {
-                         for (int j = 0; j < Indices[i].Length - 1; ++j)
-                             graphics.DrawLine(Vertices[Indices[i][j]], Vertices[Indices[i][j + 1]]);
+            List<Vector> normal = new List<Vector>();
+            Vector vec = new Vector(0, 1, 1, 1);
+            for (int i = 0; i < Indices.Length; ++i)
+            {
+                normal.Add(Vector.minus_vector(Vertices[Indices[i][0]], Vertices[Indices[i][1]]));
+                for (int j = 1; j < Indices[i].Length - 2; ++j)
+                    normal[i] = Vector.CrossProduct(normal[i], Vector.minus_vector(Vertices[Indices[i][j]],
+                                                                                   Vertices[Indices[i][j+1]]));
+                normal[i] = Vector.CrossProduct(normal[i], Vector.minus_vector(Vertices[Indices[i][Indices[i].Length - 1]],
+                                                                               Vertices[Indices[i][0]]));
+                if (Vector.AngleBet(vec, normal[i])<(Math.PI/2))
+                {
+                    for (int j = 0; j < Indices[i].Length - 1; ++j)
+                    graphics.DrawLine(Vertices[Indices[i][j]], Vertices[Indices[i][j + 1]]);
 
-                         graphics.DrawLine(Vertices[Indices[i][0]], Vertices[Indices[i][Indices[i].Length - 1]]);
-                     }
-                 }
-             }
+                    graphics.DrawLine(Vertices[Indices[i][0]], Vertices[Indices[i][Indices[i].Length - 1]]);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D.Geometry
 {
@@ -125,13 +126,18 @@ namespace AffineTransformationsIn3D.Geometry
         // Модуль
         public double Modul()
         {
-            return Math.Pow(X * X + Y * Y + Z * Z, 1.0 / 3.0);
+            return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
         // Угол между векторами
         public static double AngleBet(Vector u, Vector v)
         {
             return Math.Acos(DotProduct(u, v) / u.Modul() * v.Modul());
+        }
+
+        public static Vector minus_vector(Vector u, Vector v)
+        {
+            return new Vector(u.X- v.X, u.Y - v.Y, u.Z-v.Z);
         }
     }
 }
