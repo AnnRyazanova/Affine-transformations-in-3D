@@ -20,7 +20,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Vector operator *(double x, Vector v)
         {
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 3; ++i)
                 v[i] *= x;
             return v;
         }
@@ -135,7 +135,14 @@ namespace AffineTransformationsIn3D.Geometry
             return Math.Acos(DotProduct(u, v) / u.Modul() * v.Modul());
         }
 
-        public static Vector minus_vector(Vector u, Vector v)
+        public static double Dist(Vector u, Vector v)
+        {
+            return Math.Sqrt((u.X - v.X)*(u.X - v.X) +
+                             (u.Y - v.Y)*(u.Y - v.Y) + 
+                             (u.Z - v.Z)* (u.Z - v.Z));
+        }
+
+        public static Vector operator -(Vector u, Vector v)
         {
             return new Vector(u.X- v.X, u.Y - v.Y, u.Z-v.Z);
         }
