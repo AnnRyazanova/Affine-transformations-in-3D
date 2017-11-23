@@ -5,8 +5,6 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class Graphics3D
     {
-        private static double POINT_SIZE = 5;
-
         private Graphics graphics;
 
 
