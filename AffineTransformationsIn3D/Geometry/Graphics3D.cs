@@ -7,14 +7,12 @@ namespace AffineTransformationsIn3D.Geometry
     {
         private Graphics graphics;
 
-
         public Bitmap ColorBuffer { get; set; }
         private double[,] ZBuffer { get; set; }
 
         public Matrix Transformation { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
-
 
         public Graphics3D(Graphics graphics, Matrix transformation, double width, double height)
         {
@@ -26,14 +24,18 @@ namespace AffineTransformationsIn3D.Geometry
             ColorBuffer = new Bitmap((int)Math.Ceiling(Width), (int)Math.Ceiling(Height));
             ZBuffer = new double[(int)Math.Ceiling(Width), (int)Math.Ceiling(Height)];
 
-
             for (int j = 0; j < (int)Math.Ceiling(Height); ++j)
                 for (int i = 0; i < (int)Math.Ceiling(Width); ++i)
                     ZBuffer[i, j] = double.MinValue;
 
         }
 
-        public Vector ClipToNormalized(Vector v)
+        private Vector SpaceToNormalized(Vector v)
+        {
+            return Normailze(v * Transformation);
+        }
+
+        private Vector Normailze(Vector v)
         {
             return new Vector(v.X / v.W, v.Y / v.W, v.Z / v.W);
         }
@@ -46,22 +48,23 @@ namespace AffineTransformationsIn3D.Geometry
                 v.Z);
         }
 
+        // перевод координат из пространственных в экранные
+        private Vector SpaceToScreenCoordinate(Vector spaceVertex)
+        {
+            return NormalizedToScreen(SpaceToNormalized(spaceVertex));
+        }
+
+        private Vertex SpaceToScreen(Vertex vertex)
+        {
+            return new Vertex(SpaceToScreenCoordinate(vertex.Coordinate), vertex.Normal, vertex.Color);
+        }
+
         public void DrawLine(Vector a, Vector b)
         {
             DrawLine(a, b, Pens.Black);
         }
 
-        public static bool IsHuge(double f)
-        {
-            return 10e6 < Math.Abs(f);
-        }
-
-        public static bool IsHuge(Vector v)
-        {
-            return IsHuge(v.X) || IsHuge(v.Y);
-        }
-
-        private bool shouldBeDrawn(Vector vertex)
+        private bool ShouldBeDrawn(Vector vertex)
         {
             return ((vertex.X >= 0 && vertex.X < Width) &&
                    (vertex.Y >= 0 && vertex.Y < Height) &&
@@ -70,200 +73,120 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void DrawPoint(Vector a, Color color)
         {
-            var t = ClipToNormalized(a * Transformation);
+            var t = SpaceToNormalized(a);
             if (t.Z < -1 || t.Z > 1) return;
             var A = NormalizedToScreen(t);
-            //if (IsHuge(A)) return;
-            /*
-            var rectangle = new RectangleF(
-                (float)(A.X - POINT_SIZE / 2),
-                (float)(A.Y - POINT_SIZE / 2),
-                (float)POINT_SIZE,
-                (float)POINT_SIZE);
-                */
-            //graphics.FillRectangle(brush, rectangle);
-
-            if (shouldBeDrawn(A))
+            if (ShouldBeDrawn(A))
                 ColorBuffer.SetPixel((int)Math.Ceiling(A.X), (int)Math.Ceiling(A.Y), color);
         }
 
         public void DrawLine(Vector a, Vector b, Pen pen)
         {
-            var t = ClipToNormalized(a * Transformation);
+            var t = SpaceToNormalized(a);
             if (t.Z < -1 || t.Z > 1) return;
             var A = NormalizedToScreen(t);
-            var u = ClipToNormalized(b * Transformation);
+            var u = SpaceToNormalized(b);
             if (u.Z < -1 || u.Z > 1) return;
             var B = NormalizedToScreen(u);
-           // if (IsHuge(A) || IsHuge(B)) return;
-           if (shouldBeDrawn(A))
+            if (ShouldBeDrawn(A))
                 graphics.DrawLine(pen, (float)A.X, (float)A.Y, (float)B.X, (float)B.Y);
         }
 
-        // перевод координат из пространственных в экранные
-        private bool spaceToScreenCoordinate(Vector spaceVertex, ref Vector screenVertex)
+        private double Interpolate(double x0, double x1, double f)
         {
-            var t = ClipToNormalized(spaceVertex * Transformation);
-            if (t.Z < -1 || t.Z > 1) return false;
-            screenVertex = NormalizedToScreen(t);
-            return true;
+            return x0 + (x1 - x0) * f;
         }
 
-        private void Swap<T>(ref T c1, ref T c2)
+        private long Interpolate(long x0, long x1, double f)
         {
-            T t = c1;
-            c1 = c2;
-            c2 = t;
+            return x0 + (long)((x1 - x0) * f);
         }
 
-        private double Interpolation(int y, double x0, double x1, double y0, double y1)
+        private Color Interpolate(Color a, Color b, double f)
         {
-            return x0 + (x1 - x0) * ((y - y0) / (y1 - y0 + 1));
+            var R = Interpolate(a.R, b.R, f);
+            var G = Interpolate(a.G, b.G, f);
+            var B = Interpolate(a.B, b.B, f);
+            return Color.FromArgb((byte)R, (byte)G, (byte)B);
         }
 
-
-        private void Clip(ref double component)
+        private Vector Interpolate(Vector a, Vector b, double f)
         {
-            if (component < 0)
-                component = 0;
-            else if (component > 255)
-                component = 255;
+            return new Vector(
+                Interpolate(a.X, b.X, f),
+                Interpolate(a.Y, b.Y, f),
+                Interpolate(a.Z, b.Z, f));
         }
 
-        private Color Interpolation(int y, Color color1, Color color2, double y0, double y1)
-        {
-            float R1 = color1.R;
-            float G1 = color1.G;
-            float B1 = color1.B;
-
-            float R2 = color2.R;
-            float G2 = color2.G;
-            float B2 = color2.B;
-
-            double R = Interpolation(y, R1, R2, y0, y1);
-            double G = Interpolation(y, G1, G2, y0, y1);
-            double B = Interpolation(y, B1, B2, y0, y1);
-
-            Clip(ref R);
-            Clip(ref G);
-            Clip(ref B);
-
-            return Color.FromArgb((int)Math.Round(R), (int)Math.Round(G), (int)Math.Round(B));
+        private void Interpolate(Vertex a, Vertex b, double f, ref Vertex v) {
+            v.Coordinate = Interpolate(a.Coordinate, b.Coordinate, f);
+            v.Normal = Interpolate(a.Normal, b.Normal, f);
+            v.Color = Interpolate(a.Color, b.Color, f);
         }
 
-        public void DrawTriangle(Vector a, Vector b, Vector c, Color color1, Color color2, Color color3)
+        private static void Swap<T>(ref T a, ref T b)
         {
-            if (spaceToScreenCoordinate(a, ref a) &&
-                spaceToScreenCoordinate(b, ref b) &&
-                spaceToScreenCoordinate(c, ref c))
+            T t = a;
+            a = b;
+            b = t;
+        }
+
+        public void DrawTriangle(Vertex a, Vertex b, Vertex c)
+        {
+            a = SpaceToScreen(a);
+            b = SpaceToScreen(b);
+            c = SpaceToScreen(c);
+
+            if (a.Coordinate.Y > b.Coordinate.Y)
+                Swap(ref a, ref b);
+            if (a.Coordinate.Y > c.Coordinate.Y)
+                Swap(ref a, ref c);
+            if (b.Coordinate.Y > c.Coordinate.Y)
+                Swap(ref b, ref c);
+
+            Vertex left = new Vertex();
+            Vertex right = new Vertex();
+            Vertex point = new Vertex();
+
+            for (double y = a.Coordinate.Y; y < c.Coordinate.Y; ++y)
             {
+                // Тут не должно быть этой проверки.
+                // Если какая то вершина находится за границей экрана, то она должна быть отсечена в Clip пространстве.
+                if (y < 0 || y > (Height - 1))
+                    continue;
 
-                if (a.Y > b.Y)
-                    Swap(ref a, ref b);
+                bool topHalf = y < b.Coordinate.Y;
 
-                if (a.Y > c.Y)
-                    Swap(ref a, ref c);
+                var a0 = a;
+                var a1 = c;
+                Interpolate(a, c, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y), ref left);
 
-                if (b.Y > c.Y)
-                    Swap(ref b, ref c);
+                var b0 = topHalf ? a : b;
+                var b1 = topHalf ? b : c;
+                Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y), ref right);
 
-                
-                for (int y = (int)Math.Ceiling(a.Y); y <= (int)Math.Ceiling(b.Y); ++y)
+                if (left.Coordinate.X > right.Coordinate.X) Swap(ref left, ref right);
+
+                for (double x = left.Coordinate.X; x < right.Coordinate.X; ++x)
                 {
-                    if (y < 0 || y > (Height - 1))
+                    // Тут не должно быть этой проверки.
+                    // Если какая то вершина находится за границей экрана, то она должна быть отсечена в Clip пространстве.
+                    if (x < 0 || x > (Width - 1))
                         continue;
 
-                    double leftX, leftZ, rightX, rightZ;
-                    leftX = Interpolation(y, a.X, b.X, a.Y, b.Y);
-                    leftZ = Interpolation(y, a.Z, b.Z, a.Y, b.Y);
-                    
+                    Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X), ref point);
 
-                    Color leftColor = Interpolation(y, color1, color2, a.Y, b.Y);
+                    if (point.Coordinate.Z > 1 || point.Coordinate.Z < -1)
+                        continue;
 
-                    rightX = Interpolation(y, a.X, c.X, a.Y, c.Y);
-                    rightZ = Interpolation(y, a.Z, c.Z, a.Y, c.Y);
-
-                    Color rightColor = Interpolation(y, color1, color3, a.Y, c.Y);
-
-                    Vector left = new Vector(leftX, y, leftZ);
-                    Vector right = new Vector(rightX, y, rightZ);
-
-                    if (leftX > rightX)
+                    if (point.Coordinate.Z > ZBuffer[(int)x, (int)y])
                     {
-                        Swap(ref left, ref right);
-                        Swap(ref leftColor, ref rightColor);
-                    }
-
-                    for (int x = (int)left.X; x <= right.X; ++x)
-                    {
-                        if (x < 0 || x > (Width - 1))
-                            continue;
-
-                        double z = Interpolation(x, left.Z, right.Z, left.X, right.X);
-                        Color color = Interpolation(x, leftColor, rightColor, left.X, right.X);
-
-                        if (z > 1 || z < -1)
-                            continue;
-
-                        if (z > ZBuffer[x, y])
-                        {
-                            ZBuffer[x, y] = z;
+                        ZBuffer[(int)x, (int)y] = point.Coordinate.Z;
                           
-                            ColorBuffer.SetPixel(x, y, color);
-                        }
+                        ColorBuffer.SetPixel((int)x, (int)y, point.Color);
                     }
-
                 }
-
-
-                for (int y = (int)Math.Ceiling(b.Y); y <= (int)Math.Ceiling(c.Y); ++y)
-                {
-                    if (y < 0 || y > (Height - 1))
-                        continue;
-
-                    double leftX, leftZ, rightX, rightZ;
-                    leftX = Interpolation(y, a.X, c.X, a.Y, c.Y);
-                    leftZ = Interpolation(y, a.Z, c.Z, a.Y, c.Y);
-
-                    Color leftColor = Interpolation(y, color1, color3, a.Y, c.Y);
-
-                    rightX = Interpolation(y, b.X, c.X, b.Y, c.Y);
-                    rightZ = Interpolation(y, b.Z, c.Z, b.Y, c.Y);
-                    
-                    Color rightColor = Interpolation(y, color2, color3, b.Y, c.Y);
-
-                    Vector left = new Vector(leftX, y, leftZ);
-                    Vector right = new Vector(rightX, y, rightZ);
-
-                    if (leftX > rightX)
-                    {
-                        Swap(ref left, ref right);
-                        Swap(ref leftColor, ref rightColor);
-                    }
-
-                    for (int x = (int)left.X; x <= right.X; ++x)
-                    {
-                        if (x < 0 || x > (Width - 1))
-                            continue;
-                        
-                        double z = Interpolation(x, left.Z, right.Z, left.X, right.X);
-                        Color color = Interpolation(x, leftColor, rightColor, left.X, right.X);
-
-                        if (z > 1 || z < -1)
-                            continue;
-
-                        if (z > ZBuffer[x, y])
-                        {
-                            ZBuffer[x, y] = z;
-                            ColorBuffer.SetPixel(x, y, color);
-                        }
-                    }
-
-                }
-
             }
-
         }
-
     }
 }
