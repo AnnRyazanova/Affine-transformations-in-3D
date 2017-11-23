@@ -159,7 +159,7 @@ namespace AffineTransformationsIn3D.Geometry
 
                 var a0 = a;
                 var a1 = c;
-                Interpolate(a, c, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y), ref left);
+                Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y), ref left);
 
                 var b0 = topHalf ? a : b;
                 var b1 = topHalf ? b : c;
