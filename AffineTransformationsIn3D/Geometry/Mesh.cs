@@ -106,7 +106,7 @@ namespace AffineTransformationsIn3D.Geometry
 
                 for (int i = 1; i < facet.Length - 1; ++i)
                 {
-                    graphics.DrawTriangle(Vertices[facet[0]], Vertices[facet[i]], Vertices[facet[i + 1]], Color.FromArgb(k, k2, k3));
+                    graphics.DrawTriangle(Vertices[facet[0]], Vertices[facet[i]], Vertices[facet[i + 1]], Color.FromArgb(k, k2, k3), Color.FromArgb(k2, k, k3), Color.FromArgb(k3, k2, k));
                 }
             }
         }

@@ -111,14 +111,49 @@ namespace AffineTransformationsIn3D.Geometry
             return true;
         }
 
-        private void swap(ref Vector p1, ref Vector p2)
+        private void Swap<T>(ref T c1, ref T c2)
         {
-            Vector t = p1;
-            p1 = p2;
-            p2 = t;
+            T t = c1;
+            c1 = c2;
+            c2 = t;
         }
 
-        public void DrawTriangle(Vector a, Vector b, Vector c, Color color)
+        private double Interpolation(int y, double x0, double x1, double y0, double y1)
+        {
+            return x0 + (x1 - x0) * ((y - y0) / (y1 - y0 + 1));
+        }
+
+
+        private void Clip(ref double component)
+        {
+            if (component < 0)
+                component = 0;
+            else if (component > 255)
+                component = 255;
+        }
+
+        private Color Interpolation(int y, Color color1, Color color2, double y0, double y1)
+        {
+            float R1 = color1.R;
+            float G1 = color1.G;
+            float B1 = color1.B;
+
+            float R2 = color2.R;
+            float G2 = color2.G;
+            float B2 = color2.B;
+
+            double R = Interpolation(y, R1, R2, y0, y1);
+            double G = Interpolation(y, G1, G2, y0, y1);
+            double B = Interpolation(y, B1, B2, y0, y1);
+
+            Clip(ref R);
+            Clip(ref G);
+            Clip(ref B);
+
+            return Color.FromArgb((int)Math.Round(R), (int)Math.Round(G), (int)Math.Round(B));
+        }
+
+        public void DrawTriangle(Vector a, Vector b, Vector c, Color color1, Color color2, Color color3)
         {
             if (spaceToScreenCoordinate(a, ref a) &&
                 spaceToScreenCoordinate(b, ref b) &&
@@ -126,38 +161,48 @@ namespace AffineTransformationsIn3D.Geometry
             {
 
                 if (a.Y > b.Y)
-                    swap(ref a, ref b);
+                    Swap(ref a, ref b);
 
                 if (a.Y > c.Y)
-                    swap(ref a, ref c);
+                    Swap(ref a, ref c);
 
                 if (b.Y > c.Y)
-                    swap(ref b, ref c);
+                    Swap(ref b, ref c);
 
                 
-                // issue : нужно ли округлять? 
                 for (int y = (int)Math.Ceiling(a.Y); y <= (int)Math.Ceiling(b.Y); ++y)
                 {
                     if (y < 0 || y > (Height - 1))
                         continue;
 
-                    double leftX = a.X + (b.X - a.X) * ((y - a.Y) / (b.Y - a.Y + 1));
-                    double rightX = a.X + (c.X - a.X) * ((y - a.Y) / (c.Y - a.Y + 1));
-                    double leftZ = a.Z + (b.Z - a.Z) * ((y - a.Y) / (b.Y - a.Y + 1));
-                    double rightZ = a.Z + (c.Z - a.Z) * ((y - a.Y) / (c.Y - a.Y + 1));
+                    double leftX, leftZ, rightX, rightZ;
+                    leftX = Interpolation(y, a.X, b.X, a.Y, b.Y);
+                    leftZ = Interpolation(y, a.Z, b.Z, a.Y, b.Y);
+                    
+
+                    Color leftColor = Interpolation(y, color1, color2, a.Y, b.Y);
+
+                    rightX = Interpolation(y, a.X, c.X, a.Y, c.Y);
+                    rightZ = Interpolation(y, a.Z, c.Z, a.Y, c.Y);
+
+                    Color rightColor = Interpolation(y, color1, color3, a.Y, c.Y);
 
                     Vector left = new Vector(leftX, y, leftZ);
                     Vector right = new Vector(rightX, y, rightZ);
 
                     if (leftX > rightX)
-                        swap(ref left, ref right);
+                    {
+                        Swap(ref left, ref right);
+                        Swap(ref leftColor, ref rightColor);
+                    }
 
                     for (int x = (int)left.X; x <= right.X; ++x)
                     {
                         if (x < 0 || x > (Width - 1))
                             continue;
 
-                        double z = left.Z + (right.Z - left.Z) * ((x - left.X) / (right.X - left.X + 1));
+                        double z = Interpolation(x, left.Z, right.Z, left.X, right.X);
+                        Color color = Interpolation(x, leftColor, rightColor, left.X, right.X);
 
                         if (z > 1 || z < -1)
                             continue;
@@ -178,23 +223,33 @@ namespace AffineTransformationsIn3D.Geometry
                     if (y < 0 || y > (Height - 1))
                         continue;
 
-                    double leftX = a.X + (c.X - a.X) * ((y - a.Y) / (c.Y - a.Y + 1));
-                    double rightX = b.X + (c.X - b.X) * ((y - b.Y) / (c.Y - b.Y + 1));
-                    double leftZ = a.Z + (c.Z - a.Z) * ((y - a.Y) / (c.Y - a.Y + 1));
-                    double rightZ = b.Z + (c.Z - b.Z) * ((y - b.Y) / (c.Y - b.Y + 1));
+                    double leftX, leftZ, rightX, rightZ;
+                    leftX = Interpolation(y, a.X, c.X, a.Y, c.Y);
+                    leftZ = Interpolation(y, a.Z, c.Z, a.Y, c.Y);
+
+                    Color leftColor = Interpolation(y, color1, color3, a.Y, c.Y);
+
+                    rightX = Interpolation(y, b.X, c.X, b.Y, c.Y);
+                    rightZ = Interpolation(y, b.Z, c.Z, b.Y, c.Y);
+                    
+                    Color rightColor = Interpolation(y, color2, color3, b.Y, c.Y);
 
                     Vector left = new Vector(leftX, y, leftZ);
                     Vector right = new Vector(rightX, y, rightZ);
 
                     if (leftX > rightX)
-                        swap(ref left, ref right);
+                    {
+                        Swap(ref left, ref right);
+                        Swap(ref leftColor, ref rightColor);
+                    }
 
                     for (int x = (int)left.X; x <= right.X; ++x)
                     {
                         if (x < 0 || x > (Width - 1))
                             continue;
-
-                        double z = left.Z + (right.Z - left.Z) * ((x - left.X) / (right.X - left.X + 1));
+                        
+                        double z = Interpolation(x, left.Z, right.Z, left.X, right.X);
+                        Color color = Interpolation(x, leftColor, rightColor, left.X, right.X);
 
                         if (z > 1 || z < -1)
                             continue;

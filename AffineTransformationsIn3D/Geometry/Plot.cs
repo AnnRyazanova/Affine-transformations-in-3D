@@ -6,6 +6,8 @@ namespace AffineTransformationsIn3D.Geometry
 	{
 		private static double F(double x, double y)
 		{
+            if (x == 0 && y == 0)
+                return 0;
 			return (x * x * y) / (x * x * x * x + y * y);
 		}
 
