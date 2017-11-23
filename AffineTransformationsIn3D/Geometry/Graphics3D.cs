@@ -54,9 +54,9 @@ namespace AffineTransformationsIn3D.Geometry
             return NormalizedToScreen(SpaceToNormalized(spaceVertex));
         }
 
-        private Vertex SpaceToScreen(Vertex vertex)
+        private void SpaceToScreen(ref Vertex vertex)
         {
-            return new Vertex(SpaceToScreenCoordinate(vertex.Coordinate), vertex.Normal, vertex.Color);
+            vertex.Coordinate = SpaceToScreenCoordinate(vertex.Coordinate);
         }
 
         public void DrawLine(Vector a, Vector b)
@@ -133,9 +133,9 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void DrawTriangle(Vertex a, Vertex b, Vertex c)
         {
-            a = SpaceToScreen(a);
-            b = SpaceToScreen(b);
-            c = SpaceToScreen(c);
+            SpaceToScreen(ref a);
+            SpaceToScreen(ref b);
+            SpaceToScreen(ref c);
 
             if (a.Coordinate.Y > b.Coordinate.Y)
                 Swap(ref a, ref b);
