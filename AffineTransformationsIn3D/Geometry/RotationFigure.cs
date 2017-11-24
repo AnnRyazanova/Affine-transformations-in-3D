@@ -44,7 +44,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public override void Draw(Graphics3D graphics)
         {
-            Vector vec = new Vector(-1, 1, -1);
+            Vector vec = new Vector(0, 0, -1);
             for (int i = 0; i < Indices.Length; ++i)
             {
                 Vector normal = Vertices[Indices[i][0]] - Vertices[Indices[i][1]];

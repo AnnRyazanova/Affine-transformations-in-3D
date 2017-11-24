@@ -30,33 +30,39 @@ namespace AffineTransformationsIn3D.Geometry
 
         }
 
-        private Vector SpaceToNormalized(Vector v)
+        private Vector? SpaceToNormalized(Vector v)
         {
-            return Normailze(v * Transformation);
-        }
+            var t = Normailze(v * Transformation);
+			if (t.Z < -1 || t.Z > 1) return null;
+			return t;
+		}
 
         private Vector Normailze(Vector v)
         {
             return new Vector(v.X / v.W, v.Y / v.W, v.Z / v.W);
         }
 
-        public Vector NormalizedToScreen(Vector v)
+        public Vector? NormalizedToScreen(Vector? v)
         {
+			if (!v.HasValue) return null;
             return new Vector(
-                (v.X + 1) / 2 * Width, 
-                (-v.Y + 1) / 2 * Height,
-                v.Z);
+                (v.Value.X + 1) / 2 * Width, 
+                (-v.Value.Y + 1) / 2 * Height,
+                v.Value.Z);
         }
 
         // перевод координат из пространственных в экранные
-        private Vector SpaceToScreenCoordinate(Vector spaceVertex)
+        private Vector? SpaceToScreenCoordinate(Vector spaceVertex)
         {
             return NormalizedToScreen(SpaceToNormalized(spaceVertex));
         }
 
-        private void SpaceToScreen(ref Vertex vertex)
+        private bool SpaceToScreen(ref Vertex vertex)
         {
-            vertex.Coordinate = SpaceToScreenCoordinate(vertex.Coordinate);
+            var t = SpaceToScreenCoordinate(vertex.Coordinate);
+			if (!t.HasValue) return false;
+			vertex.Coordinate = t.Value;
+			return true;
         }
 
         public void DrawLine(Vector a, Vector b)
@@ -73,23 +79,18 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void DrawPoint(Vector a, Color color)
         {
-            var t = SpaceToNormalized(a);
-            if (t.Z < -1 || t.Z > 1) return;
-            var A = NormalizedToScreen(t);
-            if (ShouldBeDrawn(A))
-                ColorBuffer.SetPixel((int)Math.Ceiling(A.X), (int)Math.Ceiling(A.Y), color);
+            var A = NormalizedToScreen(SpaceToNormalized(a));
+            if (A.HasValue && ShouldBeDrawn(A.Value))
+                ColorBuffer.SetPixel((int)Math.Ceiling(A.Value.X), (int)Math.Ceiling(A.Value.Y), color);
         }
 
         public void DrawLine(Vector a, Vector b, Pen pen)
         {
-            var t = SpaceToNormalized(a);
-            if (t.Z < -1 || t.Z > 1) return;
-            var A = NormalizedToScreen(t);
-            var u = SpaceToNormalized(b);
-            if (u.Z < -1 || u.Z > 1) return;
-            var B = NormalizedToScreen(u);
-            if (ShouldBeDrawn(A))
-                graphics.DrawLine(pen, (float)A.X, (float)A.Y, (float)B.X, (float)B.Y);
+            var A = NormalizedToScreen(SpaceToNormalized(a));
+            var B = NormalizedToScreen(SpaceToNormalized(b));
+			if (!A.HasValue || !B.HasValue) return;
+			if (ShouldBeDrawn(A.Value))
+                graphics.DrawLine(pen, (float)A.Value.X, (float)A.Value.Y, (float)B.Value.X, (float)B.Value.Y);
         }
 
         private double Interpolate(double x0, double x1, double f)
@@ -133,9 +134,8 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void DrawTriangle(Vertex a, Vertex b, Vertex c)
         {
-            SpaceToScreen(ref a);
-            SpaceToScreen(ref b);
-            SpaceToScreen(ref c);
+			if (!SpaceToScreen(ref a) || !SpaceToScreen(ref b) || !SpaceToScreen(ref c))
+				return;
 
             if (a.Coordinate.Y > b.Coordinate.Y)
                 Swap(ref a, ref b);

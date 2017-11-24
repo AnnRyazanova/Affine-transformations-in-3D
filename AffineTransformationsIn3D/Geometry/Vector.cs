@@ -132,7 +132,7 @@ namespace AffineTransformationsIn3D.Geometry
         // Угол между векторами
         public static double AngleBet(Vector u, Vector v)
         {
-            return Math.Acos(DotProduct(u, v) / u.Modul() * v.Modul());
+            return Math.Acos(DotProduct(u, v) / (u.Modul() * v.Modul()));
         }
 
         public static double Dist(Vector u, Vector v)

@@ -91,15 +91,14 @@ namespace AffineTransformationsIn3D.Geometry
             Random r = new Random(42);
 
             foreach (var facet in Indices)
-            {
+			{
+				/*
                 // рисование каркасной модели
-                /*
                 for (int i = 0; i < facet.Length - 1; ++i)
                     graphics.DrawLine(Vertices[facet[i]], Vertices[facet[i + 1]]);
                 graphics.DrawLine(Vertices[facet[0]], Vertices[facet[facet.Length - 1]]);
-                */
-                
-                int k = r.Next(0, 256);
+				*/
+				int k = r.Next(0, 256);
                 int k2 = r.Next(0, 256);
                 int k3 = r.Next(0, 256);
 
@@ -110,8 +109,8 @@ namespace AffineTransformationsIn3D.Geometry
                     var c = new Vertex(Vertices[facet[i + 1]], new Vector(), Color.FromArgb(k3, k2, k));
                     graphics.DrawTriangle(a, b, c);
                 }
-            }
-        }
+			}
+		}
 
         public void Save(string path)
         {
