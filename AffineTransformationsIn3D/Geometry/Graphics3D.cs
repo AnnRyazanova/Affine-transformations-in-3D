@@ -40,7 +40,7 @@ namespace AffineTransformationsIn3D.Geometry
             return new Vector(v.X / v.W, v.Y / v.W, v.Z / v.W);
         }
 
-        public Vector NormalizedToScreen(Vector v)
+        private Vector NormalizedToScreen(Vector v)
         {
             return new Vector(
                 (v.X + 1) / 2 * Width, 
@@ -61,7 +61,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public void DrawLine(Vector a, Vector b)
         {
-            DrawLine(a, b, Pens.Black);
+            DrawLine(a, b, Color.Black);
         }
 
         private bool ShouldBeDrawn(Vector vertex)
@@ -80,16 +80,46 @@ namespace AffineTransformationsIn3D.Geometry
                 ColorBuffer.SetPixel((int)Math.Ceiling(A.X), (int)Math.Ceiling(A.Y), color);
         }
 
-        public void DrawLine(Vector a, Vector b, Pen pen)
+        public void DrawLine(Vector a, Vector b, Color color)
         {
-            var t = SpaceToNormalized(a);
-            if (t.Z < -1 || t.Z > 1) return;
-            var A = NormalizedToScreen(t);
-            var u = SpaceToNormalized(b);
-            if (u.Z < -1 || u.Z > 1) return;
-            var B = NormalizedToScreen(u);
-            if (ShouldBeDrawn(A))
-                graphics.DrawLine(pen, (float)A.X, (float)A.Y, (float)B.X, (float)B.Y);
+            a = SpaceToScreenCoordinate(a);
+            b = SpaceToScreenCoordinate(b);
+            var x0 = (int)a.X;
+            var y0 = (int)a.Y;
+            var x1 = (int)b.X;
+            var y1 = (int)b.Y;
+            /* https://github.com/fragkakis/bresenham/blob/master/src/main/java/org/fragkakis/Bresenham.java */
+            int dx = Math.Abs(x1 - x0);
+            int dy = Math.Abs(y1 - y0);
+            int sx = x0 < x1 ? 1 : -1;
+            int sy = y0 < y1 ? 1 : -1;
+            int err = dx - dy;
+            int currentX = x0;
+            int currentY = y0;
+            while (true)
+            {
+                if (0 <= currentX && currentX < Width && 0 <= currentY && currentY < Height)
+                {
+                    double z = Interpolate(a.Z, b.Z, dx < dy ? (currentY - a.Y) / dy : (currentX - a.X) / dx);
+                    if (-1 < z && z < 1 && ZBuffer[currentX, currentY] < z)
+                    {
+                        ColorBuffer.SetPixel(currentX, currentY, color);
+                        ZBuffer[currentX, currentY] = z;
+                    }
+                }
+                if (currentX == x1 && currentY == y1) break;
+                int e2 = 2 * err;
+                if (e2 > -dy)
+                {
+                    err = err - dy;
+                    currentX = currentX + sx;
+                }
+                if (e2 < dx)
+                {
+                    err = err + dx;
+                    currentY = currentY + sy;
+                }
+            }
         }
 
         private double Interpolate(double x0, double x1, double f)

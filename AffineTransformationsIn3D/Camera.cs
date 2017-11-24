@@ -21,10 +21,10 @@ namespace AffineTransformationsIn3D
         {
             get
             {
-                return Transformations.Translate(-Position)
+                return /*Transformations.Translate(-Position)
                     * Transformations.RotateY(-Fi)
                     * Transformations.RotateX(-Theta)
-                    * Projection;
+                    * */Projection;
             }
         }
 

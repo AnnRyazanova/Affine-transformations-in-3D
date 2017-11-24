@@ -27,7 +27,7 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentMesh = new Icosahedron(1);
+            CurrentMesh = null;
             sceneView1.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0, 
                 Transformations.OrthogonalProjection());
             sceneView2.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
@@ -36,7 +36,7 @@ namespace AffineTransformationsIn3D
             sceneView3.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
                 Transformations.RotateX(Math.PI / 2)
                 * Transformations.OrthogonalProjection());
-            Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20);
+            Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20).Transpose();
             camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -Math.PI / 4, projection);
             sceneView4.ViewCamera = camera;
 

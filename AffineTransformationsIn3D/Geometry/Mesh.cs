@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-
 
 namespace AffineTransformationsIn3D.Geometry
 {
     public class Mesh
     {
-        public Vector[] Vertices { get; set; }
-        public int[][] Indices { get; set; }
+        protected Vector[] Vertices { get; set; }
+        protected int[][] Indices { get; set; }
 
         public Vector Center
         {
@@ -87,29 +85,11 @@ namespace AffineTransformationsIn3D.Geometry
 
         public virtual void Draw(Graphics3D graphics)
         {
-
-            Random r = new Random(42);
-
             foreach (var facet in Indices)
             {
-                // рисование каркасной модели
-                /*
                 for (int i = 0; i < facet.Length - 1; ++i)
                     graphics.DrawLine(Vertices[facet[i]], Vertices[facet[i + 1]]);
                 graphics.DrawLine(Vertices[facet[0]], Vertices[facet[facet.Length - 1]]);
-                */
-                
-                int k = r.Next(0, 256);
-                int k2 = r.Next(0, 256);
-                int k3 = r.Next(0, 256);
-
-                for (int i = 1; i < facet.Length - 1; ++i)
-                {
-                    var a = new Vertex(Vertices[facet[0]], new Vector(), Color.FromArgb(k, k2, k3));
-                    var b = new Vertex(Vertices[facet[i]], new Vector(), Color.FromArgb(k2, k, k3));
-                    var c = new Vertex(Vertices[facet[i + 1]], new Vector(), Color.FromArgb(k3, k2, k));
-                    graphics.DrawTriangle(a, b, c);
-                }
             }
         }
 
