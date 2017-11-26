@@ -21,15 +21,6 @@ namespace AffineTransformationsIn3D
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            e.Graphics.Clear(SystemColors.Control);
-            e.Graphics.DrawLines(Pens.Black, new Point[]
-                {
-                    new Point(1, 1),
-                    new Point(1, Height - 1),
-                    new Point(Width - 1, Height - 1),
-                    new Point(Width - 1, 1),
-                    new Point(1, 1)
-                });
             var graphics3D = new Graphics3D(ViewCamera, Width, Height);
             var zero = new Vector(0, 0, 0);
             var x = new Vector(0.8, 0, 0);
@@ -48,7 +39,15 @@ namespace AffineTransformationsIn3D
                 new Vertex(z, new Vector(), Color.Blue));
             graphics3D.DrawPoint(new Vertex(z, new Vector(), Color.Blue));
             Mesh.Draw(graphics3D);
-            e.Graphics.DrawImage(graphics3D.ColorBuffer, 0, 0);
+            e.Graphics.DrawImage(graphics3D.FinishDrawing(), 0, 0);
+            e.Graphics.DrawLines(Pens.Black, new Point[]
+                {
+                    new Point(0, 0),
+                    new Point(0, Height - 1),
+                    new Point(Width - 1, Height - 1),
+                    new Point(Width - 1, 0),
+                    new Point(0, 0)
+                });
         }
     }
 }

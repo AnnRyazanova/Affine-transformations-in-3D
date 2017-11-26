@@ -67,7 +67,8 @@ namespace AffineTransformationsIn3D.Geometry
                 indices[10 + 2 * i] = new int[3] { 10, 2 * i, (2 * (i + 1)) % 10 };
                 indices[10 + 2 * i + 1] = new int[3] { 11, (2 * (i + 1) + 1) % 10, 2 * i + 1 };
             }
-            return new Mesh(vertices, indices);
+            //return new Mesh(vertices, indices);
+            return new MeshWithNormals(vertices, new Vector[12], indices);
         }
 
         public static Mesh Tetrahedron(double size)
@@ -111,7 +112,8 @@ namespace AffineTransformationsIn3D.Geometry
                         i * nz + j + 1
                     };
                 }
-            return new Mesh(vertices, indices);
+            //return new Mesh(vertices, indices);
+            return new MeshWithNormals(vertices, new Vector[nx * nz], indices);
         }
 
         public static Mesh RotationFigure(IList<Vector> initial, int axis, int density)

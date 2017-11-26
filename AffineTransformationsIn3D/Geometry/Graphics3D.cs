@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D.Geometry
 {
     public class Graphics3D
     {
-        public Bitmap ColorBuffer { get; private set; }
+        private Bitmap colorBuffer;
         private double[,] zBuffer;
+
+        private BitmapData bitmapData;
 
         public Camera camera;
         public double width;
@@ -19,12 +23,29 @@ namespace AffineTransformationsIn3D.Geometry
             this.width = width;
             this.height = height;
 
-            ColorBuffer = new Bitmap(width + 1, height + 1);
+            colorBuffer = new Bitmap(width + 1, height + 1, PixelFormat.Format24bppRgb);
             zBuffer = new double[height + 1, width + 1];
 
-            for (int i = 0; i < height + 1; ++i)
-                for (int j = 0; j < width + 1; ++j)
-                    zBuffer[i, j] = 1;
+            bitmapData = colorBuffer.LockBits(
+                new Rectangle(0, 0, colorBuffer.Width, colorBuffer.Height),
+                ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+            unsafe
+            {
+                var pointer = (byte*)bitmapData.Scan0.ToPointer();
+                for (int i = 0; i < height + 1; ++i)
+                    for (int j = 0; j < width + 1; ++j)
+                    {
+                        zBuffer[i, j] = 1;
+                        SetPixel(pointer, j, i, Control.DefaultBackColor);
+                    }
+            }
+        }
+
+        private unsafe void SetPixel(byte* pointer, int x, int y, Color color)
+        {
+            pointer[y * bitmapData.Stride + 3 * x + 0] = color.R;
+            pointer[y * bitmapData.Stride + 3 * x + 1] = color.G;
+            pointer[y * bitmapData.Stride + 3 * x + 2] = color.B;
         }
 
         private Vector SpaceToClip(Vector v)
@@ -103,11 +124,6 @@ namespace AffineTransformationsIn3D.Geometry
 
             public Vector P { get; set; }
 
-            private double A { get { return P[0]; } }
-            private double B { get { return P[1]; } }
-            private double C { get { return P[2]; } }
-            private double D { get { return P[3]; } }
-
             private PlaneBoundary(double a, double b, double c, double d)
             {
                 P = new Vector(a, b, c, d);
@@ -115,14 +131,13 @@ namespace AffineTransformationsIn3D.Geometry
 
             public bool IsInside(Vector point)
             {
-                return A * point.X + B * point.Y + C * point.Z + D * point.W > 0;
+                return Vector.DotProduct4(P, point) > 0;
             }
 
             public Vertex Intersect(Vertex a, Vertex b)
             {
                 var denom = Vector.DotProduct4(P, b.Coordinate) - Vector.DotProduct4(P, a.Coordinate);
-                if (0 == denom)
-                    return null;
+                if (0 == denom) return null;
                 return Interpolate(a, b, -Vector.DotProduct4(P, a.Coordinate) / denom);
             }
         }
@@ -187,18 +202,22 @@ namespace AffineTransformationsIn3D.Geometry
             if (!ClipPoint(a.Coordinate)) return;
             a.Coordinate = ClipToScreen(a.Coordinate);
             const int POINT_SIZE = 5;
-            for (int dy = 0; dy < POINT_SIZE; ++dy)
+            unsafe
             {
-                var y = (int)a.Coordinate.Y + dy - POINT_SIZE / 2;
-                if (y < 0 || height <= y) return;
-                for (int dx = 0; dx < POINT_SIZE; ++dx)
+                var pointer = (byte*)bitmapData.Scan0.ToPointer();
+                for (int dy = 0; dy < POINT_SIZE; ++dy)
                 {
-                    var x = (int)a.Coordinate.X + dx - POINT_SIZE / 2;
-                    if (x < 0 || width <= x) return;
-                    if (zBuffer[y, x] > a.Coordinate.Z)
+                    var y = (int)a.Coordinate.Y + dy - POINT_SIZE / 2;
+                    if (y < 0 || height <= y) return;
+                    for (int dx = 0; dx < POINT_SIZE; ++dx)
                     {
-                        zBuffer[y, x] = a.Coordinate.Z;
-                        ColorBuffer.SetPixel(x, y, a.Color);
+                        var x = (int)a.Coordinate.X + dx - POINT_SIZE / 2;
+                        if (x < 0 || width <= x) return;
+                        if (zBuffer[y, x] > a.Coordinate.Z)
+                        {
+                            zBuffer[y, x] = a.Coordinate.Z;
+                            SetPixel(pointer, x, y, a.Color);
+                        }
                     }
                 }
             }
@@ -223,27 +242,31 @@ namespace AffineTransformationsIn3D.Geometry
             int err = dx - dy;
             int currentX = x0;
             int currentY = y0;
-            while (true)
+            unsafe
             {
-                double f = dx < dy ? Math.Abs(currentY - a.Coordinate.Y) / dy : Math.Abs(currentX - a.Coordinate.X) / dx;
-                var point = Interpolate(a, b, f);
-                if (zBuffer[currentY, currentX] > point.Coordinate.Z)
+                var pointer = (byte*)bitmapData.Scan0.ToPointer();
+                while (true)
                 {
-                    ColorBuffer.SetPixel(currentX, currentY, point.Color);
-                    zBuffer[currentY, currentX] = point.Coordinate.Z;
-                }
-                if (currentX == x1 && currentY == y1)
-                    break;
-                int e2 = 2 * err;
-                if (e2 > -dy)
-                {
-                    err = err - dy;
-                    currentX = currentX + sx;
-                }
-                if (e2 < dx)
-                {
-                    err = err + dx;
-                    currentY = currentY + sy;
+                    double f = dx < dy ? Math.Abs(currentY - a.Coordinate.Y) / dy : Math.Abs(currentX - a.Coordinate.X) / dx;
+                    var point = Interpolate(a, b, f);
+                    if (zBuffer[currentY, currentX] > point.Coordinate.Z)
+                    {
+                        zBuffer[currentY, currentX] = point.Coordinate.Z;
+                        SetPixel(pointer, currentX, currentY, point.Color);
+                    }
+                    if (currentX == x1 && currentY == y1)
+                        break;
+                    int e2 = 2 * err;
+                    if (e2 > -dy)
+                    {
+                        err = err - dy;
+                        currentX = currentX + sx;
+                    }
+                    if (e2 < dx)
+                    {
+                        err = err + dx;
+                        currentY = currentY + sy;
+                    }
                 }
             }
         }
@@ -286,26 +309,37 @@ namespace AffineTransformationsIn3D.Geometry
                 Swap(ref a, ref c);
             if (b.Coordinate.Y > c.Coordinate.Y)
                 Swap(ref b, ref c);
-            for (double y = a.Coordinate.Y; y < c.Coordinate.Y; ++y)
+            unsafe
             {
-                bool topHalf = y < b.Coordinate.Y;
-                var a0 = a;
-                var a1 = c;
-                var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
-                var b0 = topHalf ? a : b;
-                var b1 = topHalf ? b : c;
-                var right = Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y));
-                if (left.Coordinate.X > right.Coordinate.X) Swap(ref left, ref right);
-                for (double x = left.Coordinate.X; x < right.Coordinate.X; ++x)
+                byte* pointer = (byte*)bitmapData.Scan0.ToPointer();
+                for (double y = a.Coordinate.Y; y < c.Coordinate.Y; ++y)
                 {
-                    var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
-                    if (point.Coordinate.Z < zBuffer[(int)y, (int)x])
+                    bool topHalf = y < b.Coordinate.Y;
+                    var a0 = a;
+                    var a1 = c;
+                    var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
+                    var b0 = topHalf ? a : b;
+                    var b1 = topHalf ? b : c;
+                    var right = Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y));
+                    if (left.Coordinate.X > right.Coordinate.X) Swap(ref left, ref right);
+                    for (double x = left.Coordinate.X; x < right.Coordinate.X; ++x)
                     {
-                        zBuffer[(int)y, (int)x] = point.Coordinate.Z;
-                        ColorBuffer.SetPixel((int)x, (int)y, point.Color);
+                        var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
+                        if (point.Coordinate.Z < zBuffer[(int)y, (int)x])
+                        {
+                            zBuffer[(int)y, (int)x] = point.Coordinate.Z;
+                            SetPixel(pointer, (int)x, (int)y, point.Color);
+                        }
                     }
                 }
             }
+        }
+
+        public Bitmap FinishDrawing()
+        {
+            colorBuffer.UnlockBits(bitmapData);
+            bitmapData = null;
+            return colorBuffer;
         }
     }
 }

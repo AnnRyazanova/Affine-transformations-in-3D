@@ -1,7 +1,6 @@
 ﻿using AffineTransformationsIn3D.Geometry;
 using System;
 using System.Windows.Forms;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace AffineTransformationsIn3D
@@ -68,9 +67,7 @@ namespace AffineTransformationsIn3D
                 SelectedModel = Models.RotationFigure(initial, axis, density);
             }
             else if (tabPagePlot == tab)
-            {
                 SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F);
-            }
         }
     }
 }
