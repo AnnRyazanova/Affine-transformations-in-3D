@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -83,14 +84,21 @@ namespace AffineTransformationsIn3D.Geometry
                 Vertices[i] *= transformation;
         }
 
+        protected static Color NextColor(Random r)
+        {
+            return Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
+        }
+
         public virtual void Draw(Graphics3D graphics)
         {
+            Random r = new Random(42);
             foreach (var facet in Indices)
-            {
-                for (int i = 0; i < facet.Length - 1; ++i)
-                    graphics.DrawLine(Vertices[facet[i]], Vertices[facet[i + 1]]);
-                graphics.DrawLine(Vertices[facet[0]], Vertices[facet[facet.Length - 1]]);
-            }
+                for (int i = 0; i < facet.Length; ++i)
+                {
+                    var a = new Vertex(Vertices[facet[i]], new Vector(), Color.Black);
+                    var b = new Vertex(Vertices[facet[(i + 1) % facet.Length]], new Vector(), Color.Black);
+                    graphics.DrawLine(a, b);
+                }
         }
 
         public void Save(string path)

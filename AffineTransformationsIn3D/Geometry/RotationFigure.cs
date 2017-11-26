@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
+using System.Drawing;
+
 namespace AffineTransformationsIn3D.Geometry
 {
     public class RotationFigure : Mesh
@@ -45,20 +46,25 @@ namespace AffineTransformationsIn3D.Geometry
         public override void Draw(Graphics3D graphics)
         {
             Vector vec = new Vector(-1, 1, -1);
-            for (int i = 0; i < Indices.Length; ++i)
+            foreach (var facet in Indices)
             {
-                Vector normal = Vertices[Indices[i][0]] - Vertices[Indices[i][1]];
-                normal = Vector.CrossProduct(normal, Vertices[Indices[i][1]] - Vertices[Indices[i][2]]);
+                Vector normal = Vertices[facet[0]] - Vertices[facet[1]];
+                normal = Vector.CrossProduct(normal, Vertices[facet[1]] - Vertices[facet[2]]);
 
-                if (Vector.Dist(normal, Vertices[Indices[i][0]]) < Vector.Dist(-normal, Vertices[Indices[i][0]]))
+                if (Vector.Dist(normal, Vertices[facet[0]]) < Vector.Dist(-normal, Vertices[facet[0]]))
                     normal = -normal;
 
                 if (Vector.AngleBet(vec, normal)<(Math.PI/2))
                 {
-                    for (int j = 0; j < Indices[i].Length - 1; ++j)
-                        graphics.DrawLine(Vertices[Indices[i][j]], Vertices[Indices[i][j + 1]]);
-
-                    graphics.DrawLine(Vertices[Indices[i][0]], Vertices[Indices[i][Indices[i].Length - 1]]);
+                    for (int i = 0; i < facet.Length - 1; ++i)
+                    {
+                        var a = new Vertex(Vertices[facet[i]], new Vector(), Color.Black);
+                        var b = new Vertex(Vertices[facet[i + 1]], new Vector(), Color.Black);
+                        graphics.DrawLine(a, b);
+                    }
+                    var first = new Vertex(Vertices[facet[0]], new Vector(), Color.Black);
+                    var last = new Vertex(Vertices[facet[facet.Length - 1]], new Vector(), Color.Black);
+                    graphics.DrawLine(first, last);
                 }
             }
         }

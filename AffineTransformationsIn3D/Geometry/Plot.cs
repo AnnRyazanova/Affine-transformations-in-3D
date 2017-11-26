@@ -45,7 +45,8 @@ namespace AffineTransformationsIn3D.Geometry
                         i * nz + j,
                         (i + 1) * nz + j,
                         (i + 1) * nz + j + 1,
-                        i * nz + j + 1 };
+                        i * nz + j + 1
+                    };
                 }
             return new Tuple<Vector[], int[][]>(vertices, indices);
         }

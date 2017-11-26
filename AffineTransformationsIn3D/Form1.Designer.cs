@@ -189,7 +189,6 @@
             this.sceneView3.TabIndex = 2;
             this.sceneView3.Text = "sceneView3";
             this.sceneView3.ViewCamera = null;
-            this.sceneView3.Visible = false;
             // 
             // sceneView4
             // 
@@ -212,7 +211,6 @@
             this.sceneView1.TabIndex = 0;
             this.sceneView1.Text = "sceneView1";
             this.sceneView1.ViewCamera = null;
-            this.sceneView1.Visible = false;
             // 
             // sceneView2
             // 
@@ -224,7 +222,6 @@
             this.sceneView2.TabIndex = 1;
             this.sceneView2.Text = "sceneView2";
             this.sceneView2.ViewCamera = null;
-            this.sceneView2.Visible = false;
             // 
             // label1
             // 
