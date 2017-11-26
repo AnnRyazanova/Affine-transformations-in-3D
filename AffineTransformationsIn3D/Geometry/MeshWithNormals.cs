@@ -6,7 +6,7 @@ namespace AffineTransformationsIn3D.Geometry
     {
         public Vector[] Normals { get; set; }
 
-        public MeshWithNormals(Vector[] vertices, int[][] indices, Vector[] normals) : base(vertices, indices)
+        public MeshWithNormals(Vector[] vertices, Vector[] normals, int[][] indices) : base(vertices, indices)
         {
             Normals = normals;
         }
@@ -17,11 +17,14 @@ namespace AffineTransformationsIn3D.Geometry
             foreach (var facet in Indices)
             {
                 var firstColor = NextColor(r);
+                var prevColor = NextColor(r);
                 for (int i = 1; i < facet.Length - 1; ++i)
                 {
+                    var color = NextColor(r);
                     var a = new Vertex(Vertices[facet[0]], Normals[facet[0]], firstColor);
-                    var b = new Vertex(Vertices[facet[i]], Normals[facet[i]], NextColor(r));
-                    var c = new Vertex(Vertices[facet[i + 1]], Normals[facet[i + 1]], NextColor(r));
+                    var b = new Vertex(Vertices[facet[i]], Normals[facet[i]], prevColor);
+                    var c = new Vertex(Vertices[facet[i + 1]], Normals[facet[i + 1]], color);
+                    prevColor = color;
                     graphics.DrawTriangle(a, b, c);
                 }
             }

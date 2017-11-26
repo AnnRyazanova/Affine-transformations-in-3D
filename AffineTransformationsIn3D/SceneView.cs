@@ -30,7 +30,7 @@ namespace AffineTransformationsIn3D
                     new Point(Width - 1, 1),
                     new Point(1, 1)
                 });
-            var graphics3D = new Graphics3D(ViewCamera.ViewProjection, Width, Height);
+            var graphics3D = new Graphics3D(ViewCamera, Width, Height);
             var zero = new Vector(0, 0, 0);
             var x = new Vector(0.8, 0, 0);
             var y = new Vector(0, 0.8, 0);

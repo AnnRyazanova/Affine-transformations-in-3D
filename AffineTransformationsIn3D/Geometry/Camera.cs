@@ -1,8 +1,8 @@
 ﻿using AffineTransformationsIn3D.Geometry;
 
-namespace AffineTransformationsIn3D
+namespace AffineTransformationsIn3D.Geometry
 {
-    class Camera
+    public class Camera
     {
         public Vector Position { get; set; }
         public double AngleY { get; set; }

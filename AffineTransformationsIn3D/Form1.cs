@@ -27,7 +27,7 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentMesh = new Icosahedron(0.5);
+            CurrentMesh = Models.Icosahedron(0.5);
             sceneView1.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0, 
                 Transformations.OrthogonalProjection());
             sceneView2.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
@@ -182,7 +182,5 @@ namespace AffineTransformationsIn3D
             RefreshScenes();
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
-        
     }
 }

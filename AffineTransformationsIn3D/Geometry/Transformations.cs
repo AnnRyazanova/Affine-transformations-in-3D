@@ -102,7 +102,13 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Matrix OrthogonalProjection()
         {
-            return Identity();
+            return new Matrix(
+                new double[4, 4] {
+                    { 1, 0, 0, 0 },
+                    { 0, 1, 0, 0 },
+                    { 0, 0, -1, 0 },
+                    { 0, 0, 0, 1 }
+                });
         }
 
         public static Matrix PerspectiveProjection(double left, double right, double bottom, double top, double near, double far)

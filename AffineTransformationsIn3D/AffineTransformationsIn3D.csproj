@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Camera.cs" />
+    <Compile Include="Geometry\Camera.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,14 +59,11 @@
     <Compile Include="FormChangeModel.Designer.cs">
       <DependentUpon>FormChangeModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Geometry\Icosahedron.cs" />
     <Compile Include="Geometry\Matrix.cs" />
     <Compile Include="Geometry\Mesh.cs" />
     <Compile Include="Geometry\Graphics3D.cs" />
     <Compile Include="Geometry\MeshWithTexture.cs" />
-    <Compile Include="Geometry\Plot.cs" />
-    <Compile Include="Geometry\RotationFigure.cs" />
-    <Compile Include="Geometry\Tetrahedron.cs" />
+    <Compile Include="Geometry\Models.cs" />
     <Compile Include="Geometry\Transformations.cs" />
     <Compile Include="Geometry\Vector.cs" />
     <Compile Include="Geometry\MeshWithNormals.cs" />

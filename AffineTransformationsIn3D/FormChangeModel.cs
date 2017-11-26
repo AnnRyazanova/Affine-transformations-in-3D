@@ -36,15 +36,24 @@ namespace AffineTransformationsIn3D
             listBoxPoints.Items.RemoveAt(listBoxPoints.SelectedIndex);
         }
 
+        private static double F(double x, double y)
+        {
+            if (x == 0 && y == 0)
+                return 0;
+            return (x * x * y) / (x * x * x * x + y * y);
+        }
+
         private void Ok(object sender, EventArgs e)
         {
             var tab = tabControl1.SelectedTab;
             if (tabPagePolyhedron == tab)
             {
                 if (radioButtonTetrahedron.Checked)
-                    SelectedModel = new Tetrahedron(0.5);
+                    SelectedModel = Models.Tetrahedron(0.5);
+                else if (radioButtonIcosahedron.Checked)
+                    SelectedModel = Models.Icosahedron(0.5);
                 else
-                    SelectedModel = new Icosahedron(0.5);
+                    SelectedModel = Models.Cube(0.5);
             }
             else if (tabPageRotationFigure == tab)
             {
@@ -56,11 +65,11 @@ namespace AffineTransformationsIn3D
                 else if (radioButtonY.Checked) axis = 1;
                 else /* if (radioButtonZ.Checked) */ axis = 2;
                 var density = (int)numericUpDownDensity.Value;
-                SelectedModel = new RotationFigure(initial, axis, density);
+                SelectedModel = Models.RotationFigure(initial, axis, density);
             }
             else if (tabPagePlot == tab)
             {
-                SelectedModel = new Plot();
+                SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F);
             }
         }
     }

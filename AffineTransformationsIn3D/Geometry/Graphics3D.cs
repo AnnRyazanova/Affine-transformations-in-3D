@@ -6,30 +6,30 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class Graphics3D
     {
-        public Bitmap ColorBuffer { get; set; }
-        private double[,] ZBuffer { get; set; }
+        public Bitmap ColorBuffer { get; private set; }
+        private double[,] zBuffer;
 
-        public Matrix Transformation { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public Camera camera;
+        public double width;
+        public double height;
 
-        public Graphics3D(Matrix transformation, int width, int height)
+        public Graphics3D(Camera camera, int width, int height)
         {
-            Transformation = transformation;
-            Width = width;
-            Height = height;
+            this.camera = camera;
+            this.width = width;
+            this.height = height;
 
             ColorBuffer = new Bitmap(width + 1, height + 1);
-            ZBuffer = new double[height + 1, width + 1];
+            zBuffer = new double[height + 1, width + 1];
 
             for (int i = 0; i < height + 1; ++i)
                 for (int j = 0; j < width + 1; ++j)
-                    ZBuffer[i, j] = 1;
+                    zBuffer[i, j] = 1;
         }
 
         private Vector SpaceToClip(Vector v)
         {
-            return v * Transformation;
+            return v * camera.ViewProjection;
         }
 
         private Vector ClipToScreen(Vector v)
@@ -45,8 +45,8 @@ namespace AffineTransformationsIn3D.Geometry
         private Vector NormalizedToScreen(Vector v)
         {
             return new Vector(
-                (v.X + 1) / 2 * Width,
-                (-v.Y + 1) / 2 * Height,
+                (v.X + 1) / 2 * width,
+                (-v.Y + 1) / 2 * height,
                 v.Z);
         }
 
@@ -190,14 +190,14 @@ namespace AffineTransformationsIn3D.Geometry
             for (int dy = 0; dy < POINT_SIZE; ++dy)
             {
                 var y = (int)a.Coordinate.Y + dy - POINT_SIZE / 2;
-                if (y < 0 || Height <= y) return;
+                if (y < 0 || height <= y) return;
                 for (int dx = 0; dx < POINT_SIZE; ++dx)
                 {
                     var x = (int)a.Coordinate.X + dx - POINT_SIZE / 2;
-                    if (x < 0 || Width <= x) return;
-                    if (ZBuffer[y, x] > a.Coordinate.Z)
+                    if (x < 0 || width <= x) return;
+                    if (zBuffer[y, x] > a.Coordinate.Z)
                     {
-                        ZBuffer[y, x] = a.Coordinate.Z;
+                        zBuffer[y, x] = a.Coordinate.Z;
                         ColorBuffer.SetPixel(x, y, a.Color);
                     }
                 }
@@ -227,10 +227,10 @@ namespace AffineTransformationsIn3D.Geometry
             {
                 double f = dx < dy ? Math.Abs(currentY - a.Coordinate.Y) / dy : Math.Abs(currentX - a.Coordinate.X) / dx;
                 var point = Interpolate(a, b, f);
-                if (ZBuffer[currentY, currentX] > point.Coordinate.Z)
+                if (zBuffer[currentY, currentX] > point.Coordinate.Z)
                 {
                     ColorBuffer.SetPixel(currentX, currentY, point.Color);
-                    ZBuffer[currentY, currentX] = point.Coordinate.Z;
+                    zBuffer[currentY, currentX] = point.Coordinate.Z;
                 }
                 if (currentX == x1 && currentY == y1)
                     break;
@@ -277,6 +277,9 @@ namespace AffineTransformationsIn3D.Geometry
         // Принимает на вход координаты в пространстве экрана.
         private void DrawTriangleInternal(Vertex a, Vertex b, Vertex c)
         {
+            var normal = Vector.CrossProduct(b.Coordinate - a.Coordinate, c.Coordinate - a.Coordinate);
+            if (Vector.AngleBet(new Vector(0, 0, 1), normal) > Math.PI / 2)
+                return;
             if (a.Coordinate.Y > b.Coordinate.Y)
                 Swap(ref a, ref b);
             if (a.Coordinate.Y > c.Coordinate.Y)
@@ -296,9 +299,9 @@ namespace AffineTransformationsIn3D.Geometry
                 for (double x = left.Coordinate.X; x < right.Coordinate.X; ++x)
                 {
                     var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
-                    if (point.Coordinate.Z < ZBuffer[(int)y, (int)x])
+                    if (point.Coordinate.Z < zBuffer[(int)y, (int)x])
                     {
-                        ZBuffer[(int)y, (int)x] = point.Coordinate.Z;
+                        zBuffer[(int)y, (int)x] = point.Coordinate.Z;
                         ColorBuffer.SetPixel((int)x, (int)y, point.Color);
                     }
                 }
