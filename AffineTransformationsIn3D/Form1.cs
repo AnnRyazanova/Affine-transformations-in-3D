@@ -41,9 +41,9 @@ namespace AffineTransformationsIn3D
             sceneView4.ViewCamera = camera;
         }
 
-        private static double DegToRad(double deg)
+        private static double DegreesToRadians(double degrees)
         {
-            return deg / 180 * Math.PI;
+            return degrees / 180 * Math.PI;
         }
 
         private void RefreshScenes()
@@ -65,9 +65,9 @@ namespace AffineTransformationsIn3D
 
         private void Rotate(object sender, EventArgs e)
         {
-            double rotatingX = DegToRad((double)numericUpDown4.Value);
-            double rotatingY = DegToRad((double)numericUpDown5.Value);
-            double rotatingZ = DegToRad((double)numericUpDown6.Value);
+            double rotatingX = DegreesToRadians((double)numericUpDown4.Value);
+            double rotatingY = DegreesToRadians((double)numericUpDown5.Value);
+            double rotatingZ = DegreesToRadians((double)numericUpDown6.Value);
             CurrentMesh.Apply(Transformations.RotateX(rotatingX)
                 * Transformations.RotateY(rotatingY)
                 * Transformations.RotateZ(rotatingZ));
@@ -99,9 +99,9 @@ namespace AffineTransformationsIn3D
 
         private void RotateAroundCenter(object sender, EventArgs e)
         {
-            double angleX = DegToRad((double)numericUpDown10.Value);
-            double angleY = DegToRad((double)numericUpDown11.Value);
-            double angleZ = DegToRad((double)numericUpDown12.Value);
+            double angleX = DegreesToRadians((double)numericUpDown10.Value);
+            double angleY = DegreesToRadians((double)numericUpDown11.Value);
+            double angleZ = DegreesToRadians((double)numericUpDown12.Value);
             var p = CurrentMesh.Center;
             CurrentMesh.Apply(Transformations.RotateAroundPoint(p, angleX, angleY, angleZ));
             RefreshScenes();
@@ -117,7 +117,7 @@ namespace AffineTransformationsIn3D
                 (double)numericUpDownPoint2X.Value, 
                 (double)numericUpDownPoint2Y.Value, 
                 (double)numericUpDownPoint2Z.Value);
-            var angle = DegToRad((double)numericUpDownAngle.Value);
+            var angle = DegreesToRadians((double)numericUpDownAngle.Value);
             CurrentMesh.Apply(Transformations.RotateAroundLine(a, b, angle));
             RefreshScenes();
         }
