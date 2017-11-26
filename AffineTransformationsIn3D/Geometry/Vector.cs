@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D.Geometry
 {
@@ -35,6 +34,15 @@ namespace AffineTransformationsIn3D.Geometry
             return v * (1 / x);
         }
 
+        public static Vector operator +(Vector u, Vector v)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                u[i] += v[i];
+            }
+            return u;
+        }
+
         public static Vector operator +(double x, Vector v)
         {
             return v + x;
@@ -62,11 +70,26 @@ namespace AffineTransformationsIn3D.Geometry
             return -1 * v;
         }
 
+        public Vector Normalize()
+        {
+            var length = Modul();
+            if (0 == length) return new Vector(0, 0, 0);
+            return new Vector(X / length, Y / length, Z / length, W);
+        }
+
         // Скалярное произведение векторов
         public static double DotProduct(Vector u, Vector v)
         {
             double result = 0;
             for (int i = 0; i < 3; ++i)
+                result += u[i] * v[i];
+            return result / (u[3] * v[3]);
+        }
+
+        public static double DotProduct4(Vector u, Vector v)
+        {
+            double result = 0;
+            for (int i = 0; i < 4; ++i)
                 result += u[i] * v[i];
             return result;
         }

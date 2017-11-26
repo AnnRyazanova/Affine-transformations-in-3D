@@ -27,7 +27,7 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentMesh = new Icosahedron(1);
+            CurrentMesh = new Icosahedron(0.5);
             sceneView1.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0, 
                 Transformations.OrthogonalProjection());
             sceneView2.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
@@ -37,12 +37,8 @@ namespace AffineTransformationsIn3D
                 Transformations.RotateX(Math.PI / 2)
                 * Transformations.OrthogonalProjection());
             Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20);
-            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -Math.PI / 4, projection);
+            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -0.57, projection);
             sceneView4.ViewCamera = camera;
-
-            var v1 = new Vector(1, 0, 0) * Transformations.RotateZ(Math.PI / 2);
-            var v2 = new Vector(0, 1, 0) * Transformations.RotateX(Math.PI / 2);
-            var v3 = new Vector(0, 0, 1) * Transformations.RotateY(Math.PI / 2);
         }
 
         private static double DegToRad(double deg)
@@ -178,10 +174,10 @@ namespace AffineTransformationsIn3D
                 case Keys.A: camera.Position *= Transformations.Translate(0.1 * camera.Left); break;
                 case Keys.S: camera.Position *= Transformations.Translate(0.1 * camera.Backward); break; 
                 case Keys.D: camera.Position *= Transformations.Translate(0.1 * camera.Right); break;
-                case Keys.Left: camera.Fi += delta; break;
-                case Keys.Right: camera.Fi -= delta; break;
-                case Keys.Up: camera.Theta += delta; break;
-                case Keys.Down: camera.Theta -= delta; break;
+                case Keys.Left: camera.AngleY += delta; break;
+                case Keys.Right: camera.AngleY -= delta; break;
+                case Keys.Up: camera.AngleX += delta; break;
+                case Keys.Down: camera.AngleX -= delta; break;
             }
             RefreshScenes();
             return base.ProcessCmdKey(ref msg, keyData);

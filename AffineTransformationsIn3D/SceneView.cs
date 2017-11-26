@@ -21,9 +21,7 @@ namespace AffineTransformationsIn3D
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            if (null == Mesh) return;
             e.Graphics.Clear(SystemColors.Control);
-
             e.Graphics.DrawLines(Pens.Black, new Point[]
                 {
                     new Point(1, 1),
@@ -32,20 +30,24 @@ namespace AffineTransformationsIn3D
                     new Point(Width - 1, 1),
                     new Point(1, 1)
                 });
-            if (null == Mesh) return;
-            var graphics3D = new Graphics3D(e.Graphics, ViewCamera.ViewProjection, Width, Height);
+            var graphics3D = new Graphics3D(ViewCamera.ViewProjection, Width, Height);
+            var zero = new Vector(0, 0, 0);
             var x = new Vector(0.8, 0, 0);
             var y = new Vector(0, 0.8, 0);
             var z = new Vector(0, 0, 0.8);
-            graphics3D.DrawLine(new Vector(0, 0, 0), x, new Pen(Color.Red, 2));
-            graphics3D.DrawPoint(x, Color.Red);
-            graphics3D.DrawLine(new Vector(0, 0, 0), y, new Pen(Color.Green, 2));
-            graphics3D.DrawPoint(y, Color.Green);
-            graphics3D.DrawLine(new Vector(0, 0, 0), z, new Pen(Color.Blue, 2));
-            graphics3D.DrawPoint(z, Color.Blue);
-
+            graphics3D.DrawLine(
+                new Vertex(zero, new Vector(), Color.Red), 
+                new Vertex(x, new Vector(), Color.Red));
+            graphics3D.DrawPoint(new Vertex(x, new Vector(), Color.Red));
+            graphics3D.DrawLine(
+                new Vertex(zero, new Vector(), Color.Green), 
+                new Vertex(y, new Vector(), Color.Green));
+            graphics3D.DrawPoint(new Vertex(y, new Vector(), Color.Green));
+            graphics3D.DrawLine(
+                new Vertex(zero, new Vector(), Color.Blue), 
+                new Vertex(z, new Vector(), Color.Blue));
+            graphics3D.DrawPoint(new Vertex(z, new Vector(), Color.Blue));
             Mesh.Draw(graphics3D);
-            // рисование монолитной модели
             e.Graphics.DrawImage(graphics3D.ColorBuffer, 0, 0);
         }
     }
