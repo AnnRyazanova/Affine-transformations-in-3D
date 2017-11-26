@@ -83,7 +83,7 @@ namespace AffineTransformationsIn3D.Geometry
             double result = 0;
             for (int i = 0; i < 3; ++i)
                 result += u[i] * v[i];
-            return result / u[3] * v[3];
+            return result / (u[3] * v[3]);
         }
 
         public static double DotProduct4(Vector u, Vector v)
