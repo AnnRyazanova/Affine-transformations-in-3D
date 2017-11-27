@@ -312,17 +312,18 @@ namespace AffineTransformationsIn3D.Geometry
             unsafe
             {
                 byte* pointer = (byte*)bitmapData.Scan0.ToPointer();
-                for (double y = a.Coordinate.Y; y < c.Coordinate.Y; ++y)
+                for (double y = Math.Ceiling(a.Coordinate.Y); y < c.Coordinate.Y; ++y)
                 {
                     bool topHalf = y < b.Coordinate.Y;
                     var a0 = a;
                     var a1 = c;
-                    var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
                     var b0 = topHalf ? a : b;
                     var b1 = topHalf ? b : c;
+                    var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
                     var right = Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y));
-                    if (left.Coordinate.X > right.Coordinate.X) Swap(ref left, ref right);
-                    for (double x = left.Coordinate.X; x < right.Coordinate.X; ++x)
+                    if (left.Coordinate.X > right.Coordinate.X)
+                        Swap(ref left, ref right);
+                    for (double x = Math.Ceiling(left.Coordinate.X); x < right.Coordinate.X; ++x)
                     {
                         var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
                         if (point.Coordinate.Z < zBuffer[(int)y, (int)x])
