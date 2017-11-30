@@ -37,9 +37,8 @@ namespace AffineTransformationsIn3D
 
         private static double F(double x, double y)
         {
-            if (x == 0 && y == 0)
-                return 0;
-            return (x * x * y) / (x * x * x * x + y * y);
+            double r = x * x + y * y;
+            return Math.Cos(r) / (r + 1);
         }
 
         private void Ok(object sender, EventArgs e)
