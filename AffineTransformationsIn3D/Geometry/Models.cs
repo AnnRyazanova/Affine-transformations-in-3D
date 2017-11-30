@@ -103,7 +103,7 @@ namespace AffineTransformationsIn3D.Geometry
                     vertices[i * nz + j] = new Vector(x, function(x, z), z);
                 }
             for (int i = 0; i < nx - 1; ++i)
-                for (int j = 0; j < nz - 1; ++j)
+                for (int j = 0; j < nz - 1; j++)
                 {
                     indices[i * (nz - 1) + j] = new int[4] {
                         i * nz + j,
@@ -112,9 +112,84 @@ namespace AffineTransformationsIn3D.Geometry
                         i * nz + j + 1
                     };
                 }
-            //return new Mesh(vertices, indices);
-            return new MeshWithNormals(vertices, new Vector[nx * nz], indices);
+
+            int[][] res_t = DelBadY(vertices, indices, nz, nx);
+
+
+            return new Mesh(vertices, res_t);
         }
+
+        private static int[][] DelBadY(Vector[] vertices, int[][] indices, int nz, int nx)
+        {
+            List<int[]> res_indices = new List<int[]>();
+
+            for (int i = 0; i < nx - 1; ++i)
+            {
+                double y_max = double.MinValue;
+                double y_min = double.MaxValue;
+                for (int j = 0; j < i; ++j)
+                {
+                    if ((vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][0]].Y > y_max ||
+                        vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][2]].Y > y_max) &&
+                        (vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][1]].Y > y_max ||
+                        vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][3]].Y > y_max))
+                    {
+                        res_indices.Add(indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)]);
+                        y_max = Math.Max(Math.Max(vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][0]].Y,
+                                                  vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][1]].Y),
+                                         Math.Max(vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][2]].Y,
+                                                  vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][3]].Y));
+                    }
+
+                    if ((vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][0]].Y < y_min ||
+                        vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][2]].Y < y_min )&&
+                        (vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][1]].Y < y_min ||
+                        vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][3]].Y < y_min))
+                    {
+                        res_indices.Add(indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)]);
+                        y_min = Math.Min(Math.Min(vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][0]].Y,
+                                                  vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][1]].Y),
+                                         Math.Min(vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][2]].Y,
+                                                  vertices[indices[(nz - (2 + j)) * (nz - 1) + (i - j - 1)][3]].Y));
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < nx - 1; ++i)
+            {
+                double y_max = double.MinValue;
+                double y_min = double.MaxValue;
+                for (int j = i; j >= 0; --j)
+                {
+                    if ((vertices[indices[(j + 1) * nx - (i + 2)][0]].Y > y_max ||
+                        vertices[indices[(j + 1) * nx - (i + 2)][2]].Y > y_max) &&
+                        (vertices[indices[(j + 1) * nx - (i + 2)][1]].Y > y_max ||
+                        vertices[indices[(j + 1) * nx - (i + 2)][3]].Y > y_max))
+                    {
+                        res_indices.Add(indices[(j + 1) * nx - (i + 2)]);
+                        y_max = Math.Max(Math.Max(vertices[indices[(j + 1) * nx - (i + 2)][0]].Y,
+                                                  vertices[indices[(j + 1) * nx - (i + 2)][1]].Y),
+                                         Math.Max(vertices[indices[(j + 1) * nx - (i + 2)][2]].Y,
+                                                  vertices[indices[(j + 1) * nx - (i + 2)][3]].Y));
+                    }
+
+                    if ((vertices[indices[(j + 1) * nx - (i + 2)][0]].Y < y_min ||
+                        vertices[indices[(j + 1) * nx - (i + 2)][2]].Y < y_min) &&
+                        (vertices[indices[(j + 1) * nx - (i + 2)][1]].Y < y_min ||
+                        vertices[indices[(j + 1) * nx - (i + 2)][3]].Y < y_min))
+                    {
+                        res_indices.Add(indices[(j + 1) * nx - (i + 2)]);
+                        y_min = Math.Min(Math.Min(vertices[indices[(j + 1) * nx - (i + 2)][0]].Y,
+                                                  vertices[indices[(j + 1) * nx - (i + 2)][1]].Y),
+                                         Math.Min(vertices[indices[(j + 1) * nx - (i + 2)][2]].Y,
+                                                  vertices[indices[(j + 1) * nx - (i + 2)][3]].Y));
+                    }
+                }
+            }
+            return res_indices.ToArray();
+        }
+
 
         public static Mesh RotationFigure(IList<Vector> initial, int axis, int density)
         {
