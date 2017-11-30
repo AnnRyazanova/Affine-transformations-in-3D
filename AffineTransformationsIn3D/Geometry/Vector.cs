@@ -36,11 +36,11 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Vector operator +(Vector u, Vector v)
         {
-            for (int i = 0; i < 4; ++i)
-            {
-                u[i] += v[i];
-            }
-            return u;
+            Vector result = new Vector();
+            for (int i = 0; i < 3; ++i)
+                result[i] = u[i] * v.W + v[i] * u.W;
+            result.W = u.W * v.W;
+            return result;
         }
 
         public static Vector operator +(double x, Vector v)
@@ -50,8 +50,8 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Vector operator +(Vector v, double x)
         {
-            for (int i = 0; i < 4; ++i)
-                v[i] += x;
+            for (int i = 0; i < 3; ++i)
+                v[i] += x * v.W;
             return v;
         }
 
@@ -62,7 +62,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Vector operator -(double x, Vector v)
         {
-            return v + (-x);
+            return x + (-v);
         }
 
         public static Vector operator -(Vector v)
@@ -72,9 +72,12 @@ namespace AffineTransformationsIn3D.Geometry
 
         public Vector Normalize()
         {
-            var length = Modul();
+            var length = Modul() * W;
             if (0 == length) return new Vector(0, 0, 0);
-            return new Vector(X / length, Y / length, Z / length, W);
+            var result = new Vector(X / length, Y / length, Z / length, 1);
+            var resultLength = result.Modul();
+            if (0.1e6 < Math.Abs(1 - resultLength)) throw new Exception("You shouldn't see these words.");
+            return result;
         }
 
         // Скалярное произведение векторов
@@ -83,7 +86,7 @@ namespace AffineTransformationsIn3D.Geometry
             double result = 0;
             for (int i = 0; i < 3; ++i)
                 result += u[i] * v[i];
-            return result / (u[3] * v[3]);
+            return result / (u.W * v.W);
         }
 
         public static double DotProduct4(Vector u, Vector v)
@@ -98,9 +101,9 @@ namespace AffineTransformationsIn3D.Geometry
         public static Vector CrossProduct(Vector u, Vector v)
         {
             return new Vector(
-                u[1] * v[2] - u[2] * v[1],
-                u[2] * v[0] - u[0] * v[2],
-                u[0] * v[1] - u[1] * v[0]);
+                (u[1] * v[2] - u[2] * v[1]) / (u.W * v.W),
+                (u[2] * v[0] - u[0] * v[2]) / (u.W * v.W),
+                (u[0] * v[1] - u[1] * v[0]) / (u.W * v.W));
         }
 
         public static Vector operator *(Vector v, Matrix m)
@@ -149,7 +152,7 @@ namespace AffineTransformationsIn3D.Geometry
         // Модуль
         public double Modul()
         {
-            return Math.Sqrt(X * X + Y * Y + Z * Z);
+            return Math.Sqrt(DotProduct(this, this));
         }
 
         // Угол между векторами
@@ -160,14 +163,14 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static double Dist(Vector u, Vector v)
         {
-            return Math.Sqrt((u.X - v.X)*(u.X - v.X) +
-                             (u.Y - v.Y)*(u.Y - v.Y) + 
-                             (u.Z - v.Z)* (u.Z - v.Z));
+            return Math.Sqrt((u.X - v.X) * (u.X - v.X) +
+                             (u.Y - v.Y) * (u.Y - v.Y) +
+                             (u.Z - v.Z) * (u.Z - v.Z));
         }
 
         public static Vector operator -(Vector u, Vector v)
         {
-            return new Vector(u.X- v.X, u.Y - v.Y, u.Z-v.Z);
+            return u + (-v);
         }
     }
 }

@@ -6,18 +6,18 @@ namespace AffineTransformationsIn3D
 {
     public partial class Form1 : Form
     {
-        private Mesh CurrentMesh
+        private IDrawable CurrentDrawable
         {
             get
             {
-                return sceneView4.Mesh;
+                return sceneView4.Drawable;
             }
             set
             {
-                sceneView1.Mesh = value;
-                sceneView2.Mesh = value;
-                sceneView3.Mesh = value;
-                sceneView4.Mesh = value;
+                sceneView1.Drawable = value;
+                sceneView2.Drawable = value;
+                sceneView3.Drawable = value;
+                sceneView4.Drawable = value;
                 RefreshScenes();
             }
         }
@@ -27,18 +27,18 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentMesh = Models.Icosahedron(0.5);
-            sceneView1.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0, 
+            CurrentDrawable = Models.Sphere(0.5, 20, 20);
+            sceneView1.Camera = new Camera(new Vector(0, 0, 0), 0, 0, 
                 Transformations.OrthogonalProjection());
-            sceneView2.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
+            sceneView2.Camera = new Camera(new Vector(0, 0, 0), 0, 0,
                 Transformations.RotateY(-Math.PI / 2) 
                 * Transformations.OrthogonalProjection());
-            sceneView3.ViewCamera = new Camera(new Vector(0, 0, 0), 0, 0,
+            sceneView3.Camera = new Camera(new Vector(0, 0, 0), 0, 0,
                 Transformations.RotateX(Math.PI / 2)
                 * Transformations.OrthogonalProjection());
             Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20);
-            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -0.57, projection);
-            sceneView4.ViewCamera = camera;
+            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -0.6, projection);
+            sceneView4.Camera = camera;
         }
 
         private static double DegreesToRadians(double degrees)
@@ -59,7 +59,7 @@ namespace AffineTransformationsIn3D
             double scalingX = (double)numericUpDown1.Value;
             double scalingY = (double)numericUpDown2.Value;
             double scalingZ = (double)numericUpDown3.Value;
-            CurrentMesh.Apply(Transformations.Scale(scalingX, scalingY, scalingZ));
+            CurrentDrawable.Apply(Transformations.Scale(scalingX, scalingY, scalingZ));
             RefreshScenes();
         }
 
@@ -68,7 +68,7 @@ namespace AffineTransformationsIn3D
             double rotatingX = DegreesToRadians((double)numericUpDown4.Value);
             double rotatingY = DegreesToRadians((double)numericUpDown5.Value);
             double rotatingZ = DegreesToRadians((double)numericUpDown6.Value);
-            CurrentMesh.Apply(Transformations.RotateX(rotatingX)
+            CurrentDrawable.Apply(Transformations.RotateX(rotatingX)
                 * Transformations.RotateY(rotatingY)
                 * Transformations.RotateZ(rotatingZ));
             RefreshScenes();
@@ -79,7 +79,7 @@ namespace AffineTransformationsIn3D
             double translatingX = (double)numericUpDown7.Value;
             double translatingY = (double)numericUpDown8.Value;
             double translatingZ = (double)numericUpDown9.Value;
-            CurrentMesh.Apply(Transformations.Translate(translatingX, translatingY, translatingZ));
+            CurrentDrawable.Apply(Transformations.Translate(translatingX, translatingY, translatingZ));
             RefreshScenes();
         }
 
@@ -93,7 +93,7 @@ namespace AffineTransformationsIn3D
             else if (radioButton3.Checked)
                 reflection = Transformations.ReflectZ();
             else throw new Exception("Unreachable statement");
-            CurrentMesh.Apply(reflection);
+            CurrentDrawable.Apply(reflection);
             RefreshScenes();
         }
 
@@ -102,8 +102,8 @@ namespace AffineTransformationsIn3D
             double angleX = DegreesToRadians((double)numericUpDown10.Value);
             double angleY = DegreesToRadians((double)numericUpDown11.Value);
             double angleZ = DegreesToRadians((double)numericUpDown12.Value);
-            var p = CurrentMesh.Center;
-            CurrentMesh.Apply(Transformations.RotateAroundPoint(p, angleX, angleY, angleZ));
+            var p = CurrentDrawable.Center;
+            CurrentDrawable.Apply(Transformations.RotateAroundPoint(p, angleX, angleY, angleZ));
             RefreshScenes();
         }
 
@@ -118,7 +118,7 @@ namespace AffineTransformationsIn3D
                 (double)numericUpDownPoint2Y.Value, 
                 (double)numericUpDownPoint2Z.Value);
             var angle = DegreesToRadians((double)numericUpDownAngle.Value);
-            CurrentMesh.Apply(Transformations.RotateAroundLine(a, b, angle));
+            CurrentDrawable.Apply(Transformations.RotateAroundLine(a, b, angle));
             RefreshScenes();
         }
 
@@ -127,18 +127,20 @@ namespace AffineTransformationsIn3D
             var dialog = new FormChangeModel();
             if (DialogResult.OK != dialog.ShowDialog()) return;
             if (null == dialog.SelectedModel) return;
-            CurrentMesh = dialog.SelectedModel;
+            CurrentDrawable = dialog.SelectedModel;
         }
 
         private void SaveFile(object sender, EventArgs e)
         {
+            if (!(CurrentDrawable is Mesh)) return;
+            var mesh = (Mesh)CurrentDrawable;
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = "Object Files(*.obj)|*.obj|Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    CurrentMesh.Save(saveDialog.FileName);
+                    mesh.Save(saveDialog.FileName);
                 }
                 catch
                 {
@@ -156,7 +158,7 @@ namespace AffineTransformationsIn3D
                 return;
             try
             {
-                CurrentMesh = new Mesh(openDialog.FileName);
+                CurrentDrawable = new Mesh(openDialog.FileName);
             }
             catch
             {

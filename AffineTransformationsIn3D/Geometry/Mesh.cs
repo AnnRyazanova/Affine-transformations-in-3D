@@ -6,37 +6,35 @@ using System.Linq;
 
 namespace AffineTransformationsIn3D.Geometry
 {
-    public class Mesh
+    public class Mesh : IDrawable
     {
-        protected Vector[] Vertices { get; set; }
+        protected Vector[] Coordinates { get; set; }
         protected int[][] Indices { get; set; }
 
-        public Vector Center
+        public bool VerticesVisible { get; set; } = false;
+        public bool EdgesVisible { get; set; } = true;
+
+        public virtual Vector Center
         {
             get
             {
                 Vector center = new Vector();
-                foreach (var v in Vertices)
+                foreach (var v in Coordinates)
                 {
                     center.X += v.X;
                     center.Y += v.Y;
                     center.Z += v.Z;
                 }
-                center.X /= Vertices.Length;
-                center.Y /= Vertices.Length;
-                center.Z /= Vertices.Length;
+                center.X /= Coordinates.Length;
+                center.Y /= Coordinates.Length;
+                center.Z /= Coordinates.Length;
                 return center;
             }
         }
 
-        public Mesh(Tuple<Vector[], int[][]> data)
-            : this(data.Item1, data.Item2)
-        {
-        }
-
         public Mesh(Vector[] vertices, int[][] indices)
         {
-            Vertices = vertices;
+            Coordinates = vertices;
             Indices = indices;
         }
 
@@ -74,14 +72,14 @@ namespace AffineTransformationsIn3D.Geometry
                 index++;
                 indexPointSeq++;
             }
-            Vertices = vertices.ToArray();
+            Coordinates = vertices.ToArray();
             Indices = indices.Select(x => x.ToArray()).ToArray();
         }
 
-        public void Apply(Matrix transformation)
+        public virtual void Apply(Matrix transformation)
         {
-            for (int i = 0; i < Vertices.Length; ++i)
-                Vertices[i] *= transformation;
+            for (int i = 0; i < Coordinates.Length; ++i)
+                Coordinates[i] *= transformation;
         }
 
         protected static Color NextColor(Random r)
@@ -91,22 +89,25 @@ namespace AffineTransformationsIn3D.Geometry
 
         public virtual void Draw(Graphics3D graphics)
         {
-            Random r = new Random(42);
-            foreach (var facet in Indices)
-                for (int i = 0; i < facet.Length; ++i)
-                {
-                    var a = new Vertex(Vertices[facet[i]], new Vector(), Color.Black);
-                    var b = new Vertex(Vertices[facet[(i + 1) % facet.Length]], new Vector(), Color.Black);
-                    graphics.DrawLine(a, b);
-                }
+            if (VerticesVisible)
+                foreach (var v in Coordinates)
+                    graphics.DrawPoint(new Vertex(v));
+            if (EdgesVisible)
+                foreach (var facet in Indices)
+                    for (int i = 0; i < facet.Length; ++i)
+                    {
+                        var a = new Vertex(Coordinates[facet[i]]);
+                        var b = new Vertex(Coordinates[facet[(i + 1) % facet.Length]]);
+                        graphics.DrawLine(a, b);
+                    }
         }
 
         public void Save(string path)
         {
             string info = "# File Created: " + DateTime.Now.ToString() + "\r\n";
-            foreach (var v in Vertices)
+            foreach (var v in Coordinates)
                 info += "v " + v.X + " " + v.Y + " " + v.Z + "\r\n";
-            info += "# " + Vertices.Length + " vertices\r\n";
+            info += "# " + Coordinates.Length + " vertices\r\n";
             foreach (var facet in Indices)
             {
                 info += "f ";

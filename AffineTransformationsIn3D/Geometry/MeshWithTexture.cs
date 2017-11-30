@@ -4,8 +4,8 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class MeshWithTexture : Mesh
     {
-        Bitmap texture;
-        PointF[] textureCoordinates;
+        private Bitmap texture;
+        private PointF[] textureCoordinates;
 
         public MeshWithTexture(Vector[] vertices, int[][] indices, PointF[] textureCoordinates) : base(vertices, indices)
         {

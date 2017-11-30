@@ -2,55 +2,96 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace AffineTransformationsIn3D.Geometry
 {
     public class Graphics3D
     {
+        /*
+         * Clockwise - сторона, на которой вершины идут по часовой стрелки.
+         * Counterclockwise - сторона, на которой вершины идут против часовой стрелки.
+         * None - никакая сторона.
+         */
+        public enum Face { Clockwise, Counterclockwise, None }
+
+        // Свойство, говорящее о том какую сторону треугольника не рисовать.
+        public Face CullFace { get; set; } = Face.Clockwise;
+
+        // Включен ли просчёт освещения?
+        public bool LightEnabled { get; set; } = true;
+        // Список источников света.
+        public IList<LightSource> LightSources { get; set; } =
+            new LightSource[3]
+            {
+                new LightSource(new Vector(1, 0, 0), Color.Pink),
+                new LightSource(new Vector(0, 1, 0), Color.LightGreen),
+                new LightSource(new Vector(0, 0, 1), Color.LightBlue)
+            };
+
+        // Использовать ли буфер глубины?
+        public bool ZBufferEnabled { get; set; } = true;
+
+        // Буфер цвета.
         private Bitmap colorBuffer;
+        // Буфер глубины.
         private double[,] zBuffer;
 
         private BitmapData bitmapData;
 
-        public Camera camera;
-        public double width;
-        public double height;
+        private SceneView sceneView;
+        private Matrix viewProjection;
 
-        public Graphics3D(Camera camera, int width, int height)
+        private double Width { get { return sceneView.Width; } }
+        private double Height { get { return sceneView.Height; } }
+
+        public Graphics3D(SceneView sceneView)
         {
-            this.camera = camera;
-            this.width = width;
-            this.height = height;
+            this.sceneView = sceneView;
+            Resize();
+        }
 
-            colorBuffer = new Bitmap(width + 1, height + 1, PixelFormat.Format24bppRgb);
-            zBuffer = new double[height + 1, width + 1];
+        public void Resize()
+        {
+            colorBuffer = new Bitmap((int)Width + 1, (int)Height + 1, PixelFormat.Format24bppRgb);
+            zBuffer = new double[(int)Height + 1, (int)Width + 1];
+        }
 
+        public void StartDrawing()
+        {
+            // Очистим изображение
+            using (var g = Graphics.FromImage(colorBuffer))
+                g.FillRectangle(Brushes.Black, 0, 0, (int)Width, (int)Height);
+            // Очистим z-буфер
+            for (int i = 0; i < Height + 1; ++i)
+                for (int j = 0; j < Width + 1; ++j)
+                    zBuffer[i, j] = 1;
             bitmapData = colorBuffer.LockBits(
                 new Rectangle(0, 0, colorBuffer.Width, colorBuffer.Height),
                 ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
-            unsafe
-            {
-                var pointer = (byte*)bitmapData.Scan0.ToPointer();
-                for (int i = 0; i < height + 1; ++i)
-                    for (int j = 0; j < width + 1; ++j)
-                    {
-                        zBuffer[i, j] = 1;
-                        SetPixel(pointer, j, i, Control.DefaultBackColor);
-                    }
-            }
+            viewProjection = sceneView.Camera.ViewProjection;
         }
 
-        private unsafe void SetPixel(byte* pointer, int x, int y, Color color)
+        public Bitmap FinishDrawing()
         {
-            pointer[y * bitmapData.Stride + 3 * x + 0] = color.R;
+            colorBuffer.UnlockBits(bitmapData);
+            bitmapData = null;
+            return colorBuffer;
+        }
+
+        private unsafe void SetPixel(int x, int y, double z, Color color)
+        {
+            if (ZBufferEnabled)
+                if (zBuffer[y, x] < z) return;
+                else zBuffer[y, x] = z;
+            var pointer = (byte*)bitmapData.Scan0.ToPointer();
+            pointer[y * bitmapData.Stride + 3 * x + 0] = color.B;
             pointer[y * bitmapData.Stride + 3 * x + 1] = color.G;
-            pointer[y * bitmapData.Stride + 3 * x + 2] = color.B;
+            pointer[y * bitmapData.Stride + 3 * x + 2] = color.R;
         }
 
         private Vector SpaceToClip(Vector v)
         {
-            return v * camera.ViewProjection;
+            return v * viewProjection;
         }
 
         private Vector ClipToScreen(Vector v)
@@ -66,8 +107,8 @@ namespace AffineTransformationsIn3D.Geometry
         private Vector NormalizedToScreen(Vector v)
         {
             return new Vector(
-                (v.X + 1) / 2 * width,
-                (-v.Y + 1) / 2 * height,
+                (v.X + 1) / 2 * Width,
+                (-v.Y + 1) / 2 * Height,
                 v.Z);
         }
 
@@ -102,8 +143,9 @@ namespace AffineTransformationsIn3D.Geometry
         {
             return new Vertex(
                 Interpolate(a.Coordinate, b.Coordinate, f),
+                Interpolate(a.Color, b.Color, f),
                 Interpolate(a.Normal, b.Normal, f),
-                Interpolate(a.Color, b.Color, f));
+                Interpolate(a.TextureCoordinate, b.TextureCoordinate, f));
         }
 
         /* All clipping was written based on
@@ -202,23 +244,15 @@ namespace AffineTransformationsIn3D.Geometry
             if (!ClipPoint(a.Coordinate)) return;
             a.Coordinate = ClipToScreen(a.Coordinate);
             const int POINT_SIZE = 5;
-            unsafe
+            for (int dy = 0; dy < POINT_SIZE; ++dy)
             {
-                var pointer = (byte*)bitmapData.Scan0.ToPointer();
-                for (int dy = 0; dy < POINT_SIZE; ++dy)
+                var y = (int)a.Coordinate.Y + dy - POINT_SIZE / 2;
+                if (y < 0 || Height <= y) return;
+                for (int dx = 0; dx < POINT_SIZE; ++dx)
                 {
-                    var y = (int)a.Coordinate.Y + dy - POINT_SIZE / 2;
-                    if (y < 0 || height <= y) return;
-                    for (int dx = 0; dx < POINT_SIZE; ++dx)
-                    {
-                        var x = (int)a.Coordinate.X + dx - POINT_SIZE / 2;
-                        if (x < 0 || width <= x) return;
-                        if (zBuffer[y, x] > a.Coordinate.Z)
-                        {
-                            zBuffer[y, x] = a.Coordinate.Z;
-                            SetPixel(pointer, x, y, a.Color);
-                        }
-                    }
+                    var x = (int)a.Coordinate.X + dx - POINT_SIZE / 2;
+                    if (x < 0 || Width <= x) return;
+                    SetPixel(x, y, a.Coordinate.Z, a.Color);
                 }
             }
         }
@@ -242,37 +276,67 @@ namespace AffineTransformationsIn3D.Geometry
             int err = dx - dy;
             int currentX = x0;
             int currentY = y0;
-            unsafe
+            while (true)
             {
-                var pointer = (byte*)bitmapData.Scan0.ToPointer();
-                while (true)
+                double f = dx < dy ? Math.Abs(currentY - a.Coordinate.Y) / dy : Math.Abs(currentX - a.Coordinate.X) / dx;
+                var point = Interpolate(a, b, f);
+                SetPixel(currentX, currentY, point.Coordinate.Z, point.Color);
+                if (currentX == x1 && currentY == y1)
+                    break;
+                int e2 = 2 * err;
+                if (e2 > -dy)
                 {
-                    double f = dx < dy ? Math.Abs(currentY - a.Coordinate.Y) / dy : Math.Abs(currentX - a.Coordinate.X) / dx;
-                    var point = Interpolate(a, b, f);
-                    if (zBuffer[currentY, currentX] > point.Coordinate.Z)
-                    {
-                        zBuffer[currentY, currentX] = point.Coordinate.Z;
-                        SetPixel(pointer, currentX, currentY, point.Color);
-                    }
-                    if (currentX == x1 && currentY == y1)
-                        break;
-                    int e2 = 2 * err;
-                    if (e2 > -dy)
-                    {
-                        err = err - dy;
-                        currentX = currentX + sx;
-                    }
-                    if (e2 < dx)
-                    {
-                        err = err + dx;
-                        currentY = currentY + sy;
-                    }
+                    err = err - dy;
+                    currentX = currentX + sx;
+                }
+                if (e2 < dx)
+                {
+                    err = err + dx;
+                    currentY = currentY + sy;
                 }
             }
         }
 
+        /* Если на входе значения от 0 до 1, то на выходе тоже будут значения от 0 до 1.
+         * Используется для сложения компонентов цветов. */
+        private double NormalizedAdd(double x, double y)
+        {
+            return x + y - x * y;
+        }
+
+        private Color NormalizedAdd(Color a, Color b)
+        {
+            return Color.FromArgb(
+                (int)(255 * NormalizedAdd(a.R / 255.0, b.R / 255.0)),
+                (int)(255 * NormalizedAdd(a.G / 255.0, b.G / 255.0)),
+                (int)(255 * NormalizedAdd(a.B / 255.0, b.B / 255.0)));
+        }
+
+        private Color CalculateLight(Vertex a, LightSource light)
+        {
+            var i = Math.Max(0, Vector.DotProduct(a.Normal, (light.Coordinate - a.Coordinate).Normalize()));
+            return Color.FromArgb(
+                (byte)(a.Color.R * light.Color.R / 255.0 * i),
+                (byte)(a.Color.G * light.Color.G / 255.0 * i),
+                (byte)(a.Color.B * light.Color.B / 255.0 * i));
+        }
+
         public void DrawTriangle(Vertex a, Vertex b, Vertex c)
         {
+            if (LightEnabled)
+            {
+                Color ac, bc, cc;
+                ac = bc = cc = Color.Black;
+                foreach (var lightSource in LightSources)
+                {
+                    ac = NormalizedAdd(ac, CalculateLight(a, lightSource));
+                    bc = NormalizedAdd(bc, CalculateLight(b, lightSource));
+                    cc = NormalizedAdd(cc, CalculateLight(c, lightSource));
+                }
+                a.Color = ac;
+                b.Color = bc;
+                c.Color = cc;
+            }
             a.Coordinate = SpaceToClip(a.Coordinate);
             b.Coordinate = SpaceToClip(b.Coordinate);
             c.Coordinate = SpaceToClip(c.Coordinate);
@@ -300,47 +364,38 @@ namespace AffineTransformationsIn3D.Geometry
         // Принимает на вход координаты в пространстве экрана.
         private void DrawTriangleInternal(Vertex a, Vertex b, Vertex c)
         {
-            var normal = Vector.CrossProduct(b.Coordinate - a.Coordinate, c.Coordinate - a.Coordinate);
-            if (Vector.AngleBet(new Vector(0, 0, 1), normal) > Math.PI / 2)
-                return;
+            if (Face.None != CullFace)
+            {
+                var u = b.Coordinate - a.Coordinate;
+                var v = c.Coordinate - a.Coordinate;
+                if (Face.Counterclockwise == CullFace)
+                    Swap(ref u, ref v);
+                if (Vector.AngleBet(new Vector(0, 0, 1), Vector.CrossProduct(u, v)) > Math.PI / 2)
+                    return;
+            }
             if (a.Coordinate.Y > b.Coordinate.Y)
                 Swap(ref a, ref b);
             if (a.Coordinate.Y > c.Coordinate.Y)
                 Swap(ref a, ref c);
             if (b.Coordinate.Y > c.Coordinate.Y)
                 Swap(ref b, ref c);
-            unsafe
+            for (double y = Math.Ceiling(a.Coordinate.Y); y < c.Coordinate.Y; ++y)
             {
-                byte* pointer = (byte*)bitmapData.Scan0.ToPointer();
-                for (double y = Math.Ceiling(a.Coordinate.Y); y < c.Coordinate.Y; ++y)
+                bool topHalf = y < b.Coordinate.Y;
+                var a0 = a;
+                var a1 = c;
+                var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
+                var b0 = topHalf ? a : b;
+                var b1 = topHalf ? b : c;
+                var right = Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y));
+                if (left.Coordinate.X > right.Coordinate.X)
+                    Swap(ref left, ref right);
+                for (double x = Math.Ceiling(left.Coordinate.X); x < right.Coordinate.X; ++x)
                 {
-                    bool topHalf = y < b.Coordinate.Y;
-                    var a0 = a;
-                    var a1 = c;
-                    var b0 = topHalf ? a : b;
-                    var b1 = topHalf ? b : c;
-                    var left = Interpolate(a0, a1, (y - a0.Coordinate.Y) / (a1.Coordinate.Y - a0.Coordinate.Y));
-                    var right = Interpolate(b0, b1, (y - b0.Coordinate.Y) / (b1.Coordinate.Y - b0.Coordinate.Y));
-                    if (left.Coordinate.X > right.Coordinate.X)
-                        Swap(ref left, ref right);
-                    for (double x = Math.Ceiling(left.Coordinate.X); x < right.Coordinate.X; ++x)
-                    {
-                        var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
-                        if (point.Coordinate.Z < zBuffer[(int)y, (int)x])
-                        {
-                            zBuffer[(int)y, (int)x] = point.Coordinate.Z;
-                            SetPixel(pointer, (int)x, (int)y, point.Color);
-                        }
-                    }
+                    var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
+                    SetPixel((int)x, (int)y, point.Coordinate.Z, point.Color);
                 }
             }
-        }
-
-        public Bitmap FinishDrawing()
-        {
-            colorBuffer.UnlockBits(bitmapData);
-            bitmapData = null;
-            return colorBuffer;
         }
     }
 }

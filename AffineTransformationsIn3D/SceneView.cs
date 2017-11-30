@@ -1,13 +1,16 @@
 ﻿using AffineTransformationsIn3D.Geometry;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace AffineTransformationsIn3D
 {
-    class SceneView : Control
+    public class SceneView : Control
     {
-        public Camera ViewCamera { get; set; }
-        public Mesh Mesh { get; set; }
+        public Camera Camera { get; set; }
+        public IDrawable Drawable { get; set; }
+
+        public Graphics3D Graphics3D { get; private set; }
 
         public SceneView() : base()
         {
@@ -16,38 +19,37 @@ namespace AffineTransformationsIn3D
                       | ControlStyles.UserPaint;
             SetStyle(flags, true);
             ResizeRedraw = true;
+            Graphics3D = new Graphics3D(this);
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Graphics3D.Resize();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            var graphics3D = new Graphics3D(ViewCamera, Width, Height);
             var zero = new Vector(0, 0, 0);
             var x = new Vector(0.8, 0, 0);
             var y = new Vector(0, 0.8, 0);
             var z = new Vector(0, 0, 0.8);
-            graphics3D.DrawLine(
-                new Vertex(zero, new Vector(), Color.Red), 
-                new Vertex(x, new Vector(), Color.Red));
-            graphics3D.DrawPoint(new Vertex(x, new Vector(), Color.Red));
-            graphics3D.DrawLine(
-                new Vertex(zero, new Vector(), Color.Green), 
-                new Vertex(y, new Vector(), Color.Green));
-            graphics3D.DrawPoint(new Vertex(y, new Vector(), Color.Green));
-            graphics3D.DrawLine(
-                new Vertex(zero, new Vector(), Color.Blue), 
-                new Vertex(z, new Vector(), Color.Blue));
-            graphics3D.DrawPoint(new Vertex(z, new Vector(), Color.Blue));
-            Mesh.Draw(graphics3D);
-            e.Graphics.DrawImage(graphics3D.FinishDrawing(), 0, 0);
-            e.Graphics.DrawLines(Pens.Black, new Point[]
-                {
-                    new Point(0, 0),
-                    new Point(0, Height - 1),
-                    new Point(Width - 1, Height - 1),
-                    new Point(Width - 1, 0),
-                    new Point(0, 0)
-                });
+            Graphics3D.StartDrawing();
+            Graphics3D.DrawLine(
+                new Vertex(zero, Color.Red), 
+                new Vertex(x, Color.Red));
+            Graphics3D.DrawPoint(new Vertex(x, Color.Red));
+            Graphics3D.DrawLine(
+                new Vertex(zero, Color.Green), 
+                new Vertex(y, Color.Green));
+            Graphics3D.DrawPoint(new Vertex(y, Color.Green));
+            Graphics3D.DrawLine(
+                new Vertex(zero, Color.Blue), 
+                new Vertex(z, Color.Blue));
+            Graphics3D.DrawPoint(new Vertex(z, Color.Blue));
+            Drawable.Draw(Graphics3D);
+            e.Graphics.DrawImage(Graphics3D.FinishDrawing(), 0, 0);
         }
     }
 }

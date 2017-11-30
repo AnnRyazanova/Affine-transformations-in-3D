@@ -51,8 +51,10 @@ namespace AffineTransformationsIn3D
                     SelectedModel = Models.Tetrahedron(0.5);
                 else if (radioButtonIcosahedron.Checked)
                     SelectedModel = Models.Icosahedron(0.5);
-                else
+                else if(radioButtonCube.Checked)
                     SelectedModel = Models.Cube(0.5);
+                else
+                    SelectedModel = Models.Sphere(0.5, 20, 20);
             }
             else if (tabPageRotationFigure == tab)
             {

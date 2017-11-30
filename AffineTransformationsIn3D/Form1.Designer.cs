@@ -183,45 +183,45 @@
             // 
             this.sceneView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView3.Location = new System.Drawing.Point(3, 315);
-            this.sceneView3.Mesh = null;
+            this.sceneView3.Drawable = null;
             this.sceneView3.Name = "sceneView3";
             this.sceneView3.Size = new System.Drawing.Size(353, 281);
             this.sceneView3.TabIndex = 2;
             this.sceneView3.Text = "sceneView3";
-            this.sceneView3.ViewCamera = null;
+            this.sceneView3.Camera = null;
             // 
             // sceneView4
             // 
             this.sceneView4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView4.Location = new System.Drawing.Point(362, 315);
-            this.sceneView4.Mesh = null;
+            this.sceneView4.Drawable = null;
             this.sceneView4.Name = "sceneView4";
             this.sceneView4.Size = new System.Drawing.Size(353, 281);
             this.sceneView4.TabIndex = 3;
             this.sceneView4.Text = "sceneView4";
-            this.sceneView4.ViewCamera = null;
+            this.sceneView4.Camera = null;
             // 
             // sceneView1
             // 
             this.sceneView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView1.Location = new System.Drawing.Point(3, 16);
-            this.sceneView1.Mesh = null;
+            this.sceneView1.Drawable = null;
             this.sceneView1.Name = "sceneView1";
             this.sceneView1.Size = new System.Drawing.Size(353, 280);
             this.sceneView1.TabIndex = 0;
             this.sceneView1.Text = "sceneView1";
-            this.sceneView1.ViewCamera = null;
+            this.sceneView1.Camera = null;
             // 
             // sceneView2
             // 
             this.sceneView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sceneView2.Location = new System.Drawing.Point(362, 16);
-            this.sceneView2.Mesh = null;
+            this.sceneView2.Drawable = null;
             this.sceneView2.Name = "sceneView2";
             this.sceneView2.Size = new System.Drawing.Size(353, 280);
             this.sceneView2.TabIndex = 1;
             this.sceneView2.Text = "sceneView2";
-            this.sceneView2.ViewCamera = null;
+            this.sceneView2.Camera = null;
             // 
             // label1
             // 

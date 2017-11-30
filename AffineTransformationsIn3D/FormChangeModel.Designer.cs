@@ -31,6 +31,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePolyhedron = new System.Windows.Forms.TabPage();
+            this.radioButtonCube = new System.Windows.Forms.RadioButton();
             this.radioButtonIcosahedron = new System.Windows.Forms.RadioButton();
             this.radioButtonTetrahedron = new System.Windows.Forms.RadioButton();
             this.tabPageRotationFigure = new System.Windows.Forms.TabPage();
@@ -58,7 +59,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.radioButtonCube = new System.Windows.Forms.RadioButton();
+            this.radioButtonSphere = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPagePolyhedron.SuspendLayout();
@@ -106,6 +107,7 @@
             // 
             // tabPagePolyhedron
             // 
+            this.tabPagePolyhedron.Controls.Add(this.radioButtonSphere);
             this.tabPagePolyhedron.Controls.Add(this.radioButtonCube);
             this.tabPagePolyhedron.Controls.Add(this.radioButtonIcosahedron);
             this.tabPagePolyhedron.Controls.Add(this.radioButtonTetrahedron);
@@ -116,6 +118,17 @@
             this.tabPagePolyhedron.TabIndex = 0;
             this.tabPagePolyhedron.Text = "Многогранник";
             this.tabPagePolyhedron.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonCube
+            // 
+            this.radioButtonCube.AutoSize = true;
+            this.radioButtonCube.Location = new System.Drawing.Point(6, 53);
+            this.radioButtonCube.Name = "radioButtonCube";
+            this.radioButtonCube.Size = new System.Drawing.Size(43, 17);
+            this.radioButtonCube.TabIndex = 2;
+            this.radioButtonCube.TabStop = true;
+            this.radioButtonCube.Text = "Куб";
+            this.radioButtonCube.UseVisualStyleBackColor = true;
             // 
             // radioButtonIcosahedron
             // 
@@ -474,16 +487,16 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Ok);
             // 
-            // radioButtonCube
+            // radioButtonSphere
             // 
-            this.radioButtonCube.AutoSize = true;
-            this.radioButtonCube.Location = new System.Drawing.Point(6, 53);
-            this.radioButtonCube.Name = "radioButtonCube";
-            this.radioButtonCube.Size = new System.Drawing.Size(43, 17);
-            this.radioButtonCube.TabIndex = 2;
-            this.radioButtonCube.TabStop = true;
-            this.radioButtonCube.Text = "Куб";
-            this.radioButtonCube.UseVisualStyleBackColor = true;
+            this.radioButtonSphere.AutoSize = true;
+            this.radioButtonSphere.Location = new System.Drawing.Point(6, 76);
+            this.radioButtonSphere.Name = "radioButtonSphere";
+            this.radioButtonSphere.Size = new System.Drawing.Size(58, 17);
+            this.radioButtonSphere.TabIndex = 3;
+            this.radioButtonSphere.TabStop = true;
+            this.radioButtonSphere.Text = "Сфера";
+            this.radioButtonSphere.UseVisualStyleBackColor = true;
             // 
             // FormChangeModel
             // 
@@ -547,5 +560,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton radioButtonCube;
+        private System.Windows.Forms.RadioButton radioButtonSphere;
     }
 }

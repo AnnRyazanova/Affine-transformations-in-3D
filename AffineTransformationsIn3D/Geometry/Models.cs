@@ -6,10 +6,37 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public static class Models
     {
+        public static Mesh Sphere(double diameter, int slices, int stacks)
+        {
+            var radius = diameter / 2;
+            var vertices = new Vector[slices * stacks];
+            var normals = new Vector[slices * stacks];
+            var indices = new int[slices * (stacks - 1)][];
+            for (int stack = 0; stack < stacks; ++stack)
+                for (int slice = 0; slice < slices; ++slice)
+                {
+                    var theta = Math.PI * stack / (stacks - 1.0);
+                    var phi = 2 * Math.PI * (slice / (slices - 1.0));
+                    vertices[stack * slices + slice] = new Vector(
+                        radius * Math.Sin(theta) * Math.Cos(phi),
+                        radius * Math.Sin(theta) * Math.Sin(phi),
+                        radius * Math.Cos(theta));
+                    normals[stack * slices + slice] = vertices[stack * slices + slice].Normalize();
+                }
+            for (int stack = 0; stack < stacks - 1; ++stack)
+                for (int slice = 0; slice < slices; ++slice)
+                    indices[stack * slices + slice] = new int[4] {
+                        stack * slices + ((slice + 1) % slices),
+                        (stack + 1) * slices + ((slice + 1) % slices),
+                        (stack + 1) * slices + slice,
+                        stack * slices + slice,};
+            return new MeshWithNormals(vertices, normals, indices);
+        }
+
         public static Mesh Cube(double size)
         {
             double s = size / 2;
-            return new MeshWithNormals(new Vector[8]
+            return new Mesh(new Vector[8]
                 {
                     new Vector(-s, -s, -s),
                     new Vector(-s, s, -s),
@@ -19,15 +46,6 @@ namespace AffineTransformationsIn3D.Geometry
                     new Vector(-s, s, s),
                     new Vector(s, s, s),
                     new Vector(s, -s, s)
-                }, new Vector[8] {
-                    new Vector(-1, -1, -1),
-                    new Vector(-1, 1, -1),
-                    new Vector(1, 1, -1),
-                    new Vector(1, -1, -1),
-                    new Vector(-1, -1, 1),
-                    new Vector(-1, 1, 1),
-                    new Vector(1, 1, 1),
-                    new Vector(1, -1, 1)
                 }, new int[6][]
                 {
                     new int[4] { 3, 2, 1, 0 },
@@ -67,8 +85,7 @@ namespace AffineTransformationsIn3D.Geometry
                 indices[10 + 2 * i] = new int[3] { 10, 2 * i, (2 * (i + 1)) % 10 };
                 indices[10 + 2 * i + 1] = new int[3] { 11, (2 * (i + 1) + 1) % 10, 2 * i + 1 };
             }
-            //return new Mesh(vertices, indices);
-            return new MeshWithNormals(vertices, new Vector[12], indices);
+            return new Mesh(vertices, indices);
         }
 
         public static Mesh Tetrahedron(double size)
@@ -112,8 +129,7 @@ namespace AffineTransformationsIn3D.Geometry
                         i * nz + j + 1
                     };
                 }
-            //return new Mesh(vertices, indices);
-            return new MeshWithNormals(vertices, new Vector[nx * nz], indices);
+            return new Mesh(vertices, indices);
         }
 
         public static Mesh RotationFigure(IList<Vector> initial, int axis, int density)

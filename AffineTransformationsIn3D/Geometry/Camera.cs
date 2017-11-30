@@ -1,6 +1,4 @@
-﻿using AffineTransformationsIn3D.Geometry;
-
-namespace AffineTransformationsIn3D.Geometry
+﻿namespace AffineTransformationsIn3D.Geometry
 {
     public class Camera
     {
