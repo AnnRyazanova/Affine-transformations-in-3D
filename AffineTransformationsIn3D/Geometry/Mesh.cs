@@ -11,8 +11,7 @@ namespace AffineTransformationsIn3D.Geometry
         protected Vector[] Coordinates { get; set; }
         protected int[][] Indices { get; set; }
 
-        public bool VerticesVisible { get; set; } = false;
-        public bool EdgesVisible { get; set; } = true;
+        public bool Solid { get; set; } = true;
 
         public virtual Vector Center
         {
@@ -89,10 +88,21 @@ namespace AffineTransformationsIn3D.Geometry
 
         public virtual void Draw(Graphics3D graphics)
         {
-            if (VerticesVisible)
-                foreach (var v in Coordinates)
-                    graphics.DrawPoint(new Vertex(v));
-            if (EdgesVisible)
+            if (Solid)
+            {
+                var t = graphics.LightEnabled;
+                graphics.LightEnabled = false;
+                foreach (var facet in Indices)
+                    for (int i = 1; i < facet.Length - 1; ++i)
+                    {
+                        var a = new Vertex(Coordinates[facet[0]], NextColor(new Random(facet[0])));
+                        var b = new Vertex(Coordinates[facet[i]], NextColor(new Random(facet[i])));
+                        var c = new Vertex(Coordinates[facet[i + 1]], NextColor(new Random(facet[i + 1])));
+                        graphics.DrawTriangle(a, b, c);
+                    }
+                graphics.LightEnabled = t;
+            }
+            else
                 foreach (var facet in Indices)
                     for (int i = 0; i < facet.Length; ++i)
                     {
