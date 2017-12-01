@@ -124,7 +124,7 @@ namespace AffineTransformationsIn3D
 
         private void ChangeModel(object sender, EventArgs e)
         {
-            var dialog = new FormChangeModel();
+            var dialog = new FormChangeModel(sceneView4.Camera);
             if (DialogResult.OK != dialog.ShowDialog()) return;
             if (null == dialog.SelectedModel) return;
             CurrentDrawable = dialog.SelectedModel;

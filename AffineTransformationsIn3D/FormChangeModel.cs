@@ -9,11 +9,13 @@ namespace AffineTransformationsIn3D
     {
         public Mesh SelectedModel { get; private set; }
 
-        public FormChangeModel()
+		private Camera _this_camera;
+
+		public FormChangeModel(Camera this_camera)
         {
             InitializeComponent();
+			_this_camera = this_camera;
         }
-
         private void AddPoint(object sender, EventArgs e)
         {
             var x = (double)numericUpDownX.Value;
@@ -68,7 +70,7 @@ namespace AffineTransformationsIn3D
                 SelectedModel = Models.RotationFigure(initial, axis, density);
             }
             else if (tabPagePlot == tab)
-                SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F);
+                SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F, _this_camera);
         }
     }
 }

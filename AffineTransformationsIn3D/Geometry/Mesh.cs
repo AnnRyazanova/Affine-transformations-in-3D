@@ -8,10 +8,10 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class Mesh : IDrawable
     {
-        protected Vector[] Coordinates { get; set; }
-        protected int[][] Indices { get; set; }
+        public Vector[] Coordinates { get; set; }
+		public int[][] Indices { get; set; }
 
-        public bool Solid { get; set; } = true;
+        public bool Solid { get; set; } = false;
 
         public virtual Vector Center
         {

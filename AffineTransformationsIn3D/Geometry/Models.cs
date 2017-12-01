@@ -106,7 +106,7 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Mesh Plot(
             double x0, double x1, double dx, double z0, double z1, double dz,
-            Func<double, double, double> function)
+            Func<double, double, double> function, Camera this_camera)
         {
             int nx = (int)((x1 - x0) / dx);
             int nz = (int)((z1 - z0) / dz);
@@ -129,8 +129,18 @@ namespace AffineTransformationsIn3D.Geometry
                         i * nz + j + 1
                     };
                 }
-            int[][] res_t = DelBadY(vertices, indices, nz, nx);
-            return new Mesh(vertices, res_t);
+
+			Mesh m = new Mesh(vertices, indices);
+			
+
+			m.Apply(this_camera.ViewProjection);
+
+			int[][] del_y = DelBadY(m.Coordinates, m.Indices, nz, nx);
+
+			m = new Mesh(vertices, del_y);
+			m.Apply(this_camera.ViewProjection.Inverse());
+
+            return new Mesh(vertices, m.Indices);
         }
 
         private static int[][] DelBadY(Vector[] vertices, int[][] indices, int nz, int nx)
