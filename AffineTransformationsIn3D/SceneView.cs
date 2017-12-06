@@ -31,6 +31,7 @@ namespace AffineTransformationsIn3D
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            if (null == Camera) return;
             var zero = new Vector(0, 0, 0);
             var x = new Vector(0.8, 0, 0);
             var y = new Vector(0, 0.8, 0);

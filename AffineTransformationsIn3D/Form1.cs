@@ -37,7 +37,7 @@ namespace AffineTransformationsIn3D
                 Transformations.RotateX(Math.PI / 2)
                 * Transformations.OrthogonalProjection());
             Matrix projection = Transformations.PerspectiveProjection(-0.1, 0.1, -0.1, 0.1, 0.1, 20);
-            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -0.6, projection);
+            camera = new Camera(new Vector(1, 1, 1), Math.PI / 4, -Math.Atan(1 / Math.Sqrt(3)), projection);
             sceneView4.Camera = camera;
         }
 
