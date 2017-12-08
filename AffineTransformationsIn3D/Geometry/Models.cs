@@ -106,7 +106,8 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Mesh Plot(
             double x0, double x1, double dx, double z0, double z1, double dz,
-            Func<double, double, double> function, Camera this_camera)
+            Func<double, double, double> function, double AngleX = Math.PI/4,
+			double AngleY = Math.PI / 2, double AngleZ = Math.PI / 4)
         {
             int nx = (int)((x1 - x0) / dx);
             int nz = (int)((z1 - z0) / dz);
@@ -131,16 +132,37 @@ namespace AffineTransformationsIn3D.Geometry
                 }
 
 			Mesh m = new Mesh(vertices, indices);
+
+			m.Apply(Transformations.RotateX(-AngleX) *
+					Transformations.RotateY(0) *
+					Transformations.RotateZ(0));
+
+			m.Apply(Transformations.RotateX(0) *
+					Transformations.RotateY(0) *
+					Transformations.RotateZ(-AngleZ));
 			
+			m.Apply(Transformations.RotateX(0) *
+					Transformations.RotateY(-AngleY) *
+					Transformations.RotateZ(0));
 
-			m.Apply(this_camera.ViewProjection);
-
-			int[][] del_y = DelBadY(m.Coordinates, m.Indices, nz, nx);
+			int[][] del_y = DelBadY(vertices, indices, nz, nx);
 
 			m = new Mesh(vertices, del_y);
-			m.Apply(this_camera.ViewProjection.Inverse());
 
-            return new Mesh(vertices, m.Indices);
+
+			m.Apply(Transformations.RotateX(0) *
+					Transformations.RotateY(AngleY) *
+					Transformations.RotateZ(0));
+
+			m.Apply(Transformations.RotateX(0) *
+					Transformations.RotateY(0) *
+					Transformations.RotateZ(AngleZ));
+
+			m.Apply(Transformations.RotateX(AngleX) *
+					Transformations.RotateY(0) *
+					Transformations.RotateZ(0));
+
+			return m;
         }
 
         private static int[][] DelBadY(Vector[] vertices, int[][] indices, int nz, int nx)

@@ -70,7 +70,7 @@ namespace AffineTransformationsIn3D
                 SelectedModel = Models.RotationFigure(initial, axis, density);
             }
             else if (tabPagePlot == tab)
-                SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F, _this_camera);
+                SelectedModel = Models.Plot(-0.8, 0.8, 0.1, -0.8, 0.8, 0.1, F);
         }
     }
 }
