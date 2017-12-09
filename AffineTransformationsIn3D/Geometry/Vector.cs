@@ -9,7 +9,7 @@ namespace AffineTransformationsIn3D.Geometry
         public double Z { get; set; }
         public double W { get; set; }
 
-        public Vector(double x, double y, double z, double w = 1)
+        public Vector(double x, double y, double z = 0, double w = 1)
         {
             X = x;
             Y = y;

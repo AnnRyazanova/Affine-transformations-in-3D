@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AffineTransformationsIn3D.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -35,25 +36,101 @@ namespace AffineTransformationsIn3D.Geometry
 
         public static Mesh Cube(double size)
         {
+            //double s = size / 2;
+            //return new Mesh(new Vector[8]
+            //    {
+            //        new Vector(-s, -s, -s),
+            //        new Vector(-s, s, -s),
+            //        new Vector(s, s, -s),
+            //        new Vector(s, -s, -s),
+            //        new Vector(-s, -s, s),
+            //        new Vector(-s, s, s),
+            //        new Vector(s, s, s),
+            //        new Vector(s, -s, s)
+            //    }, new int[6][]
+            //    {
+            //        new int[4] { 3, 2, 1, 0 },
+            //        new int[4] { 0, 1, 5, 4 },
+            //        new int[4] { 1, 2, 6, 5 },
+            //        new int[4] { 2, 3, 7, 6 },
+            //        new int[4] { 3, 0, 4, 7 },
+            //        new int[4] { 4, 5, 6, 7 }
+            //    });
+
             double s = size / 2;
-            return new Mesh(new Vector[8]
+            return new MeshWithTexture(Resources.ImageTexture,
+                new Vector[24]
                 {
+                    new Vector(-s, -s, s),
+                    new Vector(s, -s, s),
+                    new Vector(s, s, s),
+                    new Vector(-s, s, s),
+
+                    new Vector(s, -s, s),
+                    new Vector(s, -s, -s),
+                    new Vector(s, s, -s),
+                    new Vector(s, s, s),
+
+                    new Vector(s, -s, -s),
                     new Vector(-s, -s, -s),
                     new Vector(-s, s, -s),
                     new Vector(s, s, -s),
-                    new Vector(s, -s, -s),
+
+                    new Vector(-s, -s, -s),
                     new Vector(-s, -s, s),
                     new Vector(-s, s, s),
+                    new Vector(-s, s, -s),
+
+                    new Vector(-s, -s, -s),
+                    new Vector(s, -s, -s),
+                    new Vector(s, -s, s),
+                    new Vector(-s, -s, s),
+
+                    new Vector(-s, s, s),
                     new Vector(s, s, s),
-                    new Vector(s, -s, s)
-                }, new int[6][]
+                    new Vector(s, s, -s),
+                    new Vector(-s, s, -s),
+                },
+                new Vector[24]
                 {
-                    new int[4] { 3, 2, 1, 0 },
-                    new int[4] { 0, 1, 5, 4 },
-                    new int[4] { 1, 2, 6, 5 },
-                    new int[4] { 2, 3, 7, 6 },
-                    new int[4] { 3, 0, 4, 7 },
-                    new int[4] { 4, 5, 6, 7 }
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+
+                    new Vector(0, 0),
+                    new Vector(1, 0),
+                    new Vector(1, 1),
+                    new Vector(0, 1),
+                },
+                new int[6][]
+                {
+                   new int[4] { 0, 3, 2, 1 },
+                   new int[4] { 4, 7, 6, 5 },
+                   new int[4] { 8, 11, 10, 9 },
+                   new int[4] { 12, 15, 14, 13 },
+                   new int[4] { 16, 19, 18, 17 },
+                   new int[4] { 20, 23, 22, 21 },
                 });
         }
 

@@ -7,6 +7,9 @@ namespace AffineTransformationsIn3D.Geometry
 {
     public class Graphics3D
     {
+        public Bitmap ActiveTexture { get; set; }
+        public bool IsActiveTexture { get; set; } = false;
+
         /*
          * Clockwise - сторона, на которой вершины идут по часовой стрелки.
          * Counterclockwise - сторона, на которой вершины идут против часовой стрелки.
@@ -145,7 +148,7 @@ namespace AffineTransformationsIn3D.Geometry
                 Interpolate(a.Coordinate, b.Coordinate, f),
                 Interpolate(a.Color, b.Color, f),
                 Interpolate(a.Normal, b.Normal, f),
-                Interpolate(a.TextureCoordinate, b.TextureCoordinate, f));
+                Interpolate(a.UVCoordinate, b.UVCoordinate, f));
         }
 
         /* All clipping was written based on
@@ -393,7 +396,14 @@ namespace AffineTransformationsIn3D.Geometry
                 for (double x = Math.Ceiling(left.Coordinate.X); x < right.Coordinate.X; ++x)
                 {
                     var point = Interpolate(left, right, (x - left.Coordinate.X) / (right.Coordinate.X - left.Coordinate.X));
-                    SetPixel((int)x, (int)y, point.Coordinate.Z, point.Color);
+
+                    if (IsActiveTexture)
+                        SetPixel((int)x, (int)y, point.Coordinate.Z, 
+                            ActiveTexture.GetPixel(
+                                (int)(point.UVCoordinate.X * (ActiveTexture.Width - 1)), 
+                                (int)(point.UVCoordinate.Y * (ActiveTexture.Height - 1))));
+                    else
+                        SetPixel((int)x, (int)y, point.Coordinate.Z, point.Color);
                 }
             }
         }

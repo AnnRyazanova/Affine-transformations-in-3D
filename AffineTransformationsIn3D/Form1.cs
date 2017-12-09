@@ -27,7 +27,7 @@ namespace AffineTransformationsIn3D
         public Form1()
         {
             InitializeComponent();
-            CurrentDrawable = Models.Sphere(0.5, 20, 20);
+            CurrentDrawable = Models.Cube(0.5);
             sceneView1.Camera = new Camera(new Vector(0, 0, 0), 0, 0, 
                 Transformations.OrthogonalProjection());
             sceneView2.Camera = new Camera(new Vector(0, 0, 0), 0, 0,

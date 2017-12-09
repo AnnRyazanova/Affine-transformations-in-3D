@@ -7,7 +7,7 @@ namespace AffineTransformationsIn3D.Geometry
         public Vector Coordinate { get; set; }
         public Color Color { get; set; }
         public Vector Normal { get; set; }
-        public Vector TextureCoordinate { get; set; }
+        public Vector UVCoordinate { get; set; }
 
         public Vertex(Vector coordinate) : this(coordinate, Color.White) { }
 
@@ -20,7 +20,10 @@ namespace AffineTransformationsIn3D.Geometry
             Coordinate = coordinate;
             Color = color;
             Normal = normal;
-            TextureCoordinate = textureCoordinate;
+            UVCoordinate = textureCoordinate;
         }
+
+        public Vertex(Vector coordinate, Vector textureCoordinate) : this(coordinate, Color.Black, new Vector(0, 0, 0), textureCoordinate)
+        { }
     }
 }
